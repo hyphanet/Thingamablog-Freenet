@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=<$Charset$>" />
+
+		<title><$BlogTitle$> : Archive Index</title>
+		<link rel="stylesheet" href="<$BaseURL$>/styles-site.css" type="text/css" />    
+	</head>
+
+	<body>
+    <div id="banner">
+		<h1><$PageTitle$></h1>
+		<span class="description">Archive Index</span>
+    </div>
+
+	<div id="content">
+		<div class="blog">
+		<div class="blogbody">
+
+		<!-- Archive links list -->
+		<h3 class="title">Archives</h3>
+		<ul>		
+		<ArchiveYears sort_order="descend">
+			<li><$Year$></li>
+			<ul>
+		  	<ArchiveYear>
+			<li><a href="<$ArchiveLink$>"><$ArchiveName$></a></li>
+			</ArchiveYear>
+			</ul>
+		</ArchiveYears>	
+		</ul>       
+		
+		<hr>
+      
+		<!-- Category links list -->
+		<h3 class="title">Categories</h3>
+		<ul>	
+		<CategoryList>
+			<li><a href="<$CategoryLink$>"><$CategoryName$></a></li>
+		</CategoryList>
+		</ul>
+		    
+
+		</div>
+		</div><!--end blog -->
+	</div> <!-- end content -->
+    
+	<!-- sidebar begin -->
+    <div id="links">
+    
+    <!-- This section lays out the calendar -->
+		<div align="center" class="calendar">			
+			<Calendar>
+				<table border="0" cellspacing="3" cellpadding="0" summary="Monthly calendar with links to each day's posts">
+					<caption class="calendarhead"><$MonthLabel$></caption>
+					<tr>						
+						<WeekDays><th align="center"><span class="calendar"><$WeekDay$></span></th></WeekDays>
+					</tr>
+				<CalendarWeek>
+					<tr><CalendarDay><td align="center">
+						<span class="calendar">
+						<IfDayHasNoEntries><$DayOfMonth$></IfDayHasNoEntries>
+						<IfDayHasEntries><a href="<$EntryArchivePage$>#<$DateOfDay format="yyyy-MM-dd"$>"><$DayOfMonth$></a></IfDayHasEntries>
+						<IfEmptySpace>&nbsp;</IfEmptySpace></span></td>						
+					</CalendarDay></tr>
+				</CalendarWeek>
+				</table>
+			</Calendar>
+		</div> <!-- end calendar -->
+		
+		<br />		
+		<div class="syndicate">
+			<a href="<$FrontPageLink$>">Front Page</a><br />
+			<a href="<$RssLink$>">Syndicate this site (XML)</a>
+		</div>
+
+
+		<div class="sidetitle">
+			Credits
+		</div>
+		<div class="side"><!--REQUIRED LINK!!!! do not delete! -->
+			<a href="http://www.movablestyle.com/">Design by Movablestyle</a><br />        
+		</div>
+      
+      
+		<div class="powered">
+			Powered by<br /><a href="<$AppLink$>"><$AppName$> <$AppVersion$></a><br />    
+		</div>
+ 
+
+	</div>
+    <br clear="all" />
+    </body>
+</html>

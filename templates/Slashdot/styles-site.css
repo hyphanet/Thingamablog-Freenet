@@ -1,0 +1,252 @@
+body {
+    background-color: #000000;
+    color: #000000;
+    margin: 0px;
+    padding: 0px;
+}
+
+a 		{ color: #006666; font-weight: normal; } 
+a:link		{ color: #006666; } 
+a:visited	{ color: #000000; } 
+
+h1, h2, h3 {
+    margin: 0px;
+    padding: 0px;
+}
+
+#banner, #banner-commentspop {
+}
+
+#banner {
+    background-color: #ffffff;
+    margin: 10px 10px 0 10px;
+}
+
+#banner-commentspop {
+    background-color: #006666;
+    background-image: url(bannerbg.png);
+    background-repeat: no-repeat;
+    color: #ffffff;
+    font-family: verdana, helvetica, sans-serif;
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 5px 10px 5px 25px;
+}
+
+#banner a,
+#banner a:link,
+#banner a:visited,
+#banner a:active,
+#banner a:hover {
+    background-color: #006666;
+    background-image: url(bannerbg.png);
+    background-repeat: no-repeat;
+    border-bottom: #000000 solid 1px;
+    border-right: #000000 solid 1px;
+    color: #ffffff;
+    font-family: verdana, helvetica, sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    padding: 0 10px 5px 25px;
+    text-decoration: none;
+}
+
+#banner .description {
+    color: #006666;
+    display: block;
+    font-family: helvetica, arial, sans-serif;
+    font-size: medium;
+    font-weight: bold;
+    margin-top: 5px;
+    padding: 2px 25px;
+}	
+
+#content {
+    background-color: #ffffff;
+    margin: 0 10px 10px 10px;
+    padding-right: 230px;
+}
+
+#container {
+    background-color: #ffffff;
+    margin: 0 10px 10px 10px;
+}
+
+#links {
+    padding: 10px;				
+    position: absolute;
+    top: 65px;
+    right: 10px;
+    width: 220px;
+}
+
+.blog {
+    background-color: #fff;
+    padding: 15px;
+}	
+
+
+.blogbody {
+    font-size: medium;
+    font-weight: normal;
+    background: #fff;
+    line-height: 120%;			
+    margin-bottom: 10px;
+}
+
+.blogbody p {
+    margin-top: 2px;
+}
+
+.title	{ 
+    background-color: #006666;
+    background-image: url(headerbg.png);
+    background-repeat: no-repeat;
+    color: #ffffff;
+    font-family: helvetica, sans-serif;
+    font-size: medium; 
+    margin: 0 0 3px 0;
+    padding: 1px 0 3px 15px;
+}
+
+.title a {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#menu {
+    font-size: small;
+    text-align: right;
+}		
+
+.date	{ 
+    color: #888; 
+    font-size: small; 
+    text-align: right;
+}			
+
+.posted	{ 
+    font-size: small; 
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+
+.calendar {
+    background-color: #cccccc;
+    font-size: small;
+    font-weight: normal;
+    line-height: 120%;
+    text-align: center;	
+}
+
+.calendar a {
+    background-color: #006666;
+    color: #ffffff;
+    padding: 0 2px;
+    text-decoration: none;
+}
+
+.calendar td {
+    width: 14%;
+}
+
+div.calendar table {
+    width: 100%;
+}
+
+.calendarhead {	
+    background: #006666;
+    color: #ffffff;
+    font-family: helvetica, sans-serif;
+    font-size: medium;
+    font-weight: bold;
+    padding: 2px;
+    text-align: left;
+    width: 100%;
+}	
+
+.side {
+    background: #cccccc;
+    font-size: small;
+    line-height: 120%;
+    padding: 3px 7px;				
+}	
+
+.sidetitle {
+    background-color: #006666;
+    color: #ffffff;
+    font-family: helvetica, sans-serif;
+    font-size: small;
+    font-weight: bold;
+    padding: 2px;
+    margin-top: 10px;
+}		
+
+.syndicate {
+    background-color: #cccccc;
+    font-size: small;
+    font-weight: bold;		
+    padding: 2px;
+    margin-top: 10px;
+    text-align: center;
+}	
+
+.powered {
+    background-color: #cccccc;
+    font-size: small;
+    font-weight: bold;
+    line-height: 120%;
+    margin-top: 10px;
+    padding:2px;
+    text-align:center;
+}	
+
+.comments-body {
+    font-size: medium;
+    line-height: 120%;
+    margin-bottom: 10px;
+}		
+
+.comments-post {
+    background-color: #cccccc;
+    display: block;
+    font-size: small; 
+    font-weight: bold;
+}	
+
+.trackback-url {
+    font-size: small;
+    background: #fff;
+    line-height: 120%;
+    padding: 5px;	
+}
+
+.trackback-body {
+    font-size: small;
+    font-weight: normal;
+    line-height: 120%;
+    padding-bottom: 10px;
+    padding-top: 10px;		
+}		
+
+.trackback-post {
+    color: #666;
+    font-size: small;
+    font-weight: normal;
+    background: #fff;		
+}
+
+.comments-head	{ 
+    background-color: #006666;
+    background-image: url(headerbg.png);
+    background-repeat: no-repeat;
+    color: #ffffff;
+    font-family: helvetica, sans-serif;
+    font-size: medium; 
+    font-weight: bold;
+    margin: 0 0 3px 0;
+    padding: 1px 0 1px 15px;
+}		
+

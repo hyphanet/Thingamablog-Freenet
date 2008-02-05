@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=<$Charset$>" />
+
+		<title><$BlogTitle$> : <$PageTitle$></title>
+		<link rel="stylesheet" href="<$BaseURL$>/styles-site.css" type="text/css" />    
+	</head>
+	<body>
+
+    <div id="banner">
+		<h1><$BlogTitle$></h1>
+		<span class="description"><$PageTitle$></span>
+    </div>
+
+
+
+	<div id="content">
+		<div class="blog">
+<!-- back and forward -->
+<p align="center">
+<PreviousPage>
+<IfPageExists>
+<a href="<$PageLink$>">&laquo; <$PageName$></a> |
+</IfPageExists>
+</PreviousPage>
+<a href="<$FrontPageLink$>">Main</a>
+<NextPage>
+<IfPageExists>
+| <a href="<$PageLink$>"><$PageName$> &raquo;</a>
+</IfPageExists>
+</NextPage>
+</p>
+		<!-- This section specifies the layout for each entry -->
+		<BlogEntry>
+		<DayHeader><h2 class="date"><$DayHeaderDate$></h2></DayHeader>		
+		<div class="blogbody">
+			<a name="<$EntryID$>"></a>
+			<EntryTitle>
+			<h3 class="title"><$EntryTitle$></h3>
+			</EntryTitle>
+			<$EntryBody$>
+			<div class="posted">
+				Posted by <a href="mailto:<$EntryAuthorEmail$>"><$EntryAuthor$></a> at <$EntryTime$></a><br>
+				<EntryModifiedDate><i>Edited on: <$EntryModifiedDate$></i><br></EntryModifiedDate>
+				Categories: <EntryCategories glue=", "><a href="<$CategoryLink$>"><$CategoryName$></a></EntryCategories><br>
+			</div>
+		</div>
+		</BlogEntry>	
+
+
+		</div><!--end blog -->
+	</div> <!-- end content -->
+    
+	<!-- sidebar begin -->
+    <div id="links">
+		<p></p>
+		<div class="syndicate">
+			<a href="<$FrontPageLink$>">Front Page</a><br />
+			<a href="<$RssLink$>">Syndicate this site (XML)</a>
+		</div>
+     
+      
+		<!-- Category links list -->
+		<div class="sidetitle">
+			Categories
+		</div>
+
+		<div class="side">
+		<CategoryList>
+			<a href="<$CategoryLink$>"><$CategoryName$></a><br />
+		</CategoryList>
+		</div>      
+
+
+		<div class="sidetitle">
+			Credits
+		</div>
+		<div class="side"><!--REQUIRED LINK!!!! do not delete! -->
+			<a href="http://www.movablestyle.com/">Design by Movablestyle</a><br />        
+		</div>
+      
+      
+		<div class="powered">
+			Powered by<br /><a href="<$AppLink$>"><$AppName$> <$AppVersion$></a><br />    
+		</div>
+ 
+
+	</div>
+    <br clear="all" />
+    </body>
+</html>

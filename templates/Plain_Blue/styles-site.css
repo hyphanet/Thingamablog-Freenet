@@ -1,0 +1,253 @@
+body, table {
+    font-family: verdana, helvetica;
+}
+
+body {
+    background-color: #fff;
+    margin: 0px;
+    padding: 0px;
+}
+
+a 		{ color: #668; text-decoration: none; font-weight:normal; } 
+a:link		{ color: #668; } 
+a:visited	{ color: #668; } 
+a:active	{ color: #334; } 
+a:hover		{ color: #334; }
+
+h1, h2, h3 {
+    margin: 0px;
+    padding: 0px;
+}
+
+#banner, #banner-commentspop {
+    background-color: #ddf;
+    border-bottom: 1px dotted #668;
+}
+
+#banner {
+    height: 65px;
+    padding: 10px 0 0 15px;
+}
+
+#banner-commentspop {
+    font-size: x-large;
+    font-weight: bold;
+    padding: 5px 0 5px 5px;
+    margin-bottom: 10px;
+}
+
+#banner a,
+#banner a:link,
+#banner a:visited,
+#banner a:active,
+#banner a:hover {
+    color: #000;
+    font-size: xx-large;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#banner .description {
+    color: #668;
+    font-family: times, serif;
+    font-size: large;
+    font-style: italic;
+    font-weight: bold;
+    margin-left: 10px;
+}	
+
+#content {
+    margin-right: 230px;
+    border-right: #668 dotted 1px;
+}
+
+#container {
+    margin: 10px;
+}
+
+#links {
+    background-color: #fff;
+    border-left: 1px dotted #668;
+    padding: 10px;				
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 209px;
+}
+
+body > #links {
+    width: 210px;
+}
+
+.blog {
+    padding: 10px;
+    margin-bottom: 10px;
+}	
+
+
+.blogbody {
+    color: #666;
+    font-size: small;
+    font-weight: normal;
+    background: #fff;
+    line-height: 140%;			
+    margin-left: 15px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.blogbody a,
+.blogbody a:link,
+.blogbody a:visited {
+    border-bottom: 1px dotted #334;
+}
+.blogbody a:active,
+.blogbody a:hover {
+    border-bottom: 1px solid #668;
+}
+
+.title	{ 
+    color: #668; 	
+    font-family: verdana, helvetica, sans-serif;
+    font-size: normal; 
+}			
+
+#menu {
+    background: #fff;
+    font-size: small;
+    text-align: left;  							
+}		
+
+.date	{ 
+    color: #444; 
+    font-size: small; 
+    font-weight: bold;
+    margin-bottom: 5px;
+}			
+
+.posted	{ 
+    color: #666; 
+    font-size: x-small; 
+    font-style: italic;
+    margin-top: 8px;
+}
+
+
+.calendar {
+    font-size: x-small;
+    font-weight: normal;
+    line-height: 140%;
+    padding: 2px;
+    text-align: center;	
+}
+
+div.calendar {
+    padding: 3px;
+}
+
+div.calendar table {
+    width: 100%;
+}
+
+.calendarhead {	
+    background: #ddf;
+    border: #9c9 dotted 1px;
+    color: #668;
+    font-size: x-small;
+    font-weight: bold;
+    line-height: 140%;
+    padding: 2px;					
+    width: 100%;
+}	
+
+.side {
+    color: #333;
+    font-size: x-small;
+    font-weight: normal;
+    line-height: 140%;
+    padding: 3px 7px;				
+}	
+
+.sidetitle {
+    background-color: #ddf;
+    border: 1px dotted #9c9;
+    color: #668;
+    font-size: x-small;
+    font-weight: bold;
+    padding: 2px;
+    margin-top: 10px;
+    letter-spacing: .3em;
+    text-align:center;		  					
+}		
+
+.syndicate {
+    font-size: x-small;
+    font-weight: bold;		
+    padding: 2px;
+    margin-top: 10px;
+    text-align: center;
+}	
+
+.powered {
+    font-size: x-small;
+    font-weight: bold;
+    line-height:140%;
+    margin-top: 10px;
+    padding:2px;
+    text-align:center;
+}	
+
+
+.comments-body {
+    color: #666;
+    font-size: small;
+    font-weight: normal;
+    line-height:140%;
+    margin-left: 15px;
+    margin-bottom: 5px;
+    padding: 10px;
+}		
+
+.comments-post {
+    color: #888; 
+    font-size: x-small; 
+    font-style: italic;
+    margin-top: 3px;
+    text-align: right;
+}	
+
+.trackback-url {
+    color:#666;
+    font-size:small;
+    font-weight:normal;
+    background: #fff;
+    line-height: 140%;
+    padding: 5px;	
+}
+
+.trackback-body {
+    color:#666;
+    font-size: small;
+    font-weight: normal;
+    line-height: 140%;
+    padding-bottom: 10px;
+    padding-top: 10px;		
+}		
+
+.trackback-post {
+    color: #666;
+    font-size: x-small;
+    font-weight: normal;
+    background: #fff;		
+}
+
+.comments-head	{ 
+    color: #444; 
+    font-size: small; 
+    font-weight: bold;
+    font-size: small; 
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 3px;
+}		
+

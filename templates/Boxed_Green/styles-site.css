@@ -1,0 +1,273 @@
+body, table {
+    font-family: arial, helvetica;
+}
+
+body {
+    background: #aeb;
+    margin: 0px;
+    padding: 0px;
+}
+
+a 		{ color: #697; text-decoration: none; font-weight:normal; } 
+a:link		{ color: #697; text-decoration: none; } 
+a:visited	{ color: #697; text-decoration: none; } 
+a:active	{ color: #364;  } 
+a:hover		{ color: #364;  }
+
+h1, h2, h3 {
+    margin: 0px;
+    padding: 0px;
+}
+
+#banner, #banner-commentspop {
+    background-color: #cfc;
+}
+
+#banner {
+    border: 1px dotted #697;
+    height: 65px;
+    padding: 10px 0 0 15px;
+    margin: 10px;
+}
+
+#banner-commentspop {
+    border-bottom: 1px dotted #697;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 5px 0 5px 5px;
+    margin-bottom: 10px;
+}
+
+#banner a,
+#banner a:link,
+#banner a:visited,
+#banner a:active,
+#banner a:hover {
+    color: #000;
+    font-size: xx-large;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#banner .description {
+    color: #999;
+    font-family: times, serif;
+    font-size: large;
+    font-style: italic;
+    font-weight: bold;
+    margin-left: 25px;
+}	
+
+#content {
+    left: 250px;
+    right: 10px;
+    top: 95px;
+    position: absolute;
+}
+
+#container {
+    margin: 10px;
+}
+
+#links {
+    background: #cfc;
+    border: 1px dotted #697;
+    padding:10px;				
+    position: absolute;
+    top: 95px;
+    left: 10px;
+    width: 210px;
+}
+
+.blog {
+    background-color: #cfc;  							
+    border: 1px dotted #697;
+    padding: 10px;
+    margin-bottom: 10px;
+}	
+
+
+.blogbody {
+    border: 1px solid #9c9;
+    color: #666;
+    font-size: small;
+    font-weight: normal;
+    background: #fff;
+    line-height: 16px;			
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.blogbody a,
+.blogbody a:link,
+.blogbody a:visited,
+.blogbody a:active,
+.blogbody a:hover {
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+.title	{ 
+    color: #444; 	
+    font-family: times, serif;
+    font-size: large; 
+    font-style: italic;
+}			
+
+#menu {
+    background: #fff;
+    border: 1px solid #9c9;
+    font-size: small;
+    text-align:center;  							
+}		
+
+.date	{ 
+    background-color: #dfd;
+    border: 1px solid #9c9;
+    color: #888; 
+    font-size: small; 
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 3px;
+}			
+
+.posted	{ 
+    color: #666; 
+    font-size: x-small; 
+    margin-top: 8px;
+    padding: 1px 10px;
+    text-align: right;
+}
+
+
+.calendar {
+    background-color: #dfd;
+    font-size: x-small;
+    font-weight: normal;
+    line-height: 140%;
+    padding: 2px;
+    text-align: center;	
+}
+
+div.calendar {
+    border: #9c9 solid 1px;
+    padding: 3px;
+}
+
+div.calendar table {
+    width: 100%;
+}
+
+.calendarhead {	
+    background: #fff;
+    border: #9c9 dotted 1px;
+    font-size: x-small;
+    font-weight: bold;
+    line-height: 140%;
+    padding: 2px;					
+    width: 100%;
+}	
+
+.side {
+    background-color: #dfd;
+    border-color: #9c9;
+    border-style: solid;
+    border-width: 0 1px 1px 1px;
+    color: #333;
+    font-size: x-small;
+    font-weight: normal;
+    line-height: 140%;
+    padding: 3px 7px;				
+}	
+
+.sidetitle {
+    background-color: #fff;		
+    border: 1px #9c9;
+    border-style: solid solid dotted solid;
+    font-size: x-small;
+    font-weight: bold;
+    padding: 2px;
+    margin-top: 10px;
+    letter-spacing: .3em;
+    text-align:center;		  					
+}		
+
+.syndicate {
+    background-color: #dfd;  		
+    border: 1px solid #9c9;
+    font-size: x-small;
+    font-weight: bold;		
+    padding: 2px;
+    margin-top: 10px;
+    text-align: center;
+}	
+
+.powered {
+    background-color: #dfd;		
+    border: 1px solid #9c9;			
+    font-size: x-small;
+    font-weight: bold;
+    line-height:140%;
+    margin-top: 10px;
+    padding:2px;
+    text-align:center;
+}	
+
+
+.comments-body {
+    background-color: #fff;
+    border: 1px solid #9c9;
+    color: #666;
+    font-size: small;
+    font-weight: normal;
+    line-height:140%;
+    margin-bottom: 10px;
+    padding: 10px;
+}		
+
+.comments-post {
+    color: #666; 
+    font-size: x-small; 
+    margin-top: 8px;
+    padding: 1px 10px;
+    text-align: right;
+}	
+
+.trackback-url {
+    color:#666;
+    font-size:small;
+    font-weight:normal;
+    background: #fff;
+    line-height: 140%;
+    padding: 5px;	
+    border: 1px dotted #9c9; 					
+}
+
+.trackback-body {
+    background: #fff;
+    color:#666;
+    font-size: small;
+    font-weight: normal;
+    line-height: 140%;
+    padding-bottom: 10px;
+    padding-top: 10px;		
+    border-bottom: 1px dotted #9c9;
+}		
+
+.trackback-post {
+    color: #666;
+    font-size: x-small;
+    font-weight: normal;
+    background: #fff;		
+}
+
+.comments-head	{ 
+    background-color: #dfd;
+    border: #9c9 solid 1px;
+    color: #888; 
+    font-size: small; 
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 3px;
+}		
+
