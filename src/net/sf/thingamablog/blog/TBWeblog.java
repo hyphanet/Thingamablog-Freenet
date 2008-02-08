@@ -114,6 +114,9 @@ public class TBWeblog extends Weblog
 	private File homeDir;
 	private File tmplDir;
 	private File outputDir;
+
+        // Should be internet or freenet
+        private String type;
 	
 	
 	/**
@@ -1392,5 +1395,13 @@ public class TBWeblog extends Weblog
         }
         
         return null;
+    }
+
+    public void setType(String type) {
+        this.type=type;
+    }
+    
+    public String getType() {
+        return this.type;
     }
 }
