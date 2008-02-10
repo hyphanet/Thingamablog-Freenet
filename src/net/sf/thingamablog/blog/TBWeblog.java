@@ -89,6 +89,9 @@ public class TBWeblog extends Weblog
 	private String archivePath = basePath;
 	private String mediaPath = basePath;
 	
+        // Should be internet or freenet
+        private String type;
+        
 	//private Vector outdatedTopLevelPages = new Vector();
 	private Vector outdatedCategoryPages = new Vector();
 	private Vector outdatedArchivePages = new Vector();
@@ -114,9 +117,6 @@ public class TBWeblog extends Weblog
 	private File homeDir;
 	private File tmplDir;
 	private File outputDir;
-
-        // Should be internet or freenet
-        private String type;
 	
 	
 	/**
@@ -1398,7 +1398,7 @@ public class TBWeblog extends Weblog
     }
 
     public void setType(String type) {
-        this.type=type;
+        this.type = type;
     }
     
     public String getType() {
