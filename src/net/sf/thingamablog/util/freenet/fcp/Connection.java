@@ -31,10 +31,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.todesbaum.util.io.Closer;
-import de.todesbaum.util.io.LineInputStream;
-import de.todesbaum.util.io.StreamCopier;
-import de.todesbaum.util.io.TempFileInputStream;
+import src.net.sf.thingamablog.util.io.Closer;
+import src.net.sf.thingamablog.util.io.LineInputStream;
+import src.net.sf.thingamablog.util.io.StreamCopier;
+import src.net.sf.thingamablog.util.io.TempFileInputStream;
 
 /**
  * A physical connection to a Freenet node.
