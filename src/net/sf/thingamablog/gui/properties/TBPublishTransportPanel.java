@@ -68,6 +68,7 @@ public class TBPublishTransportPanel extends PropertyPanel
     private final String FTP = "FTP"; //$NON-NLS-1$
 	private final String SFTP = "SFTP"; //$NON-NLS-1$
 	private final String LOCAL = "Local"; //$NON-NLS-1$
+//        private final String FCP = "FCP";
 	
 	private TBWeblog weblog;
 	private JComboBox encodingsCombo;
@@ -75,6 +76,7 @@ public class TBPublishTransportPanel extends PropertyPanel
 	private JPanel transportsPanel;
 	private RemoteTransportPanel ftpPanel;
 	private RemoteTransportPanel sftpPanel;
+//        private FcpTransportPanel fcpPanel;
 	private JPanel localPanel;
 	private CardLayout tLayout;
     private JTabbedPane ftpTabs = new JTabbedPane();
@@ -83,27 +85,45 @@ public class TBPublishTransportPanel extends PropertyPanel
 	public TBPublishTransportPanel(TBWeblog wb)
 	{
 		weblog = wb;
-		String types[] = {FTP, SFTP, LOCAL};
-		
-		tLayout = new CardLayout();
-		ftpPanel = new RemoteTransportPanel(true);
-		ftpPanel.setBorder(new TitledBorder(i18n.str("ftp_transport"))); //$NON-NLS-1$
-		sftpPanel = new RemoteTransportPanel(false);
-		sftpPanel.setBorder(new TitledBorder(i18n.str("sftp_transport"))); //$NON-NLS-1$
-		localPanel = new JPanel();
-        
-        ftpTabs.add(ftpPanel, "FTP");
-        asciiPanel.setPreferredSize(new Dimension(210, 150));
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.add(asciiPanel);
-        ftpTabs.add(p, "ASCII");
-        
-		
+                String types[];
+                tLayout = new CardLayout();
+                // If we are currently building a blog, the publish process can be FTP, SFTP, or LOCAL
+                if (weblog.getType().toString().equals("internet")) {
+                    types=new String[3];
+                    types[0]="LOCAL";
+                    types[1]="FTP";
+                    types[2]="SFTP";                    
+                    ftpPanel = new RemoteTransportPanel(true);
+                    ftpPanel.setBorder(new TitledBorder(i18n.str("ftp_transport"))); //$NON-NLS-1$
+                    sftpPanel = new RemoteTransportPanel(false);
+                    sftpPanel.setBorder(new TitledBorder(i18n.str("sftp_transport"))); //$NON-NLS-1$
+                    ftpTabs.add(ftpPanel, "FTP");
+                    asciiPanel.setPreferredSize(new Dimension(210, 150));
+                    JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                    p.add(asciiPanel);
+                    ftpTabs.add(p, "ASCII");
+                 }
+                // Else, we are building a flog, and the transport process is LOCAL or FCP
+                else {
+                    types=new String[1];
+                    types[0]="LOCAL";
+                    //types[2]="FCP";                    
+                    //fcpPanel = new FcpTransportPanel();
+                    //fcpPanel.setBorder(new TitledBorder(i18n.str("fcp_transport")));
+                 }
+                localPanel = new JPanel();
+                		
 		transportsPanel = new JPanel();
-		transportsPanel.setLayout(tLayout);		
-		transportsPanel.add(ftpTabs, FTP);
-		transportsPanel.add(sftpPanel, SFTP);
-		transportsPanel.add(localPanel, LOCAL);	
+		transportsPanel.setLayout(tLayout);
+                if (weblog.getType().toString().equals("internet")) {
+                    transportsPanel.add(localPanel, LOCAL);
+                    transportsPanel.add(ftpTabs, FTP);
+                    transportsPanel.add(sftpPanel, SFTP);
+                } else {
+                    transportsPanel.add(localPanel, LOCAL);
+                    //transportsPanel.add(fcpPanel, FCP);
+                }
+			
 		
 		/* Fill combo with all supported encodings */
 		encodingsCombo = new JComboBox();
@@ -147,7 +167,12 @@ public class TBPublishTransportPanel extends PropertyPanel
 		{		
 			transportTypeCombo.setSelectedItem(LOCAL);
 			tLayout.show(transportsPanel, LOCAL);
-		}
+		} 
+//                else {
+//                    transportTypeCombo.setSelectedItem(FCP);
+//                    tLayout.show(transportsPanel, FCP);
+//                }
+                
 		transportTypeCombo.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -207,10 +232,12 @@ public class TBPublishTransportPanel extends PropertyPanel
 				pt.setPassword(sftpPanel.getPassword());
 			transport = pt;					
 		}
-		else
+		else if(o == LOCAL)
 		{
 			transport = new LocalTransport();
-		}
+		} else {
+//                    transport = new FCPTransport();
+                }
 		
 		weblog.setPublishTransport(transport);
 		weblog.getPageGenerator().setCharset(encodingsCombo.getSelectedItem().toString());
@@ -388,4 +415,10 @@ public class TBPublishTransportPanel extends PropertyPanel
             passiveModeCheckBox.setSelected(b);
         }
     }
+        
+//        private class FCPTransportPanel extends JPanel {
+//            /**
+//             * Ask for some options like : is the node on the same computer, etc..
+//             */
+//        }
 }

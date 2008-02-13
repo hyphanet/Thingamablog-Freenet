@@ -106,7 +106,8 @@ public class TBWizardDialog extends JDialog
 		
 		weblog = new TBWeblog(dir);
 		weblog.setBackend(backend);
-		weblog.setPublishTransport(new net.sf.thingamablog.transport.FTPTransport());
+                // Default behavior is to publish the b/flog locally
+		weblog.setPublishTransport(new net.sf.thingamablog.transport.LocalTransport());
 		//weblog.setAuthorStore(authStore);
 		//weblog.setCategoryStore(catStore);
 		
@@ -135,24 +136,16 @@ public class TBWizardDialog extends JDialog
 		
 		templPanel = new TemplatePanel();
 		templPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		panels.add(templPanel);
+		panels.add(templPanel);		
 		
-		transportPanel = new TransportPanel();
-		transportPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		panels.add(transportPanel);
-		
-		donePanel = new DonePanel();
-		donePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		panels.add(donePanel);
-		
+
+                
 		wizPanel.add(starterPanel, "1"); //$NON-NLS-1$
 		wizPanel.add(titlePanel, "2"); //$NON-NLS-1$
 		wizPanel.add(catPanel, "3"); //$NON-NLS-1$
 		wizPanel.add(authPanel, "4"); //$NON-NLS-1$
         wizPanel.add(emailPanel, "5"); //$NON-NLS-1$
-		wizPanel.add(templPanel, "6"); //$NON-NLS-1$
-		wizPanel.add(transportPanel, "7"); //$NON-NLS-1$
-		wizPanel.add(donePanel, "8");	 //$NON-NLS-1$
+		wizPanel.add(templPanel, "6"); //$NON-NLS-1$                
 		
 		ActionListener listener = new ButtonHandler();
 		nextButton = new JButton(i18n.str("next-")); //$NON-NLS-1$
@@ -275,19 +268,33 @@ public class TBWizardDialog extends JDialog
 		public void actionPerformed(ActionEvent e)
 		{
 			if(e.getSource() == nextButton)
-			{
-				if(!donePanel.isVisible())
+			{                            
+                                // We check if the current panel is the starterPanel (donePanel is not yet initialized) or if the current panel is not donePanel
+				if(starterPanel.isVisible() || !donePanel.isVisible())
 				{				
 					//if(isCurrentPanelValid())
                     PropertyPanel p = getCurrentPanel();
                     if(p != null && p.isValidData())
                     {
 						p.saveProperties();
+                                // We initialize the transport panel after save the type propertie
+                                if(starterPanel.isVisible()) {
+                                    transportPanel = new TransportPanel();
+                                    transportPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+                                    panels.add(transportPanel);
+		
+                                    donePanel = new DonePanel();
+                                    donePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+                                    panels.add(donePanel);
+                                
+                                    wizPanel.add(transportPanel, "7"); //$NON-NLS-1$
+                                    wizPanel.add(donePanel, "8");	 //$NON-NLS-1$
+                                }
                         wizLayout.next(wizPanel);
                         
                     }
-				}
-														
+				}                                
+
 				if(donePanel.isVisible())
 				{
 					doneButton.setText(FINISH);
@@ -380,8 +387,7 @@ public class TBWizardDialog extends JDialog
 				new URL(urlField.getText());				
 			}
 			catch(MalformedURLException ex) //invalid url
-			{
-                            
+			{                            
 				// Display a warning message instead of just put http:// at the beginning of the url, in case the user enter a USK key and didn't use the type combobox                                                                                           
 				urlField.setText("http://" + urlField.getText()); //$NON-NLS-1$
                                 JOptionPane.showMessageDialog(TBWizardDialog.this,
@@ -446,7 +452,7 @@ public class TBWizardDialog extends JDialog
 		}
 		
 		public boolean isValidData()
-		{			
+		{		                                            
 			if(titleField.getText().equals("")) //$NON-NLS-1$
 			{
 				JOptionPane.showMessageDialog(TBWizardDialog.this, 
