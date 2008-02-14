@@ -334,6 +334,7 @@ public class TBPersistFactory
 		element.setAttribute("url", blog.getBaseUrl());
 		element.setAttribute("arc_url", blog.getArchiveUrl());
 		element.setAttribute("media_url", blog.getMediaUrl());
+                element.setAttribute("insertURI", blog.getInsertUri());
 		element.setAttribute("base_path", blog.getBasePath());		
 		element.setAttribute("base_date", blog.getArchiveBaseDate().getTime() + "");
 		element.setAttribute("arc_policy", blog.getArchivePolicy() + "");
@@ -540,6 +541,7 @@ public class TBPersistFactory
 		loadPingServicesFromXML(blogEle, weblog);
         loadEmailSettingsFromXML(blogEle, weblog);
 		weblog.setTitle(blogEle.getAttributeValue("title", "Untitled"));
+                weblog.setType(blogEle.getAttributeValue("type","internet"));
 		String description = "";
 		Element desc = blogEle.getChild("Description");
 		if(desc != null)
@@ -589,6 +591,7 @@ public class TBPersistFactory
 		tb.setLocale(createLocale(element.getAttributeValue("locale", Locale.getDefault().toString())));
 		tb.setPublishAll(element.getAttributeValue("publish_all", "true").equals("true"));
 		tb.setType(element.getAttributeValue("type").toString());
+                tb.setInsertURI(element.getAttributeValue("insertURI"));
                 
 		int arcPolicy = TBWeblog.ARCHIVE_MONTHLY;
 		int dayInterval = 5;

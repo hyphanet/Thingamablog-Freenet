@@ -81,6 +81,9 @@ public abstract class Weblog
 	
 	/** The home directory of the web files */
 	protected  File webFilesDirectory = new File(System.getProperty("user.home"));
+        
+        /** The type of the weblog (f/blog) */
+        protected String type;
 		
 	private Date lastEmailCheck = new Date();
     private int outdatedAfterMinutes = 30;
@@ -1327,5 +1330,13 @@ public abstract class Weblog
     public void setLastEmailCheck(Date d)
     {
         lastEmailCheck = d;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    public String getType() {
+        return this.type;
     }
 }

@@ -111,6 +111,9 @@ public class TBOptionsDialog extends StandardDialog
 	private JTextField socksPortField;
 	private JTextField socksUserField;
 	private JPasswordField socksPasswordField;
+        
+        private JTextField nodePortTf;
+        private JTextField hostNameTf;
 	
 	private JTextArea feedItemArea;
 	private JCheckBox updateNewsCb;
@@ -234,6 +237,9 @@ public class TBOptionsDialog extends StandardDialog
 		useSocksProxyCb.addActionListener(lst);		
 		socksProxyAuthCb.addActionListener(lst);		
 		
+                //node components
+                nodePortTf = new JTextField(10);
+                hostNameTf = new JTextField(20);
 			
     	
     	
@@ -330,11 +336,20 @@ public class TBOptionsDialog extends StandardDialog
 		lip.setBorder(new TitledBorder(i18n.str("proxy_details"))); //$NON-NLS-1$
 		proxyPanel.add(lip, BorderLayout.CENTER);		
 		
+                //node tab
+                JPanel nodePanel = new JPanel(new BorderLayout());
+                lip = new LabelledItemPanel();
+                lip.addItem(i18n.str("node_port"), nodePortTf);
+                lip.addItem(i18n.str("node_hostname"), hostNameTf);
+                lip.setBorder(new TitledBorder(i18n.str("node_details")));
+                nodePanel.add(lip, BorderLayout.NORTH);
+                
 		tabs.add(generalPanel, i18n.str("general")); //$NON-NLS-1$
 		tabs.add(newsPanel, i18n.str("feed_reader")); //$NON-NLS-1$
 		//tabs.add(browserPanel, i18n.str("browser")); //$NON-NLS-1$
 		tabs.add(proxyPanel, i18n.str("proxy")); //$NON-NLS-1$
-		
+		tabs.add(nodePanel, i18n.str("node"));
+                
 		setContentPane(tabs);
 		setComponentValues();
 		pack();
@@ -352,7 +367,9 @@ public class TBOptionsDialog extends StandardDialog
     		socksPortField.setText(TBGlobals.getSocksProxyPort());
     		socksProxyAuthCb.setSelected(TBGlobals.isSocksProxyRequiresLogin());
     		socksUserField.setText(TBGlobals.getSocksProxyUser());
-    		socksPasswordField.setText(TBGlobals.getSocksProxyPassword());		
+    		socksPasswordField.setText(TBGlobals.getSocksProxyPassword());
+                nodePortTf.setText(TBGlobals.getNodePort());
+                hostNameTf.setText(TBGlobals.getNodeHostname());
   		
 			updateProxyComponentsEnabledState();
     	}
@@ -411,6 +428,8 @@ public class TBOptionsDialog extends StandardDialog
     	TBGlobals.setSocksProxyRequiresLogin(socksProxyAuthCb.isSelected());
     	TBGlobals.setSocksProxyUser(socksUserField.getText());
     	TBGlobals.setSocksProxyPassword(new String(socksPasswordField.getPassword()));
+        TBGlobals.setNodePort(nodePortTf.getText());
+        TBGlobals.setNodeHostname(hostNameTf.getText());
     	
     	if(layout2ColRb.isSelected())
     		TBGlobals.setLayoutStyle(TBGlobals.TWO_COL);

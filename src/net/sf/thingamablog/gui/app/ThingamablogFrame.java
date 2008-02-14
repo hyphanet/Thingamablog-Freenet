@@ -3491,6 +3491,7 @@ public class ThingamablogFrame extends JFrame
 		{
 			if(curSelWeblog != null)
 			{
+                            if(curSelWeblog.getType().equals("internet")){
 				try
 				{				
 					//Browser.displayURL(curSelWeblog.getFrontPageUrl());
@@ -3500,7 +3501,20 @@ public class ThingamablogFrame extends JFrame
 				{
 					ex.printStackTrace();
 					logger.log(Level.WARNING, ex.getMessage(), ex);
-				}			
+				}
+                            } else {
+                                try
+                                {   
+                                    String nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
+                                    Desktop.browse(new URL("http://" + nodeHostname + ":8888" + curSelWeblog.getFrontPageUrl()));
+                                }
+                                catch(Exception ex)
+                                {
+                                    System.err.println("erreur freenet");
+                                    ex.printStackTrace();
+                                    logger.log(Level.WARNING, ex.getMessage(), ex);
+                                }
+                            }
 			}
 		}
 	}

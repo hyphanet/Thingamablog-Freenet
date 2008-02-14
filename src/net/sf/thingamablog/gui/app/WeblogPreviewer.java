@@ -91,7 +91,7 @@ public class WeblogPreviewer
         String mediaUrl = new File(outputDir, 
             bmUrl.substring(bUrl.length() - 1, bmUrl.length())).toURI().toURL().toExternalForm();
               
-        initPreviewBlog(blog.getBackend(), pack, blog.getTitle(), blog.getDescription(), cats, auths, ents);
+        initPreviewBlog(blog.getBackend(), pack, blog.getTitle(), blog.getDescription(), cats, auths, ents, blog.getType());
         previewBlog.setBlogUrls(outputDir.getAbsolutePath(), baseUrl, arcUrl, mediaUrl);
         
         //mimic the necessary attributes of the blog we're previewing
@@ -111,15 +111,15 @@ public class WeblogPreviewer
         doPreview();
     }
     
-    public void previewInBrowser(WeblogBackend backend, TemplatePack pack, String title, String desc, String[] cats, Author[] auths) throws Exception
+    public void previewInBrowser(WeblogBackend backend, TemplatePack pack, String title, String desc, String[] cats, Author[] auths, String type) throws Exception
     {
-        previewInBrowser(backend, pack, title, desc, cats, auths, null);
+        previewInBrowser(backend, pack, title, desc, cats, auths, null, type);
     }
     
-    public void previewInBrowser(WeblogBackend backend, TemplatePack pack, String title, String desc, String[] cats, Author[] auths, BlogEntry[] ents) 
+    public void previewInBrowser(WeblogBackend backend, TemplatePack pack, String title, String desc, String[] cats, Author[] auths, BlogEntry[] ents, String type) 
     throws Exception
     {       
-        initPreviewBlog(backend, pack, title, desc, cats, auths, ents);
+        initPreviewBlog(backend, pack, title, desc, cats, auths, ents, type);
         doPreview();        
     }
     
@@ -129,8 +129,13 @@ public class WeblogPreviewer
     	
     	try
         {            
-            previewBlog.publishAll(new NullPublishProgress());        
-            Desktop.browse(new URL(previewBlog.getFrontPageUrl()));            
+            previewBlog.publishAll(new NullPublishProgress());
+            if(previewBlog.getType().equals("internet")) {
+                Desktop.browse(new URL(previewBlog.getFrontPageUrl()));            
+            } else {
+                String nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
+                Desktop.browse(new URL("http://" + nodeHostname + ":8888" + previewBlog.getFrontPageUrl()));
+            }
         }
         catch(Exception ex)
         {           
@@ -151,7 +156,7 @@ public class WeblogPreviewer
     
     
     
-    private synchronized void initPreviewBlog(WeblogBackend backend, TemplatePack pack, String title, String desc, String[] cats, Author[] auths, BlogEntry[] ents) 
+    private synchronized void initPreviewBlog(WeblogBackend backend, TemplatePack pack, String title, String desc, String[] cats, Author[] auths, BlogEntry[] ents, String type) 
     throws Exception
     {        
         clearPreviewData();
@@ -159,7 +164,8 @@ public class WeblogPreviewer
         previewBlog = new TBWeblog(TBGlobals.getPreviewDirectory());       
         previewBlog.setBackend(backend);     
         previewBlog.setTitle(title);
-        previewBlog.setDescription(desc); 
+        previewBlog.setDescription(desc);
+        previewBlog.setType(type);
         
         //set last publish date really old so that web files modified date is
         //certain to be newer 

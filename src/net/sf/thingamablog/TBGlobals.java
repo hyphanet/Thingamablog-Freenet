@@ -112,6 +112,10 @@ public class TBGlobals
 	private static String socksPort = "1080";
 	private static String socksUser = "";
 	private static String socksPass = "";
+        
+        //node properties
+        private static String nodePort = "9184";
+        private static String nodeHostname = "localhost";
 	
 	//auto feed updater stuff
 	private static int feedUpdateInterval = 1800000;//30 minutes
@@ -273,6 +277,10 @@ public class TBGlobals
 			if(props.get("LAF") != null)
 				lafName = props.getProperty("LAF");
 						
+                        if(props.get("NODE_PORT") != null)
+                            nodePort = props.getProperty("NODE_PORT");
+                        if(props.get("NODE_HOSTNAME") != null)
+                            nodeHostname = props.getProperty("NODE_HOSTNAME");
 		}
 		catch(FileNotFoundException fnfe)
 		{
@@ -321,6 +329,8 @@ public class TBGlobals
 			props.put("FEED_UPDATE_INTERVAL", feedUpdateInterval + "");
 			props.put("AUTO_UPDATE", isAutoFeedUpdate + "");
 			props.put("PING_AFTER_PUB", isPingAfterPub + "");
+                        props.put("NODE_PORT", nodePort);
+                        props.put("NODE_HOSTNAME", nodeHostname);
 			
 			//Browser.save(props);
 			props.store(fos, "Thingamablog Properties");			
@@ -515,6 +525,42 @@ public class TBGlobals
 		return socksPass;
 	}
 				
+        /**
+         * Sets the port of the node
+         * @param port
+         */
+        public static void setNodePort(String port)
+        {
+            if(port == null || port.equals(""))
+			nodePort = "9184";
+		else
+			nodePort = port;
+        }
+        
+        /**
+         * Gets the port of the node
+         * @return
+         */
+        public static String getNodePort() {
+            return nodePort;
+        }
+        
+        /**
+         * Sets the hostname of the machine the node is running on
+         * @param hostname
+         */
+        public static void setNodeHostname(String hostname){
+            nodeHostname = hostname;
+        }
+        
+        /**
+         * Gets the hostname of the machine the node is running on
+         * @return
+         */
+        public static String getNodeHostname(){
+            return nodeHostname;
+        }
+        
     /**
      * Indicates whether a splash screen is displayed at startup
      * @return

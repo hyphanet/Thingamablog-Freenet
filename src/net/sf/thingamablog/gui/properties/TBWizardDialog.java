@@ -12,10 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -34,6 +36,7 @@ import javax.swing.border.EtchedBorder;
 import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
+import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.Author;
 import net.sf.thingamablog.blog.BackendException;
 import net.sf.thingamablog.blog.TBWeblog;
@@ -268,12 +271,12 @@ public class TBWizardDialog extends JDialog
 		public void actionPerformed(ActionEvent e)
 		{
 			if(e.getSource() == nextButton)
-			{                            
+			{                           
+                                 PropertyPanel p = getCurrentPanel();
                                 // We check if the current panel is the starterPanel (donePanel is not yet initialized) or if the current panel is not donePanel
 				if(starterPanel.isVisible() || !donePanel.isVisible())
 				{				
 					//if(isCurrentPanelValid())
-                    PropertyPanel p = getCurrentPanel();
                     if(p != null && p.isValidData())
                     {
 						p.saveProperties();
@@ -295,7 +298,8 @@ public class TBWizardDialog extends JDialog
                     }
 				}                                
 
-				if(donePanel.isVisible())
+                                if(p == starterPanel){}
+                                else if( donePanel.isVisible())
 				{
 					doneButton.setText(FINISH);
 					nextButton.setEnabled(false);
@@ -342,6 +346,8 @@ public class TBWizardDialog extends JDialog
 		private JTextField urlField = new JTextField(20);
                 private String TYPE[]={"internet","freenet"};
                 private JComboBox typeCombo = new JComboBox(TYPE);
+                private JButton generateKeyButton = new JButton(i18n.str("generate_key"));
+                private JTextField insertUriField = new JTextField();
 		
 		public StarterPanel()
 		{			
@@ -349,11 +355,17 @@ public class TBWizardDialog extends JDialog
 			String text =
 			i18n.str("welcome_panel_text"); //$NON-NLS-1$
 			
-			
+                        ActionListener listener = new TypeListener();
+                        typeCombo.addActionListener(listener);
+                        generateKeyButton.addActionListener(listener);
+                        generateKeyButton.setEnabled(false);
+                        
 			LabelledItemPanel lip = new LabelledItemPanel();
 			lip.addItem(i18n.str("base_path"), pathField); //$NON-NLS-1$
 			lip.addItem(i18n.str("base_url"), urlField); //$NON-NLS-1$
+                        lip.addItem(i18n.str("insertUri"), insertUriField);
 			lip.addItem(i18n.str("type"), typeCombo);
+                        lip.addItem("", generateKeyButton);
                         
 			popupManager.registerJTextComponent(pathField);
 			popupManager.registerJTextComponent(urlField);
@@ -396,8 +408,14 @@ public class TBWizardDialog extends JDialog
                                 return false;
 			}			
             }		
-            if (typeCombo.getSelectedItem().toString().equals("freenet"))
-                        return isValidSSK(urlField.getText());
+            if (typeCombo.getSelectedItem().toString().equals("freenet")) {
+                boolean valid = true;        
+                valid = valid && isValidSSK(urlField.getText());
+                valid = valid && isValidSSK(insertUriField.getText());
+                return valid;
+            } else {
+                insertUriField.setText("none");                
+            }
 			
             return true;		
             }
@@ -417,7 +435,31 @@ public class TBWizardDialog extends JDialog
 			
 			weblog.setBlogUrls(path, url, arcUrl, mediaUrl);
                         weblog.setType(typeCombo.getSelectedItem().toString());
+                        weblog.setInsertURI(insertUriField.getText());
 		}
+                
+                private class TypeListener implements ActionListener {
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource() instanceof JComboBox && ((JComboBox) e.getSource()).getSelectedItem().equals("internet")) {
+                        generateKeyButton.setEnabled(false);
+                        insertUriField.setEditable(false);
+                        urlField.setEditable(true);
+                    } else if (e.getSource() instanceof JComboBox && ((JComboBox) e.getSource()).getSelectedItem().equals("freenet")) {
+                        generateKeyButton.setEnabled(true);
+                        insertUriField.setEditable(true);
+                    } else if (e.getSource() instanceof JButton){
+                        if(generateKeyButton.getText().equals(i18n.str("generate_key"))){
+                            int port = Integer.parseInt(TBGlobals.getProperty("NODE_PORT"));
+                            String hostname = TBGlobals.getProperty("NODE_HOSTNAME");
+                            generateKeyButton.setText(i18n.str("cancel"));
+                        } else {
+                            urlField.setText("");
+                            insertUriField.setText("");
+                            generateKeyButton.setText(i18n.str("generate_key"));
+                        }
+                    }
+                }
+            }
 	}
 	
 	private class TitleDescrPanel extends PropertyPanel

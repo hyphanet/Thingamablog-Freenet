@@ -73,7 +73,7 @@ public class TemplateSelectionPanel extends JPanel
         init(prevListener);
     }
     
-    public TemplateSelectionPanel(final WeblogBackend backend, final String title, final String descr, final String[] cats, final Author[] auths)
+    public TemplateSelectionPanel(final WeblogBackend backend, final String title, final String descr, final String[] cats, final Author[] auths, final String type)
     {
         ActionListener prevListener = new ActionListener()
         {               
@@ -86,7 +86,7 @@ public class TemplateSelectionPanel extends JPanel
                     return;
                 try
                 {
-                    pw.previewInBrowser(backend, pack, title, descr, cats, auths);
+                    pw.previewInBrowser(backend, pack, title, descr, cats, auths, type);
                 }
                 catch (Exception ex)
                 {                        

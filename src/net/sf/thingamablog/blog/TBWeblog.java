@@ -91,6 +91,8 @@ public class TBWeblog extends Weblog
 	
         // Should be internet or freenet
         private String type;
+        // If type == freenet, then insertURI is set to the insertURI of the flog, else, set to null
+        private String insertURI;
         
 	//private Vector outdatedTopLevelPages = new Vector();
 	private Vector outdatedCategoryPages = new Vector();
@@ -1403,5 +1405,13 @@ public class TBWeblog extends Weblog
     
     public String getType() {
         return this.type;
+    }
+
+    public void setInsertURI(String insertURI) {
+        this.insertURI = insertURI;
+    }
+    
+    public String getInsertUri() {
+        return this.insertURI;
     }
 }

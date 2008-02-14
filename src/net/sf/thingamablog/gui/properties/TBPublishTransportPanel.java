@@ -68,7 +68,7 @@ public class TBPublishTransportPanel extends PropertyPanel
     private final String FTP = "FTP"; //$NON-NLS-1$
 	private final String SFTP = "SFTP"; //$NON-NLS-1$
 	private final String LOCAL = "Local"; //$NON-NLS-1$
-//        private final String FCP = "FCP";
+        private final String FCP = "FCP";
 	
 	private TBWeblog weblog;
 	private JComboBox encodingsCombo;
@@ -76,7 +76,7 @@ public class TBPublishTransportPanel extends PropertyPanel
 	private JPanel transportsPanel;
 	private RemoteTransportPanel ftpPanel;
 	private RemoteTransportPanel sftpPanel;
-//        private FcpTransportPanel fcpPanel;
+        private FcpTransportPanel fcpPanel;
 	private JPanel localPanel;
 	private CardLayout tLayout;
     private JTabbedPane ftpTabs = new JTabbedPane();
@@ -105,11 +105,11 @@ public class TBPublishTransportPanel extends PropertyPanel
                  }
                 // Else, we are building a flog, and the transport process is LOCAL or FCP
                 else {
-                    types=new String[1];
+                    types=new String[2];
                     types[0]="LOCAL";
-                    //types[2]="FCP";                    
-                    //fcpPanel = new FcpTransportPanel();
-                    //fcpPanel.setBorder(new TitledBorder(i18n.str("fcp_transport")));
+                    types[1]="FCP";                    
+                    fcpPanel = new FcpTransportPanel();
+                    fcpPanel.setBorder(new TitledBorder(i18n.str("fcp_transport")));
                  }
                 localPanel = new JPanel();
                 		
@@ -121,7 +121,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                     transportsPanel.add(sftpPanel, SFTP);
                 } else {
                     transportsPanel.add(localPanel, LOCAL);
-                    //transportsPanel.add(fcpPanel, FCP);
+                    transportsPanel.add(fcpPanel, FCP);
                 }
 			
 		
@@ -163,15 +163,14 @@ public class TBPublishTransportPanel extends PropertyPanel
 			transportTypeCombo.setSelectedItem(SFTP);
 			tLayout.show(transportsPanel, SFTP);
 		}
-		else
+		else if(wb.getPublishTransport() instanceof LocalTransport)
 		{		
 			transportTypeCombo.setSelectedItem(LOCAL);
 			tLayout.show(transportsPanel, LOCAL);
-		} 
-//                else {
-//                    transportTypeCombo.setSelectedItem(FCP);
-//                    tLayout.show(transportsPanel, FCP);
-//                }
+		} else {
+                        transportTypeCombo.setSelectedItem(FCP);
+                        tLayout.show(transportsPanel, FCP);
+                }
                 
 		transportTypeCombo.addActionListener(new ActionListener()
 		{
@@ -236,7 +235,9 @@ public class TBPublishTransportPanel extends PropertyPanel
 		{
 			transport = new LocalTransport();
 		} else {
-//                    transport = new FCPTransport();
+//                        FCPTransport pt = new FCPTransport();
+//                        pt.setPort(fcpPanel.getPort());
+//                        pt.setMachineName(fcpPanel.getMachineName());
                 }
 		
 		weblog.setPublishTransport(transport);
@@ -416,9 +417,56 @@ public class TBPublishTransportPanel extends PropertyPanel
         }
     }
         
-//        private class FCPTransportPanel extends JPanel {
-//            /**
-//             * Ask for some options like : is the node on the same computer, etc..
-//             */
-//        }
+        private class FcpTransportPanel extends JPanel {
+            /**
+             * Ask for some options like : is the node on the same computer, etc..
+             */
+            
+                private static final long serialVersionUID = 1L;		
+		private JTextField portField;
+		private JTextField machineNameField;
+		public FcpTransportPanel()
+		{
+                        portField = new JTextField();
+                        machineNameField = new JTextField();
+                    
+			TextEditPopupManager pm = TextEditPopupManager.getInstance();
+			pm.registerJTextComponent(machineNameField);
+                        
+                        // Default port
+                        portField.setText("9481");
+                        //Default machine name
+                        machineNameField.setText("localhost");
+			LabelledItemPanel lip = new LabelledItemPanel();
+			JPanel p = new JPanel(new BorderLayout());
+			p.add(portField, BorderLayout.WEST);
+			p.add(new JPanel(), BorderLayout.CENTER);
+			lip.addItem(i18n.str("port"), p);
+                        lip.addItem(i18n.str("machineName"),machineNameField);
+			setLayout(new BorderLayout());
+			add(lip, BorderLayout.CENTER);	
+		}
+
+        public int getPortField() {                        
+            try
+            {
+            	return Integer.parseInt(portField.getText());
+            }
+            catch (Exception ex){}
+            return 9481;
+        }
+
+        public void setPortField(int p) {
+            portField.setText(p+"");
+        }
+
+        public String getMachineNameField() {
+            return machineNameField.getText();
+        }
+
+        public void setMachineNameField(String machineNameField) {
+            this.machineNameField.setText(machineNameField);
+        }
+                
+    }
 }
