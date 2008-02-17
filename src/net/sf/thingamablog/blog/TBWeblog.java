@@ -93,6 +93,8 @@ public class TBWeblog extends Weblog
         private String type;
         // If type == freenet, then insertURI is set to the insertURI of the flog, else, set to null
         private String insertURI;
+        // Number of the current edition (flog only)
+        private String edition="0";
         
 	//private Vector outdatedTopLevelPages = new Vector();
 	private Vector outdatedCategoryPages = new Vector();
@@ -1413,5 +1415,13 @@ public class TBWeblog extends Weblog
     
     public String getInsertUri() {
         return this.insertURI;
+    }
+    
+    public void setEdition(String edition){
+        this.edition=edition;
+    }
+    
+    public String getEdition(){
+        return this.edition;
     }
 }

@@ -353,6 +353,7 @@ public class TBPersistFactory
 		element.setAttribute("locale", blog.getLocale().toString());
 		element.setAttribute("publish_all", blog.isPublishAll() + "");
 		element.setAttribute("type", blog.getType());
+                element.setAttribute("edition", blog.getEdition());
                 
 		Element outdatedArcs = new Element("OutdatedArchives");
 		ArchiveRange ar[] = blog.getOutdatedArchives();
@@ -592,6 +593,7 @@ public class TBPersistFactory
 		tb.setPublishAll(element.getAttributeValue("publish_all", "true").equals("true"));
 		tb.setType(element.getAttributeValue("type").toString());
                 tb.setInsertURI(element.getAttributeValue("insertURI"));
+                tb.setEdition(element.getAttributeValue("edition"));
                 
 		int arcPolicy = TBWeblog.ARCHIVE_MONTHLY;
 		int dayInterval = 5;

@@ -221,8 +221,8 @@ public class TaskDialog extends JDialog
          * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
          */
         public void itemStateChanged(ItemEvent e)
-        {
-            if(blogCombo.getItemCount() > 0)
+        {            
+            if(blogCombo.getItemCount() > 1)
             {
             	Weblog b = (Weblog)blogCombo.getSelectedItem();
             	cardLayout.show(cardPanel, b.getKey());

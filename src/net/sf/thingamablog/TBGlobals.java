@@ -114,7 +114,7 @@ public class TBGlobals
 	private static String socksPass = "";
         
         //node properties
-        private static String nodePort = "9184";
+        private static String nodePort = "9481";
         private static String nodeHostname = "localhost";
 	
 	//auto feed updater stuff

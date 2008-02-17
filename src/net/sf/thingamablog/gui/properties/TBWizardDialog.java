@@ -47,7 +47,7 @@ import net.sf.thingamablog.gui.LabelledItemPanel;
 import net.sf.thingamablog.gui.MultilineText;
 import net.sf.thingamablog.gui.app.TemplateSelectionPanel;
 import net.sf.thingamablog.gui.app.WeblogPreviewer;
-
+import net.sf.thingamablog.util.freenet.fcp.fcpManager;
 
 
 
@@ -118,7 +118,7 @@ public class TBWizardDialog extends JDialog
 		wizPanel = new JPanel(wizLayout);
 		
 		starterPanel = new StarterPanel();
-		starterPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		starterPanel.setBorder(new EmptyBorder(15, 10, 15, 10));
 		panels.add(starterPanel);
 		
 		titlePanel = new TitleDescrPanel();
@@ -348,6 +348,7 @@ public class TBWizardDialog extends JDialog
                 private JComboBox typeCombo = new JComboBox(TYPE);
                 private JButton generateKeyButton = new JButton(i18n.str("generate_key"));
                 private JTextField insertUriField = new JTextField();
+                private fcpManager Manager = new fcpManager();
 		
 		public StarterPanel()
 		{			
@@ -435,7 +436,13 @@ public class TBWizardDialog extends JDialog
 			
 			weblog.setBlogUrls(path, url, arcUrl, mediaUrl);
                         weblog.setType(typeCombo.getSelectedItem().toString());
-                        weblog.setInsertURI(insertUriField.getText());
+                        if(weblog.getType().equals("freenet")){
+                            weblog.setInsertURI(insertUriField.getText());
+                            weblog.setEdition("1");
+                        } else {
+                            weblog.setInsertURI("noflog");
+                            weblog.setEdition("noflog");
+                        }
 		}
                 
                 private class TypeListener implements ActionListener {
@@ -450,7 +457,19 @@ public class TBWizardDialog extends JDialog
                     } else if (e.getSource() instanceof JButton){
                         if(generateKeyButton.getText().equals(i18n.str("generate_key"))){
                             int port = Integer.parseInt(TBGlobals.getProperty("NODE_PORT"));
-                            String hostname = TBGlobals.getProperty("NODE_HOSTNAME");
+                            String keys[]=new String[2];
+                            String hostname = TBGlobals.getProperty("NODE_HOSTNAME");                            
+                            Manager.setNode(hostname,port);
+                                try {
+                                    keys=Manager.generateKeyPair();
+                                } catch (IOException ex) {                                    
+                                    JOptionPane.showMessageDialog(TBWizardDialog.this,
+                                    hostname + " : " + port + " : " + ex, i18n.str("key_generation_failure"),  //$NON-NLS-1$ //$NON-NLS-2$
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                }
+                            insertUriField.setText(keys[0]);
+                            urlField.setText(keys[1]);
                             generateKeyButton.setText(i18n.str("cancel"));
                         } else {
                             urlField.setText("");
