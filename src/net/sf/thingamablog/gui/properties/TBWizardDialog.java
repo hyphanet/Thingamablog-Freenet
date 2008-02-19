@@ -92,6 +92,8 @@ public class TBWizardDialog extends JDialog
 	private TextEditPopupManager popupManager = TextEditPopupManager.getInstance();
     
     private TemplatePack selectedPack;
+    
+        private String InsertURI;
 	
 	public TBWizardDialog(Frame f, File dir, WeblogBackend backend)
 	{
@@ -360,6 +362,7 @@ public class TBWizardDialog extends JDialog
                         typeCombo.addActionListener(listener);
                         generateKeyButton.addActionListener(listener);
                         generateKeyButton.setEnabled(false);
+                        insertUriField.setEditable(false);
                         
 			LabelledItemPanel lip = new LabelledItemPanel();
 			lip.addItem(i18n.str("base_path"), pathField); //$NON-NLS-1$
@@ -413,6 +416,12 @@ public class TBWizardDialog extends JDialog
                 boolean valid = true;        
                 valid = valid && isValidSSK(urlField.getText());
                 valid = valid && isValidSSK(insertUriField.getText());
+                if (pathField.getText().contains("/")) {
+                    JOptionPane.showMessageDialog(TBWizardDialog.this,
+                                    i18n.str("invalid_path_prompt"), i18n.str("invalid_path"),  //$NON-NLS-1$ //$NON-NLS-2$
+                                    JOptionPane.WARNING_MESSAGE);
+                    valid = false;
+                }
                 return valid;
             } else {
                 insertUriField.setText("none");                
@@ -436,13 +445,7 @@ public class TBWizardDialog extends JDialog
 			
 			weblog.setBlogUrls(path, url, arcUrl, mediaUrl);
                         weblog.setType(typeCombo.getSelectedItem().toString());
-                        if(weblog.getType().equals("freenet")){
-                            weblog.setInsertURI(insertUriField.getText());
-                            weblog.setEdition("1");
-                        } else {
-                            weblog.setInsertURI("noflog");
-                            weblog.setEdition("noflog");
-                        }
+                        InsertURI=insertUriField.getText();
 		}
                 
                 private class TypeListener implements ActionListener {
@@ -464,12 +467,15 @@ public class TBWizardDialog extends JDialog
                                     keys=Manager.generateKeyPair();
                                 } catch (IOException ex) {                                    
                                     JOptionPane.showMessageDialog(TBWizardDialog.this,
-                                    hostname + " : " + port + " : " + ex, i18n.str("key_generation_failure"),  //$NON-NLS-1$ //$NON-NLS-2$
+                                    hostname + ":" + port + " : " + ex, i18n.str("key_generation_failure"),  //$NON-NLS-1$ //$NON-NLS-2$
                                     JOptionPane.ERROR_MESSAGE);
                                     return;
                                 }
-                            insertUriField.setText(keys[0]);
-                            urlField.setText(keys[1]);
+                            // We put "USK" instead of "SSK"
+                            keys[0] = keys[0].substring("SSK".length());
+                            keys[1] = keys[1].substring("SSK".length());
+                            insertUriField.setText("USK" + keys[0]);
+                            urlField.setText("USK" + keys[1]);
                             generateKeyButton.setText(i18n.str("cancel"));
                         } else {
                             urlField.setText("");
@@ -726,7 +732,7 @@ public class TBWizardDialog extends JDialog
 			instrPanel.add(header, BorderLayout.NORTH);
 			instrPanel.add(new MultilineText(text), BorderLayout.CENTER);
 
-			pubPanel = new TBPublishTransportPanel(weblog);
+			pubPanel = new TBPublishTransportPanel(weblog,InsertURI);
 			add(instrPanel, BorderLayout.NORTH);
 			add(pubPanel, BorderLayout.CENTER);							
 		}

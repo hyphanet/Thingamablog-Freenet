@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.thingamablog.transport.EMailTransport;
+import net.sf.thingamablog.transport.FCPTransport;
 import net.sf.thingamablog.transport.LocalTransport;
 import net.sf.thingamablog.transport.MailTransportProgress;
 import net.sf.thingamablog.transport.PublishTransport;
@@ -81,9 +82,6 @@ public abstract class Weblog
 	
 	/** The home directory of the web files */
 	protected  File webFilesDirectory = new File(System.getProperty("user.home"));
-        
-        /** The type of the weblog (f/blog) */
-        protected String type;
 		
 	private Date lastEmailCheck = new Date();
     private int outdatedAfterMinutes = 30;
@@ -356,6 +354,80 @@ public abstract class Weblog
 		System.out.println("PUBLISH COMPLETE");				
 	}
 	
+        public synchronized void doFlogPublish(PublishProgress progress) throws BackendException
+        {            
+            if(isPublishing())
+                return;
+            isPublishing = true;
+            publishFailed = false;
+        
+            Hashtable ht = null;
+                try
+		{		
+			ht = weblogFiles(true);
+		}
+                catch (IOException ioe)
+		{
+			isPublishing = false;
+			publishFailed = true;
+			progress.publishFailed("Error building pages: " + ioe.getLocalizedMessage());
+			return;
+		}
+            markWebFilesAsUpdated();
+            File webFiles[] = getUpdatedWebFiles();
+            long totalBytes = 0;				
+            //count the total bytes for this publish
+            for(int i = 0; i < webFiles.length; i++)
+            totalBytes += webFiles[i].length();
+            for(Enumeration e = ht.keys() ; e.hasMoreElements() ;) 
+            {
+                    try
+                    {
+                        File f = (File)e.nextElement();
+                        totalBytes += f.length();
+                    }   
+                    catch(ClassCastException cce){}
+            }
+		
+            progress.publishStarted(totalBytes);
+        
+            if(!transport.connect())
+            {
+                isPublishing = false;
+                publishFailed = true;
+                publishComplete(ht, true);
+                progress.publishFailed(transport.getFailureReason());
+                return;
+            }            
+            //publish weblog files, if any
+            boolean failed = false;
+            //we are publishing a flog with fcp
+            FCPTransport fcp = (FCPTransport) transport;
+            boolean result = fcp.publishFile(ht,progress);
+            if(!result)
+				{
+					//progress.publishFailed(transport.getFailureReason());
+					failed = true;					
+				}            
+            if(transport.isConnected())
+            transport.disconnect();
+            
+            if(!failed)
+            {			
+		progress.publishCompleted();//publish completed okay
+		lastPublishDate = new Date();			
+            }
+            else
+            {
+		if(!progress.isAborted())
+		    progress.publishFailed(transport.getFailureReason());
+            }		        
+            publishFailed = failed && !progress.isAborted();
+            publishComplete(ht, failed);
+            isPublishing = false;
+            System.out.println("PUBLISH COMPLETE");	
+        }
+        
 	private boolean publishWebFiles(File webFiles[], PublishProgress progress)
 	{
 		String webPaths[] = getWebFilesServerPaths(webFiles);
@@ -1330,13 +1402,5 @@ public abstract class Weblog
     public void setLastEmailCheck(Date d)
     {
         lastEmailCheck = d;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-    
-    public String getType() {
-        return this.type;
     }
 }

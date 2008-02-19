@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.io.IOUtils;
 import net.sf.thingamablog.generator.PageGenerator;
+import net.sf.thingamablog.transport.FCPTransport;
 
 
 /**
@@ -91,10 +92,6 @@ public class TBWeblog extends Weblog
 	
         // Should be internet or freenet
         private String type;
-        // If type == freenet, then insertURI is set to the insertURI of the flog, else, set to null
-        private String insertURI;
-        // Number of the current edition (flog only)
-        private String edition="0";
         
 	//private Vector outdatedTopLevelPages = new Vector();
 	private Vector outdatedCategoryPages = new Vector();
@@ -145,6 +142,24 @@ public class TBWeblog extends Weblog
 		//unique key for this blog, it should never change
 		key = System.currentTimeMillis() + "";
 		init(dir);
+	}
+                
+	public void publish(PublishProgress progress) throws BackendException
+	{
+            if(!(getPublishTransport() instanceof FCPTransport)){
+                super.publish(progress);
+            } else {
+                super.doFlogPublish(progress);
+            }
+	}
+        
+        public void publishAll(PublishProgress progress) throws BackendException
+	{
+            if(!(getPublishTransport() instanceof FCPTransport)){
+                super.publishAll(progress);
+            } else {
+                super.doFlogPublish(progress);
+            }
 	}
 	
 	private void init(File dir)
@@ -1408,20 +1423,5 @@ public class TBWeblog extends Weblog
     public String getType() {
         return this.type;
     }
-
-    public void setInsertURI(String insertURI) {
-        this.insertURI = insertURI;
-    }
     
-    public String getInsertUri() {
-        return this.insertURI;
-    }
-    
-    public void setEdition(String edition){
-        this.edition=edition;
-    }
-    
-    public String getEdition(){
-        return this.edition;
-    }
 }

@@ -28,6 +28,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.SortedMap;
@@ -45,6 +47,7 @@ import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.gui.LabelledItemPanel;
+import net.sf.thingamablog.transport.FCPTransport;
 import net.sf.thingamablog.transport.FTPTransport;
 import net.sf.thingamablog.transport.LocalTransport;
 import net.sf.thingamablog.transport.PublishTransport;
@@ -69,6 +72,7 @@ public class TBPublishTransportPanel extends PropertyPanel
 	private final String SFTP = "SFTP"; //$NON-NLS-1$
 	private final String LOCAL = "Local"; //$NON-NLS-1$
         private final String FCP = "FCP";
+        private String InsertURI;
 	
 	private TBWeblog weblog;
 	private JComboBox encodingsCombo;
@@ -82,15 +86,15 @@ public class TBPublishTransportPanel extends PropertyPanel
     private JTabbedPane ftpTabs = new JTabbedPane();
     private ASCIIPanel asciiPanel = new ASCIIPanel();
 	
-	public TBPublishTransportPanel(TBWeblog wb)
+	public TBPublishTransportPanel(TBWeblog wb, String InsertURI)
 	{
 		weblog = wb;
                 String types[];
                 tLayout = new CardLayout();
                 // If we are currently building a blog, the publish process can be FTP, SFTP, or LOCAL
-                if (weblog.getType().toString().equals("internet")) {
+                if (weblog.getType().toString().equals("internet")) {                    
                     types=new String[3];
-                    types[0]="LOCAL";
+                    types[0]="Local";
                     types[1]="FTP";
                     types[2]="SFTP";                    
                     ftpPanel = new RemoteTransportPanel(true);
@@ -105,8 +109,15 @@ public class TBPublishTransportPanel extends PropertyPanel
                  }
                 // Else, we are building a flog, and the transport process is LOCAL or FCP
                 else {
+                    // The InsertURI parameter is here only for the TBWizardDialog process (yes I know, it's quite ugly)
+                    if(weblog.getPublishTransport()==null || weblog.getPublishTransport() instanceof LocalTransport){
+                        this.InsertURI=InsertURI;
+                    } else {
+                        FCPTransport fcp = (FCPTransport) weblog.getPublishTransport();
+                        this.InsertURI=fcp.getInsertURI();
+                    }
                     types=new String[2];
-                    types[0]="LOCAL";
+                    types[0]="Local";
                     types[1]="FCP";                    
                     fcpPanel = new FcpTransportPanel();
                     fcpPanel.setBorder(new TitledBorder(i18n.str("fcp_transport")));
@@ -168,6 +179,10 @@ public class TBPublishTransportPanel extends PropertyPanel
 			transportTypeCombo.setSelectedItem(LOCAL);
 			tLayout.show(transportsPanel, LOCAL);
 		} else {
+                        FCPTransport t =(FCPTransport)wb.getPublishTransport();
+                        fcpPanel.setMachineNameField(t.getHostname());
+                        fcpPanel.setPortField(Integer.parseInt(t.getPort()));
+                        fcpPanel.setTitle(wb.getTitle());
                         transportTypeCombo.setSelectedItem(FCP);
                         tLayout.show(transportsPanel, FCP);
                 }
@@ -235,9 +250,21 @@ public class TBPublishTransportPanel extends PropertyPanel
 		{
 			transport = new LocalTransport();
 		} else {
-//                        FCPTransport pt = new FCPTransport();
-//                        pt.setPort(fcpPanel.getPort());
-//                        pt.setMachineName(fcpPanel.getMachineName());
+                        FCPTransport pt = new FCPTransport();
+                        pt.setNode(fcpPanel.getMachineNameField(),fcpPanel.getPortField());
+                        pt.setInsertURI(InsertURI);
+                        pt.setEdition("1");
+                        pt.setTitle(fcpPanel.getTitle());
+                        if(weblog.getPublishTransport() == null || weblog.getPublishTransport() instanceof LocalTransport){
+                            String url = weblog.getBaseUrl();
+                            if(!url.endsWith("/"))
+                            	url += "/";;
+                            url += fcpPanel.getTitle() + "/1/";
+                            String arcUrl = url;
+                            String mediaUrl = url;                            
+                            weblog.setBlogUrls(weblog.getBasePath(), url, arcUrl, mediaUrl);
+                        }
+                        transport = pt;
                 }
 		
 		weblog.setPublishTransport(transport);
@@ -254,6 +281,8 @@ public class TBPublishTransportPanel extends PropertyPanel
         	return validateOptions(ftpPanel);
         if(o == SFTP)
         	return validateOptions(sftpPanel);
+        if(o == FCP)
+            return validateOptions(fcpPanel);
         	
         return true;
     }
@@ -268,6 +297,16 @@ public class TBPublishTransportPanel extends PropertyPanel
     	}
     	
 		return true;
+    }
+    
+    private boolean validateOptions(FcpTransportPanel fcp)
+    {
+        if (fcp.getTitle().contains("/")) {
+            JOptionPane.showMessageDialog(TBPublishTransportPanel.this, 
+		i18n.str("invalid_title_prompt_contains_slash"), i18n.str("title"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+            return false;
+        }
+        return true;
     }
     
     private class RemoteTransportPanel extends JPanel
@@ -425,10 +464,12 @@ public class TBPublishTransportPanel extends PropertyPanel
                 private static final long serialVersionUID = 1L;		
 		private JTextField portField;
 		private JTextField machineNameField;
+                private JTextField titleField;
 		public FcpTransportPanel()
 		{
                         portField = new JTextField();
                         machineNameField = new JTextField();
+                        titleField = new JTextField();
                     
 			TextEditPopupManager pm = TextEditPopupManager.getInstance();
 			pm.registerJTextComponent(machineNameField);
@@ -443,6 +484,7 @@ public class TBPublishTransportPanel extends PropertyPanel
 			p.add(new JPanel(), BorderLayout.CENTER);
 			lip.addItem(i18n.str("port"), p);
                         lip.addItem(i18n.str("machineName"),machineNameField);
+                        lip.addItem(i18n.str("freesite_path"),titleField);
 			setLayout(new BorderLayout());
 			add(lip, BorderLayout.CENTER);	
 		}
@@ -467,6 +509,14 @@ public class TBPublishTransportPanel extends PropertyPanel
         public void setMachineNameField(String machineNameField) {
             this.machineNameField.setText(machineNameField);
         }
+        
+        public void setTitle(String title){
+            this.titleField.setText(title);
+        }
+        
+        public String getTitle(){
+            return this.titleField.getText();
+        } 
                 
     }
 }

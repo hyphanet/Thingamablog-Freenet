@@ -52,6 +52,10 @@ public class fcpManager {
         return new String[] { keypairMessage.get("InsertURI"), keypairMessage.get("RequestURI") };
     }
     
+    public boolean isConnected(){
+        return connection.isConnected();
+    }
+    
     public Node getNode() {
         return node;
     }

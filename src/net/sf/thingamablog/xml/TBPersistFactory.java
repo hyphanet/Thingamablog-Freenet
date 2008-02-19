@@ -47,6 +47,7 @@ import net.sf.thingamablog.feed.FeedFolder;
 import net.sf.thingamablog.generator.CustomTag;
 import net.sf.thingamablog.generator.PageGenerator;
 import net.sf.thingamablog.transport.EMailTransport;
+import net.sf.thingamablog.transport.FCPTransport;
 import net.sf.thingamablog.transport.FTPTransport;
 import net.sf.thingamablog.transport.LocalTransport;
 import net.sf.thingamablog.transport.PublishTransport;
@@ -334,7 +335,6 @@ public class TBPersistFactory
 		element.setAttribute("url", blog.getBaseUrl());
 		element.setAttribute("arc_url", blog.getArchiveUrl());
 		element.setAttribute("media_url", blog.getMediaUrl());
-                element.setAttribute("insertURI", blog.getInsertUri());
 		element.setAttribute("base_path", blog.getBasePath());		
 		element.setAttribute("base_date", blog.getArchiveBaseDate().getTime() + "");
 		element.setAttribute("arc_policy", blog.getArchivePolicy() + "");
@@ -353,7 +353,6 @@ public class TBPersistFactory
 		element.setAttribute("locale", blog.getLocale().toString());
 		element.setAttribute("publish_all", blog.isPublishAll() + "");
 		element.setAttribute("type", blog.getType());
-                element.setAttribute("edition", blog.getEdition());
                 
 		Element outdatedArcs = new Element("OutdatedArchives");
 		ArchiveRange ar[] = blog.getOutdatedArchives();
@@ -474,6 +473,16 @@ public class TBPersistFactory
                 transport.addContent(e);
 			}					
 		}
+                else if (pt instanceof FCPTransport)
+                {
+                    FCPTransport fpt = (FCPTransport) pt;
+                    transport.setAttribute("type","fcp");
+                    transport.setAttribute("hostname",fpt.getHostname());
+                    transport.setAttribute("port",fpt.getPort());
+                    transport.setAttribute("edition",fpt.getEdition()+"");
+                    transport.setAttribute("insertURI",fpt.getInsertURI());
+                    transport.setAttribute("title",fpt.getTitle());
+                }
 		else
 		{
 			transport.setAttribute("type", "local");
@@ -542,7 +551,6 @@ public class TBPersistFactory
 		loadPingServicesFromXML(blogEle, weblog);
         loadEmailSettingsFromXML(blogEle, weblog);
 		weblog.setTitle(blogEle.getAttributeValue("title", "Untitled"));
-                weblog.setType(blogEle.getAttributeValue("type","internet"));
 		String description = "";
 		Element desc = blogEle.getChild("Description");
 		if(desc != null)
@@ -592,8 +600,6 @@ public class TBPersistFactory
 		tb.setLocale(createLocale(element.getAttributeValue("locale", Locale.getDefault().toString())));
 		tb.setPublishAll(element.getAttributeValue("publish_all", "true").equals("true"));
 		tb.setType(element.getAttributeValue("type").toString());
-                tb.setInsertURI(element.getAttributeValue("insertURI"));
-                tb.setEdition(element.getAttributeValue("edition"));
                 
 		int arcPolicy = TBWeblog.ARCHIVE_MONTHLY;
 		int dayInterval = 5;
@@ -863,6 +869,15 @@ public class TBPersistFactory
 			configureRemoteTransport(rtp, transport, port);
 			pubTransport = rtp;
 		}
+                else if (type.equals("fcp"))
+                {
+                    FCPTransport fcp = new FCPTransport();
+                    fcp.setNode(transport.getAttributeValue("hostname"), Integer.parseInt(transport.getAttributeValue("port")));
+                    fcp.setEdition(transport.getAttributeValue("edition"));
+                    fcp.setInsertURI(transport.getAttributeValue("insertURI"));
+                    fcp.setTitle(transport.getAttributeValue("title"));
+                    pubTransport = fcp;
+                }
 		else		
 			pubTransport = new LocalTransport();
 		

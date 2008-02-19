@@ -116,7 +116,7 @@ public class ClientPutComplexDir extends ClientPutDir {
 				writer.write("Files." + fileIndex + ".DataLength=" + ((DirectFileEntry) fileEntry).getDataLength() + LINEFEED);
 				payloadLength += ((DirectFileEntry) fileEntry).getDataLength();
 			} else if (fileEntry instanceof DiskFileEntry) {
-				writer.write("Files." + fileIndex + ".Filename=" + ((DiskFileEntry) fileEntry).getFilename() + LINEFEED);
+				writer.write("Files." + fileIndex + ".Filename=" + ((DiskFileEntry) fileEntry).getLocalFilename() + LINEFEED);
 			} else if (fileEntry instanceof RedirectFileEntry) {
 				writer.write("Files." + fileIndex + ".TargetURI=" + ((RedirectFileEntry) fileEntry).getTargetURI() + LINEFEED);
 			}

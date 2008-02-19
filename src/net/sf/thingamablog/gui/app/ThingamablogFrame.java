@@ -3491,7 +3491,9 @@ public class ThingamablogFrame extends JFrame
 		{
 			if(curSelWeblog != null)
 			{
-                            if(curSelWeblog.getType().equals("internet")){
+                            if(curSelWeblog instanceof TBWeblog){
+                                TBWeblog tb = (TBWeblog) curSelWeblog;
+                                if(tb.getType().equals("internet")){
 				try
 				{				
 					//Browser.displayURL(curSelWeblog.getFrontPageUrl());
@@ -3514,6 +3516,18 @@ public class ThingamablogFrame extends JFrame
                                     ex.printStackTrace();
                                     logger.log(Level.WARNING, ex.getMessage(), ex);
                                 }
+                            }
+                            }else{
+                                try
+				{				
+					//Browser.displayURL(curSelWeblog.getFrontPageUrl());
+                    Desktop.browse(new URL(curSelWeblog.getFrontPageUrl()));
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+					logger.log(Level.WARNING, ex.getMessage(), ex);
+				}
                             }
 			}
 		}
