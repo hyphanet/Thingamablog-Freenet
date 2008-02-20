@@ -456,6 +456,7 @@ public class TBOptionsDialog extends StandardDialog
     	TBGlobals.setAutoFeedUpdate(updateNewsCb.isSelected());
     	Integer val = (Integer)minuteModel.getValue();
     	TBGlobals.setFeedUpdateInterval((val.intValue() * 1000) * 60);
+        TBGlobals.saveProperties();
     	FeedItemFormatter.setTemplate(feedItemArea.getText());
     	try{
     	FeedItemFormatter.saveTemplate();
