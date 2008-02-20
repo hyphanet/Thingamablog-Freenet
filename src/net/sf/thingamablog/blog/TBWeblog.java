@@ -998,7 +998,9 @@ public class TBWeblog extends Weblog
 		{
 			try
 			{
-				File f = (File)e.nextElement();
+                            Object element = e.nextElement();
+                            File f = (File)element;
+                            if(!f.getAbsolutePath().contains(webFilesDirectory.getAbsolutePath()))
 				f.delete();				
 			}
 			catch(ClassCastException cce){}

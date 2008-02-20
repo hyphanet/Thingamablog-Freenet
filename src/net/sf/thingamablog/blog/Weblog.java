@@ -374,7 +374,7 @@ public abstract class Weblog
 			return;
 		}
             markWebFilesAsUpdated();
-            File webFiles[] = getUpdatedWebFiles();
+            File webFiles[] = getWebFiles();
             String webPaths[] = getWebFilesServerPaths(webFiles);
             long totalBytes = 0;				
             //count the total bytes for this publish
@@ -406,7 +406,9 @@ public abstract class Weblog
             boolean failed = false;
             //we are publishing a flog with fcp
             FCPTransport fcp = (FCPTransport) transport;
-            boolean result = fcp.publishFile(ht,progress,this.getFrontPageUrl().substring(("USK@" + fcp.getInsertURI() + "/" + fcp.getTitle() + "/" + fcp.getEdition() + "/").length()),getArchivePath());
+            int index = this.getFrontPageUrl().lastIndexOf("/");
+            String defaultName = this.getFrontPageUrl().substring(index+1);
+            boolean result = fcp.publishFile(ht,progress,defaultName,getArchivePath());
             if(!result)
 				{
 					//progress.publishFailed(transport.getFailureReason());
@@ -430,6 +432,45 @@ public abstract class Weblog
             isPublishing = false;
             System.out.println("PUBLISH COMPLETE");	
         }
+        
+        private File[] getWebFiles(){            
+            if(webFilesDirectory != null && webFilesDirectory.exists())
+            {		                
+                Vector v = scanDirWithoutDate(webFilesDirectory, new Vector());
+                File f[] = new File[v.size()];
+                for(int i = 0; i < f.length; i++){
+                    f[i] = (File)v.elementAt(i);
+                }
+                return f;
+            }
+            return null;
+        }
+        
+        private Vector scanDirWithoutDate(File dir, Vector updatedFiles)
+        {		
+		File files[] = dir.listFiles(new FileFilter()
+		{
+			public boolean accept(File f)
+			{
+				return f.isFile();
+			}
+		});
+
+		for(int i = 0; i < files.length; i++)
+			updatedFiles.add(files[i]);                
+		
+		File dirs[] = dir.listFiles(new FileFilter()
+		{
+			public boolean accept(File f)
+			{
+				return f.isDirectory();
+			}	
+		});
+		for(int i = 0; i < dirs.length; i++)
+			scanDirWithoutDate(dirs[i], updatedFiles);
+		
+		return updatedFiles;
+	}
         
 	private boolean publishWebFiles(File webFiles[], PublishProgress progress)
 	{

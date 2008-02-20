@@ -121,6 +121,7 @@ public class FCPTransport implements PublishTransport {
         String dirURI = "freenet:USK@" + insertURI + "/" + title + "/" + edition + "/";
         System.out.println("Insert URI : " + dirURI);
         ClientPutComplexDir putDir = new ClientPutComplexDir("Thingamablog insert", dirURI);
+        System.out.println("Default name : " + frontPage);
         putDir.setDefaultName(frontPage);
         putDir.setMaxRetries(-1);
         int totalBytes = 0;
@@ -136,10 +137,8 @@ public class FCPTransport implements PublishTransport {
             }
         }
         try {            
-            System.out.println("Executing the command...");
             tp.publishStarted(totalBytes);
             client.execute(putDir);
-            System.out.println("Command executed!");
             System.out.println("Publish in progress...");
         } catch (IOException ioe) {
             logger.log(Level.WARNING,"Publish process failed : " + ioe.getMessage());
