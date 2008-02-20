@@ -528,11 +528,6 @@ public class TBWizardDialog extends JDialog
 		{
 			weblog.setTitle(titleField.getText());
 			weblog.setDescription(textArea.getText());
-                        if(weblog.getType().equals("freenet")){
-                            String url=weblog.getBaseUrl();
-                            url+=ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
-                            weblog.setBlogUrls(weblog.getBasePath(),url,url,url);
-                        }
 		}	
         
         public String getTitle()
@@ -812,6 +807,12 @@ public class TBWizardDialog extends JDialog
 		
 		public void saveProperties()
 		{			
+                        // We change the urls to the good one
+                        if(weblog.getType().equals("freenet")){
+                            String url=weblog.getBaseUrl();
+                            url+=ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
+                            weblog.setBlogUrls(weblog.getBasePath(),url,url,url);
+                        }
 		}		
 	}
 }
