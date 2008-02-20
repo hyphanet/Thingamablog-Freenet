@@ -205,6 +205,7 @@ public class TBWizardDialog extends JDialog
         
         try
         {
+            donePanel.saveProperties();
             selectedPack.installPack(weblog.getHomeDirectory());
         }
         catch(Exception ex)
@@ -807,6 +808,7 @@ public class TBWizardDialog extends JDialog
 		
 		public void saveProperties()
 		{			
+                    System.out.println("Creating the [b/f]log...");
                         // We change the urls to the good one
                         if(weblog.getType().equals("freenet")){
                             String url=weblog.getBaseUrl();
