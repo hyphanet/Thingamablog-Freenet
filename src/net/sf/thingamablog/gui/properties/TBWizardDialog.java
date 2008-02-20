@@ -416,12 +416,6 @@ public class TBWizardDialog extends JDialog
                 boolean valid = true;        
                 valid = valid && isValidSSK(urlField.getText());
                 valid = valid && isValidSSK(insertUriField.getText());
-                if (pathField.getText().contains("/")) {
-                    JOptionPane.showMessageDialog(TBWizardDialog.this,
-                                    i18n.str("invalid_path_prompt"), i18n.str("invalid_path"),  //$NON-NLS-1$ //$NON-NLS-2$
-                                    JOptionPane.WARNING_MESSAGE);
-                    valid = false;
-                }
                 return valid;
             } else {
                 insertUriField.setText("none");                

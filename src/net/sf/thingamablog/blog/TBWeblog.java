@@ -150,6 +150,13 @@ public class TBWeblog extends Weblog
                 super.publish(progress);
             } else {
                 super.doFlogPublish(progress);
+                // Now we update the urls with the new edition number
+                String url = baseUrl;
+                if(!url.endsWith("/"))
+                    url += "/";;
+                url = url.substring(0,url.length()-2);
+                url += ((FCPTransport) getPublishTransport()).getEdition() + "/";
+                setBlogUrls(basePath,url,url,url);
             }
 	}
         
@@ -159,6 +166,13 @@ public class TBWeblog extends Weblog
                 super.publishAll(progress);
             } else {
                 super.doFlogPublish(progress);
+                // Now we update the urls with the new edition number
+                String url = baseUrl;
+                if(!url.endsWith("/"))
+                    url += "/";;
+                url = url.substring(0,url.length()-2);
+                url += ((FCPTransport) getPublishTransport()).getEdition() + "/";
+                setBlogUrls(basePath,url,url,url);
             }
 	}
 	

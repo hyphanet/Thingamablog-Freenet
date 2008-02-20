@@ -79,16 +79,11 @@ public class FCPTransport implements PublishTransport {
      * @return true on success, false otherwise
      */
     public boolean disconnect(){
-        // We do the publish process during the disconnection (I hope it will be temporary, time I get a solution)
         if (client.isDisconnected())
             return true;
         logger.info("Disconnecting from the node...");
         Manager.getConnection().disconnect();
         logger.info("Disconnected!");
-        if (hasPublish){
-            hasPublish=false;
-            edition++;
-        }
         return true;
     }
     
@@ -115,7 +110,7 @@ public class FCPTransport implements PublishTransport {
         return false;
     }
     
-    public boolean publishFile(Hashtable ht, PublishProgress tp){
+    public boolean publishFile(Hashtable ht, PublishProgress tp, String frontPage, String arcPath){
         //We do the publish job for an entire directory
         if(!Manager.isConnected()){
             logger.log(Level.WARNING,"The connection to the node is not open !");
@@ -126,16 +121,16 @@ public class FCPTransport implements PublishTransport {
         String dirURI = "freenet:USK@" + insertURI + "/" + title + "/" + edition + "/";
         System.out.println("Insert URI : " + dirURI);
         ClientPutComplexDir putDir = new ClientPutComplexDir("Thingamablog insert", dirURI);
-        putDir.setDefaultName("blog.html");
+        putDir.setDefaultName(frontPage);
         putDir.setMaxRetries(-1);
         int totalBytes = 0;
         for(Enumeration e = ht.keys() ; e.hasMoreElements() ;) {
-            File file = (File)e.nextElement();
-            FileEntry fileEntry = createFileEntry(file, edition);            
+            Object element = e.nextElement();
+            File file = (File)element;
+            String path = ((String) ht.get(element)).substring(arcPath.length());
+            FileEntry fileEntry = createFileEntry(file, edition, path);            
             if (fileEntry != null) {
                 System.out.println("File to insert : " + fileEntry.getFilename());
-                System.out.println("Method : " + fileEntry.getName());
-                System.out.println("Local path :" + ((DiskFileEntry) fileEntry).getLocalFilename());
                 totalBytes += file.length();
                 putDir.addFileEntry(fileEntry);
             }
@@ -145,6 +140,7 @@ public class FCPTransport implements PublishTransport {
             tp.publishStarted(totalBytes);
             client.execute(putDir);
             System.out.println("Command executed!");
+            System.out.println("Publish in progress...");
         } catch (IOException ioe) {
             logger.log(Level.WARNING,"Publish process failed : " + ioe.getMessage());
             return false;
@@ -174,14 +170,16 @@ public class FCPTransport implements PublishTransport {
                 finished = success || "PutFailed".equals(messageName) || messageName.endsWith("Error");
             }            
         }
-        hasPublish=success;
+        // If the publish has been made, we update the edition number to the current edition +1
+        if(finalURI != null){
+            edition = Integer.parseInt(finalURI.substring(finalURI.length()-1)) + 1;
+        }
         return success;
     }
     
-    private FileEntry createFileEntry(File file, int edition){
+    private FileEntry createFileEntry(File file, int edition, String path){
         String content = DefaultMIMETypes.guessMIMEType(file.getName());
-        System.out.println(content);
-        FileEntry fileEntry = new DiskFileEntry(file.getName(), content, file.getPath());
+        FileEntry fileEntry = new DiskFileEntry(path + file.getName(), content, file.getPath());
         return fileEntry;
     }
     

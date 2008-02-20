@@ -134,7 +134,7 @@ public class WeblogPreviewer
                 Desktop.browse(new URL(previewBlog.getFrontPageUrl()));            
             } else {
                 String nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
-                Desktop.browse(new URL("http://" + nodeHostname + ":8888" + previewBlog.getFrontPageUrl()));
+                Desktop.browse(new URL("http://" + nodeHostname + ":8888/" + previewBlog.getFrontPageUrl()));
             }
         }
         catch(Exception ex)

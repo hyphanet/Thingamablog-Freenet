@@ -375,10 +375,13 @@ public abstract class Weblog
 		}
             markWebFilesAsUpdated();
             File webFiles[] = getUpdatedWebFiles();
+            String webPaths[] = getWebFilesServerPaths(webFiles);
             long totalBytes = 0;				
             //count the total bytes for this publish
-            for(int i = 0; i < webFiles.length; i++)
-            totalBytes += webFiles[i].length();
+            for(int i = 0; i < webFiles.length; i++){
+                totalBytes += webFiles[i].length();
+                ht.put(webFiles[i],webPaths[i]);
+            }
             for(Enumeration e = ht.keys() ; e.hasMoreElements() ;) 
             {
                     try
@@ -403,7 +406,7 @@ public abstract class Weblog
             boolean failed = false;
             //we are publishing a flog with fcp
             FCPTransport fcp = (FCPTransport) transport;
-            boolean result = fcp.publishFile(ht,progress);
+            boolean result = fcp.publishFile(ht,progress,this.getFrontPageUrl().substring(("USK@" + fcp.getInsertURI() + "/" + fcp.getTitle() + "/" + fcp.getEdition() + "/").length()),getArchivePath());
             if(!result)
 				{
 					//progress.publishFailed(transport.getFailureReason());

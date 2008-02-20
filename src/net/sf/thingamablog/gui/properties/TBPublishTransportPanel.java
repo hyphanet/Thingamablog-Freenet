@@ -30,9 +30,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.SortedMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -52,6 +55,7 @@ import net.sf.thingamablog.transport.FTPTransport;
 import net.sf.thingamablog.transport.LocalTransport;
 import net.sf.thingamablog.transport.PublishTransport;
 import net.sf.thingamablog.transport.SFTPTransport;
+import net.sf.thingamablog.util.freenet.fcp.fcpManager;
 
 /**
  * @author Bob Tantlinger
@@ -85,6 +89,7 @@ public class TBPublishTransportPanel extends PropertyPanel
 	private CardLayout tLayout;
     private JTabbedPane ftpTabs = new JTabbedPane();
     private ASCIIPanel asciiPanel = new ASCIIPanel();
+    private Logger logger = Logger.getLogger("net.sf.thingamablog.gui.properties");
 	
 	public TBPublishTransportPanel(TBWeblog wb, String InsertURI)
 	{
@@ -252,7 +257,29 @@ public class TBPublishTransportPanel extends PropertyPanel
 		} else {
                         FCPTransport pt = new FCPTransport();
                         pt.setNode(fcpPanel.getMachineNameField(),fcpPanel.getPortField());
-                        pt.setInsertURI(InsertURI);
+                        // If we are changing the publish transport after the Dialog Wizard, we need to create a new key pair
+                        
+                        if(InsertURI == null) {
+                            logger.log(Level.INFO,"Creating a new SSK key pair...");
+                            fcpManager fcp = new fcpManager();
+                            String keys[];
+                            fcp.setNode(fcpPanel.getMachineNameField(),fcpPanel.getPortField());
+                            try {
+                                keys=fcp.generateKeyPair();
+                                keys[0]=keys[0].substring("SSK".length());
+                                keys[1]=keys[1].substring("SSK".length());
+                                InsertURI="USK" + keys[0];
+                                weblog.setBlogUrls(weblog.getBasePath(),"USK"+keys[1],weblog.getArchiveUrl(),weblog.getMediaUrl());
+                            } catch (IOException ex) {
+                                JOptionPane.showMessageDialog(TBPublishTransportPanel.this,
+                                    fcpPanel.getMachineNameField() + ":" + fcpPanel.getPortField() + " : " + ex, i18n.str("key_generation_failure"),  //$NON-NLS-1$ //$NON-NLS-2$
+                                    JOptionPane.ERROR_MESSAGE);
+                                    return;
+                            }
+                            logger.log(Level.INFO,"Done!");
+                            
+                        }
+                        pt.setInsertURI(InsertURI);                        
                         pt.setEdition("1");
                         pt.setTitle(fcpPanel.getTitle());
                         if(weblog.getPublishTransport() == null || weblog.getPublishTransport() instanceof LocalTransport){
