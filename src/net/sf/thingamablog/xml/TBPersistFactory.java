@@ -481,7 +481,6 @@ public class TBPersistFactory
                     transport.setAttribute("port",fpt.getPort());
                     transport.setAttribute("edition",fpt.getEdition()+"");
                     transport.setAttribute("insertURI",fpt.getInsertURI());
-                    transport.setAttribute("title",fpt.getTitle());
                 }
 		else
 		{
@@ -875,7 +874,6 @@ public class TBPersistFactory
                     fcp.setNode(transport.getAttributeValue("hostname"), Integer.parseInt(transport.getAttributeValue("port")));
                     fcp.setEdition(transport.getAttributeValue("edition"));
                     fcp.setInsertURI(transport.getAttributeValue("insertURI"));
-                    fcp.setTitle(transport.getAttributeValue("title"));
                     pubTransport = fcp;
                 }
 		else		

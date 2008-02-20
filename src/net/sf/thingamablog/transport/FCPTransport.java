@@ -32,6 +32,7 @@ import net.sf.thingamablog.util.freenet.fcp.FileEntry;
 import net.sf.thingamablog.util.freenet.fcp.Message;
 import net.sf.thingamablog.util.freenet.fcp.Verbosity;
 import net.sf.thingamablog.util.freenet.fcp.fcpManager;
+import net.sf.thingamablog.util.string.ASCIIconv;
 import src.net.sf.thingamablog.util.io.ReplacingOutputStream;
 
 /**
@@ -46,7 +47,6 @@ public class FCPTransport implements PublishTransport {
     private String failMsg;
     private boolean hasPublish = false;
     private int edition;
-    private String title;
     
     /**
      * Connects the transport
@@ -110,7 +110,7 @@ public class FCPTransport implements PublishTransport {
         return false;
     }
     
-    public boolean publishFile(Hashtable ht, PublishProgress tp, String frontPage, String arcPath){
+    public boolean publishFile(Hashtable ht, PublishProgress tp, String frontPage, String arcPath, String title){
         //We do the publish job for an entire directory
         if(!Manager.isConnected()){
             logger.log(Level.WARNING,"The connection to the node is not open !");
@@ -118,7 +118,7 @@ public class FCPTransport implements PublishTransport {
             return false;
         }
         System.out.println("Beginning of the publish process...");
-        String dirURI = "freenet:USK@" + insertURI + "/" + title + "/" + edition + "/";
+        String dirURI = "freenet:USK@" + insertURI + "/" + ASCIIconv.convertNonAscii(title) + "/" + edition + "/";
         System.out.println("Insert URI : " + dirURI);
         ClientPutComplexDir putDir = new ClientPutComplexDir("Thingamablog insert", dirURI);
         System.out.println("Default name : " + frontPage);
@@ -224,13 +224,5 @@ public class FCPTransport implements PublishTransport {
             uri = uri.substring(0, uri.length()-1);
         }
         return uri;
-    }
-    
-    public String getTitle(){
-        return this.title;
-    }
-    
-    public void setTitle(String title){
-        this.title=title;
     }
 }

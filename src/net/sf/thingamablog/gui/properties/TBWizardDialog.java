@@ -48,6 +48,7 @@ import net.sf.thingamablog.gui.MultilineText;
 import net.sf.thingamablog.gui.app.TemplateSelectionPanel;
 import net.sf.thingamablog.gui.app.WeblogPreviewer;
 import net.sf.thingamablog.util.freenet.fcp.fcpManager;
+import net.sf.thingamablog.util.string.ASCIIconv;
 
 
 
@@ -434,8 +435,8 @@ public class TBWizardDialog extends JDialog
 			String url = urlField.getText();
 			if(!url.endsWith("/")) //$NON-NLS-1$
 				url += "/";; //$NON-NLS-1$
-			String arcUrl = url + "archives"; //$NON-NLS-1$
-			String mediaUrl = url + "media"; //$NON-NLS-1$
+			String arcUrl = url; //$NON-NLS-1$
+			String mediaUrl = url; //$NON-NLS-1$
 			
 			weblog.setBlogUrls(path, url, arcUrl, mediaUrl);
                         weblog.setType(typeCombo.getSelectedItem().toString());
@@ -527,6 +528,11 @@ public class TBWizardDialog extends JDialog
 		{
 			weblog.setTitle(titleField.getText());
 			weblog.setDescription(textArea.getText());
+                        if(weblog.getType().equals("freenet")){
+                            String url=weblog.getBaseUrl();
+                            url+=ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
+                            weblog.setBlogUrls(weblog.getBasePath(),url,url,url);
+                        }
 		}	
         
         public String getTitle()
