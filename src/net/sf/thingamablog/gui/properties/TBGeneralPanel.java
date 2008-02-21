@@ -46,6 +46,7 @@ public class TBGeneralPanel extends PropertyPanel
 	
 	private JTextField titleField;
 	private JTextArea descrArea;
+        private JTextField typeField;
 	private JTextField basePathField;
 	private JTextField urlField;
 	private JTextField arcUrlField;
@@ -54,10 +55,8 @@ public class TBGeneralPanel extends PropertyPanel
 	private JComboBox localeCombo;
 	private JComboBox dateFormatCombo;
 	private JComboBox timeFormatCombo;
-        private JComboBox typeCombo;
 	
 	private static Locale LOCS[] = DateFormat.getAvailableLocales();
-        private static String TYPE[] = {"internet","freenet"};
         
 	private String[] getDateFormats(Locale locale) {
 		String s = i18n.str("DateFormatOptions",locale);
@@ -158,9 +157,10 @@ public class TBGeneralPanel extends PropertyPanel
 		timeFormatCombo = new JComboBox(getTimeFormats(weblog.getLocale()));
 		timeFormatCombo.setSelectedItem(weblog.getPageGenerator().getTimeFormat());
 		timeFormatCombo.setRenderer(new ComboRenderer());
-		
-                typeCombo = new JComboBox(TYPE);
-                typeCombo.setSelectedItem(weblog.getType());
+		                
+                typeField = new JTextField();
+                typeField.setText(weblog.getType());
+                typeField.setEditable(false);                
                 
 		basePathField = new JTextField();
 		basePathField.setText(weblog.getBasePath());
@@ -190,7 +190,7 @@ public class TBGeneralPanel extends PropertyPanel
 		lip1.addItem(i18n.str("language"), localeCombo); //$NON-NLS-1$
 		lip1.addItem(i18n.str("date_format"), dateFormatCombo); //$NON-NLS-1$
 		lip1.addItem(i18n.str("time_format"), timeFormatCombo); //$NON-NLS-1$
-		lip1.addItem(i18n.str("type"), typeCombo);
+		lip1.addItem(i18n.str("type"), typeField);
                 
 		LabelledItemPanel lip2 = new LabelledItemPanel();
 		lip2.setBorder(new TitledBorder(i18n.str("location"))); //$NON-NLS-1$
@@ -224,7 +224,6 @@ public class TBGeneralPanel extends PropertyPanel
         weblog.setDescription(descrArea.getText());
         weblog.getPageGenerator().setDateFormat(dateFormatCombo.getSelectedItem().toString());
 		weblog.getPageGenerator().setTimeFormat(timeFormatCombo.getSelectedItem().toString());
-                weblog.setType(typeCombo.getSelectedItem().toString());
     }
     
 
@@ -243,10 +242,10 @@ public class TBGeneralPanel extends PropertyPanel
 				return false;
 		}
 		
-		if(typeCombo.getSelectedItem().toString().equals("internet") && (!isValidUrl(base) || !isValidUrl(arc) || !isValidUrl(media)))
+		if(typeField.getText().equals("internet") && (!isValidUrl(base) || !isValidUrl(arc) || !isValidUrl(media)))
 			return false;	
 		
-                if(typeCombo.getSelectedItem().toString().equals("freenet") && (!isValidSSK(base)) || !isValidSSK(arc) || !isValidSSK(media))
+                if(typeField.getText().equals("freenet") && (!isValidSSK(base)) || !isValidSSK(arc) || !isValidSSK(media))
                         return false;
                 
 		if(!arc.startsWith(base))

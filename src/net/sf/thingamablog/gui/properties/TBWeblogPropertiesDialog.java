@@ -85,7 +85,7 @@ public class TBWeblogPropertiesDialog extends StandardDialog
         opts.add(new DialogPanel(new TBTemplatesPanel(tbw), i18n.str("templates"))); //$NON-NLS-1$
         opts.add(new DialogPanel(new TBEmailPanel(tbw), i18n.str("email"))); //$NON-NLS-1$
         opts.add(new DialogPanel(new XmlRpcPingPanel(tbw), i18n.str("pinging")));		 //$NON-NLS-1$
-		opts.add(new DialogPanel(new TBPublishTransportPanel(tbw,null), i18n.str("publishing"))); //$NON-NLS-1$
+		opts.add(new DialogPanel(new TBPublishTransportPanel(tbw), i18n.str("publishing"))); //$NON-NLS-1$
 		
 		optionPanel = new JPanel(optionLayout);
 		for(int i = 0; i < opts.size(); i++)

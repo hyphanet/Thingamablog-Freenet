@@ -728,7 +728,7 @@ public class TBWizardDialog extends JDialog
 			instrPanel.add(header, BorderLayout.NORTH);
 			instrPanel.add(new MultilineText(text), BorderLayout.CENTER);
 
-			pubPanel = new TBPublishTransportPanel(weblog,InsertURI);
+			pubPanel = new TBPublishTransportPanel(weblog);
 			add(instrPanel, BorderLayout.NORTH);
 			add(pubPanel, BorderLayout.CENTER);							
 		}

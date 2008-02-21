@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -78,7 +79,6 @@ public class TBPublishTransportPanel extends PropertyPanel
 	private final String SFTP = "SFTP"; //$NON-NLS-1$
 	private final String LOCAL = "Local"; //$NON-NLS-1$
         private final String FCP = "FCP";
-        private String InsertURI;
 	
 	private TBWeblog weblog;
 	private JComboBox encodingsCombo;
@@ -93,13 +93,13 @@ public class TBPublishTransportPanel extends PropertyPanel
     private ASCIIPanel asciiPanel = new ASCIIPanel();
     private Logger logger = Logger.getLogger("net.sf.thingamablog.gui.properties");
 	
-	public TBPublishTransportPanel(TBWeblog wb, String InsertURI)
+	public TBPublishTransportPanel(TBWeblog wb)
 	{
 		weblog = wb;
                 String types[];
                 tLayout = new CardLayout();
-                // If we are currently building a blog, the publish process can be FTP, SFTP, or LOCAL
-                if (weblog.getType().toString().equals("internet")) {                    
+                // If we are currently building a blog, the publish process can be FTP, SFTP, or LOCAL (default set to FTP)
+                if (weblog.getPublishTransport() instanceof FTPTransport || (weblog.getType() != null && weblog.getType().equals("internet"))) {
                     types=new String[3];
                     types[0]="Local";
                     types[1]="FTP";
@@ -114,26 +114,24 @@ public class TBPublishTransportPanel extends PropertyPanel
                     p.add(asciiPanel);
                     ftpTabs.add(p, "ASCII");
                  }
-                // Else, we are building a flog, and the transport process is LOCAL or FCP
-                else {
-                    // The InsertURI parameter is here only for the TBWizardDialog process (yes I know, it's quite ugly)
-                    if(weblog.getPublishTransport()==null || weblog.getPublishTransport() instanceof LocalTransport){
-                        this.InsertURI=InsertURI;
-                    } else {
-                        FCPTransport fcp = (FCPTransport) weblog.getPublishTransport();
-                        this.InsertURI=fcp.getInsertURI();
-                    }
+                // Else, we are building a flog, and the transport process is LOCAL or FCP 
+                else {                   
                     types=new String[2];
                     types[0]="Local";
                     types[1]="FCP";                    
                     fcpPanel = new FcpTransportPanel();
                     fcpPanel.setBorder(new TitledBorder(i18n.str("fcp_transport")));
+                    if(weblog.getPublishTransport() instanceof FCPTransport){
+                        types[0]="FCP";
+                        types[1]="Local";   
+                    }
+                    fcpPanel.setRequestUri(weblog.getBaseUrl());
                  }
                 localPanel = new JPanel();
                 		
 		transportsPanel = new JPanel();
 		transportsPanel.setLayout(tLayout);
-                if (weblog.getType().toString().equals("internet")) {
+                if (weblog.getPublishTransport() instanceof FTPTransport || (weblog.getType() != null && weblog.getType().equals("internet"))) {
                     transportsPanel.add(localPanel, LOCAL);
                     transportsPanel.add(ftpTabs, FTP);
                     transportsPanel.add(sftpPanel, SFTP);
@@ -187,10 +185,9 @@ public class TBPublishTransportPanel extends PropertyPanel
 			tLayout.show(transportsPanel, LOCAL);
 		} else {
                         FCPTransport t =(FCPTransport)wb.getPublishTransport();
-                        fcpPanel.setMachineNameField(t.getHostname());
-                        fcpPanel.setPortField(Integer.parseInt(t.getPort()));
-                        if (t.getInsertURI() != null)
-                            InsertURI=t.getInsertURI();
+                        fcpPanel.setMachineNameField(TBGlobals.getProperty("NODE_HOSTNAME"));
+                        fcpPanel.setPortField(Integer.parseInt(TBGlobals.getProperty("NODE_PORT")));
+                        fcpPanel.setInsertUri("USK@" + t.getInsertURI() + "/");
                         transportTypeCombo.setSelectedItem(FCP);
                         tLayout.show(transportsPanel, FCP);
                 }
@@ -259,32 +256,12 @@ public class TBPublishTransportPanel extends PropertyPanel
 			transport = new LocalTransport();
 		} else {
                         FCPTransport pt = new FCPTransport();
-                        pt.setNode(fcpPanel.getMachineNameField(),fcpPanel.getPortField());
-                        // If we are changing the publish transport after the Dialog Wizard, we need to create a new key pair
-                        
-                        if(InsertURI == null && !(weblog.getPublishTransport() instanceof FCPTransport)) {
-                            logger.log(Level.INFO,"Creating a new SSK key pair...");
-                            fcpManager fcp = new fcpManager();
-                            String keys[];
-                            fcp.setNode(fcpPanel.getMachineNameField(),fcpPanel.getPortField());
-                            try {
-                                keys=fcp.generateKeyPair();
-                                keys[0]=keys[0].substring("SSK".length());
-                                keys[1]=keys[1].substring("SSK".length());
-                                InsertURI="USK" + keys[0];
-                                String url="USK" + keys[1];
-                                url += ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
-                                weblog.setBlogUrls(weblog.getBasePath(),url,url,url);
-                            } catch (IOException ex) {
-                                JOptionPane.showMessageDialog(TBPublishTransportPanel.this,
-                                    fcpPanel.getMachineNameField() + ":" + fcpPanel.getPortField() + " : " + ex, i18n.str("key_generation_failure"),  //$NON-NLS-1$ //$NON-NLS-2$
-                                    JOptionPane.ERROR_MESSAGE);
-                                    return;
-                            }
-                            logger.log(Level.INFO,"Done!");
-                            
-                        }
-                        pt.setInsertURI(InsertURI);                        
+                        pt.setNode(fcpPanel.getMachineNameField(),fcpPanel.getPortField());  
+                        pt.setInsertURI(fcpPanel.getInsertUri());                                                                     
+                        String url = fcpPanel.getRequestUri();
+                        int firstSlash = url.indexOf('/');
+                        url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
+                        weblog.setBlogUrls("none",url,url,url);
                         pt.setEdition("1");
                         transport = pt;
                 }
@@ -474,24 +451,37 @@ public class TBPublishTransportPanel extends PropertyPanel
                 private static final long serialVersionUID = 1L;		
 		private JTextField portField;
 		private JTextField machineNameField;
+                private JTextField requestUriField;
+                private JTextField insertUriField;
+                private JButton generateKeyButton;
 		public FcpTransportPanel()
 		{
                         portField = new JTextField();
                         machineNameField = new JTextField();
+                        requestUriField = new JTextField();
+                        insertUriField = new JTextField();
+                        generateKeyButton = new JButton();
                     
 			TextEditPopupManager pm = TextEditPopupManager.getInstance();
 			pm.registerJTextComponent(machineNameField);
+                        
+                        TypeListener listener = new TypeListener();
+                        generateKeyButton.addActionListener(listener);
                         
                         // Default port
                         portField.setText(TBGlobals.getProperty("NODE_PORT"));
                         //Default machine name
                         machineNameField.setText(TBGlobals.getProperty("NODE_HOSTNAME"));
+                        generateKeyButton.setText(i18n.str("generate_keys"));
 			LabelledItemPanel lip = new LabelledItemPanel();
 			JPanel p = new JPanel(new BorderLayout());
 			p.add(portField, BorderLayout.WEST);
 			p.add(new JPanel(), BorderLayout.CENTER);
 			lip.addItem(i18n.str("port"), p);
                         lip.addItem(i18n.str("machineName"),machineNameField);
+                        lip.addItem(i18n.str("requestUri"),requestUriField);
+                        lip.addItem(i18n.str("insertUri"),insertUriField);
+                        lip.addItem("",generateKeyButton);
 			setLayout(new BorderLayout());
 			add(lip, BorderLayout.CENTER);	
 		}
@@ -515,6 +505,55 @@ public class TBPublishTransportPanel extends PropertyPanel
 
         public void setMachineNameField(String machineNameField) {
             this.machineNameField.setText(machineNameField);
+        }
+        
+        public void setInsertUri(String insertUri){
+            this.insertUriField.setText(insertUri);
+        }
+        
+        public String getInsertUri(){
+            return this.insertUriField.getText();
+        }
+        
+        public void setRequestUri(String requestUri){
+            this.requestUriField.setText(requestUri);
+        }
+        
+        public String getRequestUri(){
+            return this.requestUriField.getText();
+        }
+        
+        private class TypeListener implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() instanceof JButton){
+                    if(generateKeyButton.getText().equals(i18n.str("generate_keys"))){
+                        fcpManager Manager = new fcpManager();
+                        int port = Integer.parseInt(TBGlobals.getProperty("NODE_PORT"));
+                        String keys[]=new String[2];
+                        String hostname = TBGlobals.getProperty("NODE_HOSTNAME");
+                        Manager.setNode(hostname,port);
+                        try {
+                            keys=Manager.generateKeyPair();
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(TBPublishTransportPanel.this,
+                                    hostname + ":" + port + " : " + ex, i18n.str("key_generation_failure"),  //$NON-NLS-1$ //$NON-NLS-2$
+                                    JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        // We put "USK" instead of "SSK"
+                        keys[0] = keys[0].substring("SSK".length());
+                        keys[1] = keys[1].substring("SSK".length());
+                        insertUriField.setText("USK" + keys[0]);
+                        requestUriField.setText("USK" + keys[1]);
+                        Manager.getConnection().disconnect();
+                        generateKeyButton.setText(i18n.str("cancel"));
+                    } else {
+                        requestUriField.setText("");
+                        insertUriField.setText("");
+                        generateKeyButton.setText(i18n.str("generate_keys"));
+                    }
+                }
+            }
         }
     }
 }

@@ -98,6 +98,7 @@ import net.sf.thingamablog.gui.UpdatableAction;
 import net.sf.thingamablog.gui.ViewerPane;
 import net.sf.thingamablog.gui.editor.EntryEditor;
 import net.sf.thingamablog.gui.editor.HTMLEditor;
+import net.sf.thingamablog.gui.properties.TBFlogWizardDialog;
 import net.sf.thingamablog.gui.properties.TBWizardDialog;
 import net.sf.thingamablog.gui.properties.WeblogPropertiesDialogFactory;
 import net.sf.thingamablog.gui.table.JSortTable;
@@ -221,6 +222,7 @@ public class ThingamablogFrame extends JFrame
 	//private Action importLegacyWeblogAction;
 	
 	private Action newWeblogAction;
+        private Action newFlogAction;
 	private Action deleteWeblogAction;
 	
 	private Action importFileAction;
@@ -763,6 +765,8 @@ public class ThingamablogFrame extends JFrame
 		actions.add(weblogPropertiesAction);
 		newWeblogAction = new NewWeblogAction();
 		actions.add(newWeblogAction);
+                newFlogAction = new NewFlogAction();
+                actions.add(newFlogAction);
 		deleteWeblogAction = new DeleteWeblogAction();
 		actions.add(deleteWeblogAction);
 		editTemplateAction = new EditTemplateAction();
@@ -870,6 +874,7 @@ public class ThingamablogFrame extends JFrame
 		JMenu fileMenu = new JMenu(i18n.str("file")); //$NON-NLS-1$
 		fileMenu.setMnemonic(i18n.mnem("file")); //$NON-NLS-1$
 		fileMenu.add(newWeblogAction);
+                fileMenu.add(newFlogAction);
 		fileMenu.add(newEntryAction);
 		//fileMenu.add(newFeedAction);
 		fileMenu.addSeparator();
@@ -1283,6 +1288,35 @@ public class ThingamablogFrame extends JFrame
 		}
 	    
 	    TBWizardDialog wiz = new TBWizardDialog(FRAME, curDB, backend);
+		wiz.setLocationRelativeTo(FRAME);
+		wiz.setVisible(true);
+		
+		if(!wiz.hasUserCancelled())
+		{
+			Weblog w = wiz.getWeblog();
+            weblogList.addWeblog(w);
+            taskDialog.addWeblog(w);
+            
+			weblogTreeModel.setData(weblogList);				
+			if(searchDialog != null)
+				searchDialog.setWeblogList(weblogList);
+				
+			//updateActions();
+			saveCurrentData();
+			selectWeblog(wiz.getWeblog());
+		}
+	}
+        
+        	
+        private void showNewFlogWizard()
+	{
+		if(!isDBOpen)
+		{
+		    JOptionPane.showMessageDialog(FRAME, i18n.str("no_database_is_open")); //$NON-NLS-1$
+		    return;
+		}
+	    
+                TBFlogWizardDialog wiz = new TBFlogWizardDialog(FRAME, curDB, backend);
 		wiz.setLocationRelativeTo(FRAME);
 		wiz.setVisible(true);
 		
@@ -3698,6 +3732,33 @@ public class ThingamablogFrame extends JFrame
 		public void actionPerformed(ActionEvent e)
 		{
 		    showNewWeblogWizard();
+		}	
+	}
+        
+        //************************************************
+	//Action for creating a new Flog from the wizard
+	//************************************************
+	private class NewFlogAction extends AbstractAction
+	{
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+        public NewFlogAction()
+		{
+			super(i18n.str("new_flog_")); //$NON-NLS-1$
+            putValue(MNEMONIC_KEY, new Integer(i18n.mnem("new_flog_"))); //$NON-NLS-1$
+			putValue(ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
+			putValue(Action.SMALL_ICON, 
+                UIUtils.getIcon(UIUtils.X16, "flog_glow.png")); //$NON-NLS-1$
+			putValue("LARGE_ICON", UIUtils.getIcon(UIUtils.X24, "flog_glow.png"));
+		}
+		
+		public void actionPerformed(ActionEvent e)
+		{
+		    showNewFlogWizard();
 		}	
 	}
 	
