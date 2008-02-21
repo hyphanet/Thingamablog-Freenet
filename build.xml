@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Thingamablog" default="dist" basedir=".">
+
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	<property name="lib"	location="lib"/>
+
+	<assertions>
+		<enable/>
+	</assertions>
+
+	<target name="mkdir">
+		<mkdir dir="${build}"/>
+		<mkdir dir="${lib}"/>
+	</target>
+
+	<!-- ================================================== -->
+
+	<target name="compile" depends="mkdir">
+		<!-- Create the time stamp -->
+		<tstamp/>
+
+		<javac srcdir="${src}" destdir="${build}" debug="on" optimize="on" source="1.5">
+			<classpath>
+				<pathelement location="${lib}/activation.jar"/>
+				<pathelement location="${lib}/commons-codec-1.3.jar"/>
+				<pathelement location="${lib}/datatips.jar"/>
+				<pathelement location="${lib}/edtftpj.jar"/>
+				<pathelement location="${lib}/hsqldb.jar"/>
+				<pathelement location="${lib}/jdatepicker.jar"/>
+				<pathelement location="${lib}/jdic.jar"/>
+				<pathelement location="${lib}/jdic_stub_lin.jar"/>
+				<pathelement location="${lib}/jdic_stub_mac.jar"/>
+				<pathelement location="${lib}/jdic_stub_win.jar"/>
+				<pathelement location="${lib}/jdom.jar"/>
+				<pathelement location="${lib}/jhall.jar"/>
+				<pathelement location="${lib}/jhelpaction.jar"/>
+				<pathelement location="${lib}/jmyspell.jar"/>
+				<pathelement location="${lib}/jsch.jar"/>
+				<pathelement location="${lib}/jtidy-8.0.jar"/>
+				<pathelement location="${lib}/l2fprod-common-directorychooser.jar"/>
+				<pathelement location="${lib}/mail.jar"/>
+				<pathelement location="${lib}/novaworx-syntax-0.0.7.jar"/>
+				<pathelement location="${lib}/plastic-1.2.1.jar"/>
+				<pathelement location="${lib}/rome-0.6.jar"/>
+				<pathelement location="${lib}/sam.jar"/>
+				<pathelement location="${lib}/tamb-ui-commons.jar"/>
+				<pathelement location="${lib}/tamb-utils.jar"/>
+				<pathelement location="${lib}/xmlrpc-2.0.jar"/>
+			</classpath>
+
+
+			<include name="net/sf/thingamablog/**/*.java"/>
+		</javac>
+	</target>
+
+
+	<!-- ================================================== -->
+
+	<target name="dist" depends="compile"
+		description="generate the distribution" >
+		<jar jarfile="thingamablog.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="net.sf.thingamablog.App"/>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Class-Path" value="lib/commons-codec-1.3.jar lib/hsqldb.jar lib/jdatepicker.jar lib/jdom.jar lib/jhall.jar lib/jhelpaction.jar lib/jmyspell.jar lib/jsch.jar lib/plastic-1.2.1.jar lib/rome-0.6.jar lib/xmlrpc-2.0.jarlib/activation.jar lib/datatips.jar lib/edtftpj.jar lib/jdic.jar lib/jdic_stub_lin.jar lib/jdic_stub_mac.jar lib/jdic_stub_win.jar lib/jtidy-8.0.jar lib/l2fprod-common-directorychooser.jar lib/mail.jar lib/novaworx-syntax-0.0.7.jar lib/sam.jar lib/tamb-ui-commons.jar lib/tamb-utils.jar"/> 
+			</manifest>
+		</jar>    
+	</target>
+	
+	<target name="release" depends="clean,dist" description="generate a clean release">
+		<zip destfile="thingamablog.zip">
+			<fileset dir=".">
+				<include name="lib/*"/>
+				<include name="dictionaries/*"/>
+				<include name="languages/*"/>
+				<include name="template_sets/*"/>
+				<include name="*txt"/>
+				<include name="thingamablog.jar"/>
+			</fileset>
+		</zip>
+	</target>
+
+	<!-- ================================================== -->
+
+	<target name="clean" description="Delete class files and docs dir.">
+		<delete dir="${build}"/>
+	</target>
+</project>
