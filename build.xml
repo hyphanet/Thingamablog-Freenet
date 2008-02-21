@@ -1,90 +1,241 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
+<project name="TAMB 1.1.x" basedir="." default="all">
+		
+	<target name="init">
 
-<project name="Thingamablog" default="dist" basedir=".">
+		<property name="project_name" value="Thingamablog" />
+		<property name="version" value="1.1b6" />
+		<property name="project_url" value="http://thingamablog.sourceforge.net"/>
 
-	<property name="src" location="src"/>
-	<property name="build" location="build"/>
-	<property name="lib"	location="lib"/>
+		<!-- comment out the following property if you're not under win32 or don't have nsis -->
+		<property name="makensis" location="C:/program files/nsis/makensis.exe"/> 
 
-	<assertions>
-		<enable/>
-	</assertions>
+		<!-- name for prefixing distributables -->
+		<property name="dist_file" value="thingamablog-${version}" />
+		
+		<property name="jar_file" value="thingamablog.jar" />
+				
 
-	<target name="mkdir">
-		<mkdir dir="${build}"/>
-		<mkdir dir="${lib}"/>
+		<!-- dirs needed for the build process -->
+		<property name="src_dir" value="./src" />
+		<property name="dicts_dir" value="./dictionaries" />
+		<property name="build_dir" value="./build" />
+		<property name="lib_dir" value="./lib" />
+		<property name="templates_dir" value="./template_sets" />
+		<property name="languages_dir" value="./languages" />
+		<property name="class_dir" value="${build_dir}/classes" />
+		<property name="app_dir" value="${build_dir}/app" />
+		<property name="jar_dir" value="${app_dir}/thingamablog-${version}" />
+		<property name="rpm_dir" value="${build_dir}/rpm" />
+		<property name="dist_dir" value="${build_dir}/dist" />
+		<property name="installer_dir" value="./installer" />
+
+		<!-- jar manifest sets the cp. This property includes the required libs -->
+		<property name="classpath_jars" 
+			value="lib/activation.jar lib/commons-codec-1.3.jar lib/datatips.jar 
+			lib/edtftpj.jar lib/jdatepicker.jar lib/jdic.jar lib/jdom.jar lib/jhall.jar 
+			lib/jhelpaction.jar lib/jmyspell.jar lib/jsch.jar lib/mail.jar 
+			lib/novaworx-syntax-0.0.7.jar lib/plastic-1.2.1.jar lib/rome-0.6.jar
+			lib/sam.jar lib/tamb-utils.jar lib/jtidy-8.0.jar
+			lib/userguide.zip lib/xmlrpc-2.0.jar lib/tamb-ui-commons.jar
+			lib/l2fprod-common-directorychooser.jar lib/hsqldb.jar"
+		/>
+
+		<!--
+ 		Create the directories where we put all the build products. 
+		-->
+		<mkdir dir="${build_dir}" />
+		<mkdir dir="${class_dir}" />
+		<mkdir dir="${jar_dir}" />
+		<mkdir dir="${dist_dir}" />
+		<echo message="Initializing" />
 	</target>
 
-	<!-- ================================================== -->
+	<target name="compile" depends="init" description="Compile the app">
+		<tstamp />
+		<buildnumber />
+		<move file="${src_dir}/net/sf/thingamablog/TBGlobals.java" tofile="${src_dir}/net/sf/thingamablog/~~TBGlobals.java" />
+		<copy file="${src_dir}/net/sf/thingamablog/~~TBGlobals.java" tofile="${src_dir}/net/sf/thingamablog/TBGlobals.java" />
+		<replace file="${src_dir}/net/sf/thingamablog/TBGlobals.java" token="@APP_NAME@" value="${project_name}" />
+		<replace file="${src_dir}/net/sf/thingamablog/TBGlobals.java" token="@APP_URL@" value="${project_url}" />
+		<replace file="${src_dir}/net/sf/thingamablog/TBGlobals.java" token="@VERSION@" value="${version}" />
+		<replace file="${src_dir}/net/sf/thingamablog/TBGlobals.java" token="@BUILD@" value="${DSTAMP}.${build.number}" />
 
-	<target name="compile" depends="mkdir">
-		<!-- Create the time stamp -->
-		<tstamp/>
-
-		<javac srcdir="${src}" destdir="${build}" debug="on" optimize="on" source="1.5">
+		<javac srcdir="${src_dir}" source="1.4" destdir="${class_dir}" excludes="**/Cvs/**,**/*.ini,**/~*" optimize="on" deprecation="true" fork="true">
 			<classpath>
-				<pathelement location="${lib}/activation.jar"/>
-				<pathelement location="${lib}/commons-codec-1.3.jar"/>
-				<pathelement location="${lib}/datatips.jar"/>
-				<pathelement location="${lib}/edtftpj.jar"/>
-				<pathelement location="${lib}/hsqldb.jar"/>
-				<pathelement location="${lib}/jdatepicker.jar"/>
-				<pathelement location="${lib}/jdic.jar"/>
-				<pathelement location="${lib}/jdic_stub_lin.jar"/>
-				<pathelement location="${lib}/jdic_stub_mac.jar"/>
-				<pathelement location="${lib}/jdic_stub_win.jar"/>
-				<pathelement location="${lib}/jdom.jar"/>
-				<pathelement location="${lib}/jhall.jar"/>
-				<pathelement location="${lib}/jhelpaction.jar"/>
-				<pathelement location="${lib}/jmyspell.jar"/>
-				<pathelement location="${lib}/jsch.jar"/>
-				<pathelement location="${lib}/jtidy-8.0.jar"/>
-				<pathelement location="${lib}/l2fprod-common-directorychooser.jar"/>
-				<pathelement location="${lib}/mail.jar"/>
-				<pathelement location="${lib}/novaworx-syntax-0.0.7.jar"/>
-				<pathelement location="${lib}/plastic-1.2.1.jar"/>
-				<pathelement location="${lib}/rome-0.6.jar"/>
-				<pathelement location="${lib}/sam.jar"/>
-				<pathelement location="${lib}/tamb-ui-commons.jar"/>
-				<pathelement location="${lib}/tamb-utils.jar"/>
-				<pathelement location="${lib}/xmlrpc-2.0.jar"/>
+				<fileset dir="${lib_dir}" includes="*.jar, *.zip" />
 			</classpath>
-
-
-			<include name="net/sf/thingamablog/**/*.java"/>
+			<!-- We're still assuming most users are running jre 1.4 or so... -->
+			<!-- So we're not going to worry about jdk 5.0 warnings yet -->
+			<!-- <compilerarg value="-Xlint:unchecked"/> -->
 		</javac>
+		<move file="${src_dir}/net/sf/thingamablog/~~TBGlobals.java" tofile="${src_dir}/net/sf/thingamablog/TBGlobals.java" />
+		<delete file="${src_dir}/net/sf/thingamablog/~~TBGlobals.java" />
+		<!--
+         Copy files needed to run the software to destinations in the 
+         build directory. I do this because I usually pull all binary files like
+         this from inside the Jar files that make up my application rather than
+         having them loose. So they need to be copied to the class dir so they
+         get included in the Jar file for the application. 
+        -->
+		<copy todir="${class_dir}">
+			<fileset dir="${src_dir}">
+				<include name="**/*.gif" />				
+				<include name="**/*.jpg" />
+				<include name="**/*.png" />
+				<include name="**/*.wav" />
+				<include name="**/*.css" />
+				<include name="**/*.properties" />
+				<include name="**/*.txt" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar" depends="init,compile" description="Jar the app and create the app dir">
+		<jar jarfile="${jar_dir}/${jar_file}" compress="true" basedir="${class_dir}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<!-- 
+      			seems like there ought to be a way to get each jar name
+      			and add it to the Class-Path attribute programatically
+      			-->
+				<attribute name="Class-Path" value="${classpath_jars}" />
+				<attribute name="Main-Class" value="net.sf.thingamablog.App" />
+			</manifest>
+		</jar>
+
+		<!-- copy the libs to the jar dir -->
+		<copy todir="${jar_dir}/lib">
+			<fileset dir="${lib_dir}" />
+		</copy>
+
+		<!-- copy the dictionaries to the jar dir -->
+		<copy todir="${jar_dir}/dictionaries">
+			<fileset dir="${dicts_dir}" />
+		</copy>
+
+		<!-- copy the sample templates to the jar dir -->
+		<copy todir="${jar_dir}/template_sets">
+			<fileset dir="${templates_dir}" />
+		</copy>
+		
+		<!-- copy the lang packs to the jar dir -->
+		<copy todir="${jar_dir}/languages">
+				<fileset dir="${languages_dir}" />
+		</copy>
+
+		<!-- copy any text and icon files to the jar dir -->
+		<copy todir="${jar_dir}">
+			<fileset dir="." includes="*.txt" />
+			<fileset dir="." includes="*.ico" />
+			<fileset dir="." includes="*.bat" />
+			<fileset dir="." includes="*.sh" />
+		</copy>
+	</target>
+
+	<target name="run" depends="jar" description="Run the program">
+		<java jar="${jar_dir}/${jar_file}" fork="yes" />
+	</target>
+
+	<target name="all" depends="distrib" description="Build everything">
+		<echo message="Application built." />
+	</target>
+
+	<target name="distrib" depends="jar" description="Create basic distributables (.zip, .src.zip)">
+		<!-- create a tar.gz file -->
+		<!--
+		<tar tarfile="${dist_dir}/${dist_file}.tar" basedir="${app_dir}" />
+		<gzip zipfile="${dist_dir}/${dist_file}.tar.gz" src="${dist_dir}/${dist_file}.tar" />
+		<delete file="${dist_dir}/${dist_file}.tar" />
+		-->
+
+		<!-- create a zip file -->
+		<zip destfile="${dist_dir}/${dist_file}.zip" basedir="${app_dir}" />
+
+		<!-- create a src zip file -->
+		<mkdir dir="${jar_dir}/src" />
+		<copy todir="${jar_dir}/src">
+			<fileset dir="${src_dir}" />
+		</copy>
+		<copy todir="${jar_dir}">
+			<fileset dir="." includes="build.xml" />
+			<fileset dir="." includes="build.number" />
+		</copy>
+		<copy todir="${jar_dir}/installer">
+			<fileset dir="${installer_dir}" />
+		</copy>
+
+		<zip destfile="${dist_dir}/${dist_file}-src.zip" basedir="${app_dir}" excludes="**/${jar_file}" />
 	</target>
 
 
-	<!-- ================================================== -->
+	<target name="distrib-rpm" depends="jar" description="Create an rpm distrib">
 
-	<target name="dist" depends="compile"
-		description="generate the distribution" >
-		<jar jarfile="thingamablog.jar" basedir="${build}">
-			<manifest>
-				<attribute name="Main-Class" value="net.sf.thingamablog.App"/>
-				<attribute name="Built-By" value="${user.name}"/>
-				<attribute name="Class-Path" value="lib/commons-codec-1.3.jar lib/hsqldb.jar lib/jdatepicker.jar lib/jdom.jar lib/jhall.jar lib/jhelpaction.jar lib/jmyspell.jar lib/jsch.jar lib/plastic-1.2.1.jar lib/rome-0.6.jar lib/xmlrpc-2.0.jarlib/activation.jar lib/datatips.jar lib/edtftpj.jar lib/jdic.jar lib/jdic_stub_lin.jar lib/jdic_stub_mac.jar lib/jdic_stub_win.jar lib/jtidy-8.0.jar lib/l2fprod-common-directorychooser.jar lib/mail.jar lib/novaworx-syntax-0.0.7.jar lib/sam.jar lib/tamb-ui-commons.jar lib/tamb-utils.jar"/> 
-			</manifest>
-		</jar>    
+		<mkdir dir="${rpm_dir}" />
+		<mkdir dir="${rpm_dir}/SOURCES" />
+		<mkdir dir="${rpm_dir}/SPECS" />
+		<mkdir dir="${rpm_dir}/BUILD" />
+		<mkdir dir="${rpm_dir}/RPMS" />
+		<mkdir dir="${rpm_dir}/RPMS/noarch" />
+
+		<copy toDir="${rpm_dir}/SPECS/" file="${installer_dir}/linux/tamb.spec" />
+		<replace file="${rpm_dir}/SPECS/tamb.spec" token="@VERSION@" value="${version}" />
+
+
+		<copy toDir="${jar_dir}" file="${installer_dir}/linux/run.sh" />
+		<replace file="${jar_dir}/run.sh" token="@VERSION@" value="${version}" />
+		<!-- create a tar file -->
+		<tar tarfile="${rpm_dir}/SOURCES/${dist_file}.tar" basedir="${app_dir}" />
+
+		<rpm specFile="tamb.spec" command="-bb --target noarch" topDir="${rpm_dir}" error="${rpm_dir}/error.txt" output="${rpm_dir}/output.txt" />
+
+		<copy toDir="${dist_dir}" file="${rpm_dir}/RPMS/noarch/thingamablog-${version}-0.noarch.rpm" />
+
+	</target>
+
+	<target name="distrib-nsis" depends="distrib" if="makensis" description="Create a windows installer distrib with NSIS">
+
+		<!-- windows installer properties -->	    
+		<property name="exe_name" value="tamb.exe" />		
+		<property name="nsis_out" location="${dist_dir}/thinga-setup-${version}.exe" />
+		
+		<!-- create the .exe that launches the app -->
+		<copy file="${installer_dir}/win/launcher.nsi" todir="${jar_dir}" />
+		<copy file="${installer_dir}/win/launcher.ico" todir="${jar_dir}" />
+		<replace file="${jar_dir}/launcher.nsi" token="@EXE_FILE@" value="${exe_name}" />
+		<replace file="${jar_dir}/launcher.nsi" token="@APP_NAME@" value="${project_name}" />
+		<replace file="${jar_dir}/launcher.nsi" token="@VERSION@" value="${version}" />
+		<replace file="${jar_dir}/launcher.nsi" token="@JAR_FILE@" value="${jar_file}" />
+		<exec executable="${makensis}">
+			<arg value="${jar_dir}/launcher.nsi" />
+		</exec>
+		<delete file="${jar_dir}/launcher.nsi" />
+		<delete file="${jar_dir}/launcher.ico" />
+		
+		
+		<!-- copy the exe that starts thingamablog to the jar dir -->
+		<!-- <copy file="${exe_path}" todir="${jar_dir}" /> -->
+		<copy file="${installer_dir}/win/vmargs.cfg" todir="${jar_dir}" />		
+		<copy file="${installer_dir}/win/run.bat" toDir="${jar_dir}" />
+		
+		<copy file="${installer_dir}/win/installer.nsi" todir="${jar_dir}" />		
+		<replace file="${jar_dir}/installer.nsi" token="@OUTFILE@" value="${nsis_out}" />
+		<replace file="${jar_dir}/installer.nsi" token="@VERSION@" value="${version}" />
+		<replace file="${jar_dir}/installer.nsi" token="@EXE_FILE@" value="${exe_name}" />
+		<replace file="${jar_dir}/installer.nsi" token="@APP_NAME@" value="${project_name}" />
+		<replace file="${jar_dir}/installer.nsi" token="@JAR_FILE@" value="${jar_file}" />
+		<replace file="${jar_dir}/installer.nsi" token="@APP_URL@" value="${project_url}" />
+
+		<exec executable="${makensis}">
+			<arg value="${jar_dir}/installer.nsi" />
+		</exec>
+		<delete file="${jar_dir}/installer.nsi" />
+		
 	</target>
 	
-	<target name="release" depends="clean,dist" description="generate a clean release">
-		<zip destfile="thingamablog.zip">
-			<fileset dir=".">
-				<include name="lib/*"/>
-				<include name="dictionaries/*"/>
-				<include name="languages/*"/>
-				<include name="template_sets/*"/>
-				<include name="*txt"/>
-				<include name="thingamablog.jar"/>
-			</fileset>
-		</zip>
+	
+	<target name="clean" depends="init" description="Clean all build products">
+		<delete dir="${build_dir}" />
 	</target>
 
-	<!-- ================================================== -->
-
-	<target name="clean" description="Delete class files and docs dir.">
-		<delete dir="${build}"/>
-	</target>
 </project>
