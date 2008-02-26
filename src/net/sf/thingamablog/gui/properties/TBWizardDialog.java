@@ -92,9 +92,7 @@ public class TBWizardDialog extends JDialog
     
 	private TextEditPopupManager popupManager = TextEditPopupManager.getInstance();
     
-    private TemplatePack selectedPack;
-    
-        private String InsertURI;
+    private TemplatePack selectedPack;    
 	
 	public TBWizardDialog(Frame f, File dir, WeblogBackend backend)
 	{
@@ -112,8 +110,7 @@ public class TBWizardDialog extends JDialog
 		
 		weblog = new TBWeblog(dir);
 		weblog.setBackend(backend);
-                // Default behavior is to publish the b/flog locally
-		weblog.setPublishTransport(new net.sf.thingamablog.transport.LocalTransport());
+		weblog.setPublishTransport(new net.sf.thingamablog.transport.FTPTransport());
 		//weblog.setAuthorStore(authStore);
 		//weblog.setCategoryStore(catStore);
 		
@@ -144,14 +141,22 @@ public class TBWizardDialog extends JDialog
 		templPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panels.add(templPanel);		
 		
-
+                transportPanel = new TransportPanel();
+                transportPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+                panels.add(transportPanel);
+		
+                donePanel = new DonePanel();
+                donePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+                panels.add(donePanel);
                 
 		wizPanel.add(starterPanel, "1"); //$NON-NLS-1$
 		wizPanel.add(titlePanel, "2"); //$NON-NLS-1$
 		wizPanel.add(catPanel, "3"); //$NON-NLS-1$
 		wizPanel.add(authPanel, "4"); //$NON-NLS-1$
         wizPanel.add(emailPanel, "5"); //$NON-NLS-1$
-		wizPanel.add(templPanel, "6"); //$NON-NLS-1$                
+		wizPanel.add(templPanel, "6"); //$NON-NLS-1$                                                  
+                wizPanel.add(transportPanel, "7"); //$NON-NLS-1$
+                wizPanel.add(donePanel, "8");	 //$NON-NLS-1$
 		
 		ActionListener listener = new ButtonHandler();
 		nextButton = new JButton(i18n.str("next-")); //$NON-NLS-1$
@@ -275,35 +280,20 @@ public class TBWizardDialog extends JDialog
 		public void actionPerformed(ActionEvent e)
 		{
 			if(e.getSource() == nextButton)
-			{                           
-                                 PropertyPanel p = getCurrentPanel();
-                                // We check if the current panel is the starterPanel (donePanel is not yet initialized) or if the current panel is not donePanel
-				if(starterPanel.isVisible() || !donePanel.isVisible())
+			{                                                            
+				if(!donePanel.isVisible())
 				{				
 					//if(isCurrentPanelValid())
+                                    PropertyPanel p = getCurrentPanel();
                     if(p != null && p.isValidData())
                     {
 						p.saveProperties();
-                                // We initialize the transport panel after save the type propertie
-                                if(starterPanel.isVisible()) {
-                                    transportPanel = new TransportPanel();
-                                    transportPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-                                    panels.add(transportPanel);
-		
-                                    donePanel = new DonePanel();
-                                    donePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-                                    panels.add(donePanel);
-                                
-                                    wizPanel.add(transportPanel, "7"); //$NON-NLS-1$
-                                    wizPanel.add(donePanel, "8");	 //$NON-NLS-1$
-                                }
                         wizLayout.next(wizPanel);
                         
                     }
 				}                                
 
-                                if(p == starterPanel){}
-                                else if( donePanel.isVisible())
+                                if( donePanel.isVisible())
 				{
 					doneButton.setText(FINISH);
 					nextButton.setEnabled(false);
@@ -348,30 +338,16 @@ public class TBWizardDialog extends JDialog
         private static final long serialVersionUID = 1L;
         private JTextField pathField = new JTextField(20);
 		private JTextField urlField = new JTextField(20);
-                private String TYPE[]={"internet","freenet"};
-                private JComboBox typeCombo = new JComboBox(TYPE);
-                private JButton generateKeyButton = new JButton(i18n.str("generate_key"));
-                private JTextField insertUriField = new JTextField();
-                private fcpManager Manager = new fcpManager();
 		
 		public StarterPanel()
 		{			
 			JLabel header = createHeaderLabel(i18n.str("weblog_wizard"));			 //$NON-NLS-1$
 			String text =
 			i18n.str("welcome_panel_text"); //$NON-NLS-1$
-			
-                        ActionListener listener = new TypeListener();
-                        typeCombo.addActionListener(listener);
-                        generateKeyButton.addActionListener(listener);
-                        generateKeyButton.setEnabled(false);
-                        insertUriField.setEditable(false);
                         
 			LabelledItemPanel lip = new LabelledItemPanel();
 			lip.addItem(i18n.str("base_path"), pathField); //$NON-NLS-1$
 			lip.addItem(i18n.str("base_url"), urlField); //$NON-NLS-1$
-                        lip.addItem(i18n.str("insertUri"), insertUriField);
-			lip.addItem(i18n.str("type"), typeCombo);
-                        lip.addItem("", generateKeyButton);
                         
 			popupManager.registerJTextComponent(pathField);
 			popupManager.registerJTextComponent(urlField);
@@ -399,7 +375,6 @@ public class TBWizardDialog extends JDialog
                     JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-            if (typeCombo.getSelectedItem().toString().equals("internet")) {
             try
 			{
 				new URL(urlField.getText());				
@@ -413,23 +388,10 @@ public class TBWizardDialog extends JDialog
                                     JOptionPane.WARNING_MESSAGE);
                                 return false;
 			}			
-            }		
-            if (typeCombo.getSelectedItem().toString().equals("freenet")) {
-                boolean valid = true;        
-                valid = valid && isValidSSK(urlField.getText());
-                valid = valid && isValidSSK(insertUriField.getText());
-                return valid;
-            } else {
-                insertUriField.setText("none");                
-            }
 			
             return true;		
             }
-        	private boolean isValidSSK(String u)
-                {
-                    // TODO : Check if u match a SSK key                    
-                    return true;
-                }
+
 		public void saveProperties()
 		{
 			String path = pathField.getText();
@@ -440,47 +402,8 @@ public class TBWizardDialog extends JDialog
 			String mediaUrl = url; //$NON-NLS-1$
 			
 			weblog.setBlogUrls(path, url, arcUrl, mediaUrl);
-                        weblog.setType(typeCombo.getSelectedItem().toString());
-                        InsertURI=insertUriField.getText();
-		}
-                
-                private class TypeListener implements ActionListener {
-                public void actionPerformed(ActionEvent e) {
-                    if (e.getSource() instanceof JComboBox && ((JComboBox) e.getSource()).getSelectedItem().equals("internet")) {
-                        generateKeyButton.setEnabled(false);
-                        insertUriField.setEditable(false);
-                        urlField.setEditable(true);
-                    } else if (e.getSource() instanceof JComboBox && ((JComboBox) e.getSource()).getSelectedItem().equals("freenet")) {
-                        generateKeyButton.setEnabled(true);
-                        insertUriField.setEditable(true);
-                    } else if (e.getSource() instanceof JButton){
-                        if(generateKeyButton.getText().equals(i18n.str("generate_key"))){
-                            int port = Integer.parseInt(TBGlobals.getProperty("NODE_PORT"));
-                            String keys[]=new String[2];
-                            String hostname = TBGlobals.getProperty("NODE_HOSTNAME");                            
-                            Manager.setNode(hostname,port);
-                                try {
-                                    keys=Manager.generateKeyPair();
-                                } catch (IOException ex) {                                    
-                                    JOptionPane.showMessageDialog(TBWizardDialog.this,
-                                    hostname + ":" + port + " : " + ex, i18n.str("key_generation_failure"),  //$NON-NLS-1$ //$NON-NLS-2$
-                                    JOptionPane.ERROR_MESSAGE);
-                                    return;
-                                }
-                            // We put "USK" instead of "SSK"
-                            keys[0] = keys[0].substring("SSK".length());
-                            keys[1] = keys[1].substring("SSK".length());
-                            insertUriField.setText("USK" + keys[0]);
-                            urlField.setText("USK" + keys[1]);
-                            generateKeyButton.setText(i18n.str("cancel"));
-                        } else {
-                            urlField.setText("");
-                            insertUriField.setText("");
-                            generateKeyButton.setText(i18n.str("generate_key"));
-                        }
-                    }
-                }
-            }
+                        weblog.setType("internet");
+		}                
 	}
 	
 	private class TitleDescrPanel extends PropertyPanel
@@ -808,13 +731,7 @@ public class TBWizardDialog extends JDialog
 		
 		public void saveProperties()
 		{			
-                    System.out.println("Creating the [b/f]log...");
-                        // We change the urls to the good one
-                        if(weblog.getType().equals("freenet")){
-                            String url=weblog.getBaseUrl();
-                            url+=ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
-                            weblog.setBlogUrls(weblog.getBasePath(),url,url,url);
-                        }
+                    System.out.println("Creating the blog...");
 		}		
 	}
 }

@@ -528,9 +528,9 @@ public class TBPublishTransportPanel extends PropertyPanel
                 if (e.getSource() instanceof JButton){
                     if(generateKeyButton.getText().equals(i18n.str("generate_keys"))){
                         fcpManager Manager = new fcpManager();
-                        int port = Integer.parseInt(TBGlobals.getProperty("NODE_PORT"));
+                        int port = getPortField();
                         String keys[]=new String[2];
-                        String hostname = TBGlobals.getProperty("NODE_HOSTNAME");
+                        String hostname = getMachineNameField();
                         Manager.setNode(hostname,port);
                         try {
                             keys=Manager.generateKeyPair();
