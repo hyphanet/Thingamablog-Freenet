@@ -94,39 +94,16 @@ public class TBFlogWizardDialog extends JDialog {
     
     private TemplatePack selectedPack;
     
-    public TBFlogWizardDialog(Frame f, File dir, WeblogBackend backend) {
+    public TBFlogWizardDialog(Frame f, File dir, WeblogBackend backend, TBWeblog flog) {
         super(f, true);
         setTitle(i18n.str("new_flog")); //$NON-NLS-1$
-        
+        this.flog = flog;
         WindowAdapter windowAdapter = new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
                 cancelDialog();
             }
         };
-        addWindowListener(windowAdapter);
-        
-        flog = new TBWeblog(dir);
-        flog.setBackend(backend);
-        try {
-            fcpManager Manager = new fcpManager();
-            int port = Integer.parseInt(TBGlobals.getProperty("NODE_PORT"));
-            String keys[]=new String[2];
-            String hostname = TBGlobals.getProperty("NODE_HOSTNAME");
-            Manager.setNode(hostname,port);            
-            keys=Manager.generateKeyPair();
-            Manager.getConnection().disconnect();
-            // We put "USK" instead of "SSK"
-            keys[1] = keys[1].substring("SSK".length());
-            String url = "USK" + keys[1];
-            flog.setBlogUrls("",url,url,url);
-            
-            flog.setPublishTransport(new net.sf.thingamablog.transport.FCPTransport());
-            ((FCPTransport) flog.getPublishTransport()).setInsertURI(keys[0]);            
-        } catch (IOException ex) {
-            logger.log(Level.INFO,"Node unreachable : " + ex.getMessage());
-            logger.log(Level.INFO,"Transport method set to Local");
-            flog.setPublishTransport(new net.sf.thingamablog.transport.LocalTransport());
-        }
+        addWindowListener(windowAdapter);        
         
         //weblog.setAuthorStore(authStore);
         //weblog.setCategoryStore(catStore);

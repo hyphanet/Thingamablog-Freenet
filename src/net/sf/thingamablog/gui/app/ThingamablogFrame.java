@@ -98,6 +98,7 @@ import net.sf.thingamablog.gui.UpdatableAction;
 import net.sf.thingamablog.gui.ViewerPane;
 import net.sf.thingamablog.gui.editor.EntryEditor;
 import net.sf.thingamablog.gui.editor.HTMLEditor;
+import net.sf.thingamablog.gui.properties.TBFlogNodeWizardDialog;
 import net.sf.thingamablog.gui.properties.TBFlogWizardDialog;
 import net.sf.thingamablog.gui.properties.TBWizardDialog;
 import net.sf.thingamablog.gui.properties.WeblogPropertiesDialogFactory;
@@ -1316,7 +1317,7 @@ public class ThingamablogFrame extends JFrame
 		    return;
 		}
 	    
-                TBFlogWizardDialog wiz = new TBFlogWizardDialog(FRAME, curDB, backend);
+                TBFlogNodeWizardDialog wiz = new TBFlogNodeWizardDialog(FRAME, curDB, backend);
 		wiz.setLocationRelativeTo(FRAME);
 		wiz.setVisible(true);
 		
