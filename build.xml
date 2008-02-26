@@ -62,7 +62,7 @@
 		<replace file="${src_dir}/net/sf/thingamablog/TBGlobals.java" token="@VERSION@" value="${version}" />
 		<replace file="${src_dir}/net/sf/thingamablog/TBGlobals.java" token="@BUILD@" value="${DSTAMP}.${build.number}" />
 
-		<javac srcdir="${src_dir}" source="1.5" destdir="${class_dir}" excludes="**/Cvs/**,**/*.ini,**/~*" optimize="on" deprecation="true" fork="true">
+		<javac srcdir="${src_dir}" source="1.4" destdir="${class_dir}" excludes="**/Cvs/**,**/*.ini,**/~*" optimize="on" deprecation="true" fork="true">
 			<classpath>
 				<fileset dir="${lib_dir}" includes="*.jar, *.zip" />
 			</classpath>
