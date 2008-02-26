@@ -162,7 +162,7 @@ public class FCPTransport implements PublishTransport {
                     int succeeded = Integer.parseInt(message.get("Succeeded"));
                     int fatal = Integer.parseInt(message.get("FatallyFailed"));
                     int failed = Integer.parseInt(message.get("Failed"));
-                    boolean finalized = Boolean.parseBoolean(message.get("FinalizedTotal"));
+                    boolean finalized = Boolean.valueOf(message.get("FinalizedTotal")).booleanValue();
                     tp.bytesTransferred(succeeded);
                 }
                 success = "PutSuccessful".equals(messageName);

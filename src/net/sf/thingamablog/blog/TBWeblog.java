@@ -1000,7 +1000,7 @@ public class TBWeblog extends Weblog
 			{
                             Object element = e.nextElement();
                             File f = (File)element;
-                            if(!f.getAbsolutePath().contains(webFilesDirectory.getAbsolutePath()))
+                            if(f.getAbsolutePath().indexOf(webFilesDirectory.getAbsolutePath()) > -1)
 				f.delete();				
 			}
 			catch(ClassCastException cce){}

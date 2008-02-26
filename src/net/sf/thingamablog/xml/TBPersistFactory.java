@@ -563,7 +563,7 @@ public class TBPersistFactory
 			weblog.setLastPublishDate(new Date(time));
 		}
 		catch(Exception ex){}
-        weblog.setPublishFailed(Boolean.parseBoolean(blogEle.getAttributeValue("publish_failed", "false")));
+        weblog.setPublishFailed(Boolean.valueOf(blogEle.getAttributeValue("publish_failed", "false")).booleanValue());
 		
         return weblog; //element wasn't a known type
 	}
@@ -761,10 +761,10 @@ public class TBPersistFactory
         Element mailSettings = parent.getChild("MailSettings");
         if(mailSettings == null)
             return;
-        blog.setImportFromEmailEnabled(Boolean.parseBoolean(mailSettings.getAttributeValue("enabled", "true")));
+        blog.setImportFromEmailEnabled(Boolean.valueOf(mailSettings.getAttributeValue("enabled", "true")).booleanValue());
         blog.setLastEmailCheck(parseDate(mailSettings.getAttributeValue("last_check", "0")));
         blog.setOutdatedAfterMinutes(parseInt(mailSettings.getAttributeValue("check_minutes", "30"), 30));
-        blog.setMailCheckFailed(Boolean.parseBoolean(mailSettings.getAttributeValue("check_failed", "false")));
+        blog.setMailCheckFailed(Boolean.valueOf(mailSettings.getAttributeValue("check_failed", "false")).booleanValue());
         
         Element transport = mailSettings.getChild("MailTransport");
         if(transport == null)
