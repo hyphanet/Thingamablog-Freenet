@@ -29,6 +29,7 @@ import java.io.Writer;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import src.net.sf.thingamablog.util.io.Closer;
@@ -45,7 +46,7 @@ import src.net.sf.thingamablog.util.io.TempFileInputStream;
 public class Connection {
 
 	/** The listeners that receive events from this connection. */
-	private List<ConnectionListener> connectionListeners = new ArrayList<ConnectionListener>();
+	private List connectionListeners = new ArrayList();
 
 	/** The node this connection is connected to. */
 	private final Node node;
@@ -113,7 +114,9 @@ public class Connection {
 	 *            The received message
 	 */
 	protected void fireMessageReceived(Message message) {
-		for (ConnectionListener connectionListener: connectionListeners) {
+            Iterator it = connectionListeners.iterator();
+		while(it.hasNext()) {
+                        ConnectionListener connectionListener = (ConnectionListener) it.next();
 			connectionListener.messageReceived(this, message);
 		}
 	}
@@ -122,7 +125,9 @@ public class Connection {
 	 * Notifies listeners about the loss of the connection.
 	 */
 	protected void fireConnectionTerminated() {
-		for (ConnectionListener connectionListener: connectionListeners) {
+            Iterator it = connectionListeners.iterator();
+		while(it.hasNext()) {
+                        ConnectionListener connectionListener = (ConnectionListener) it.next();
 			connectionListener.connectionTerminated(this);
 		}
 	}
@@ -276,7 +281,6 @@ public class Connection {
 	private class NodeReader implements Runnable {
 
 		/** The input stream to read from. */
-		@SuppressWarnings("hiding")
 		private InputStream nodeInputStream;
 
 		/**

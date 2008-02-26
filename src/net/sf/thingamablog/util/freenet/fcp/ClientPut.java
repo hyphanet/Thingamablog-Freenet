@@ -195,7 +195,6 @@ public abstract class ClientPut extends Command {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected void write(Writer writer) throws IOException {
 		super.write(writer);
 		writer.write("URI=" + uri + LINEFEED);

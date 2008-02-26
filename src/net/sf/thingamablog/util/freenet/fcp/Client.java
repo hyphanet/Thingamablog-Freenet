@@ -36,10 +36,10 @@ public class Client implements ConnectionListener {
 	private final Connection connection;
 
 	/** The identifiers the client filters messages for. */
-	private List<String> identifiers = new ArrayList<String>();
+	private List identifiers = new ArrayList();
 
 	/** The queued messages. */
-	private final List<Message> messageQueue = new ArrayList<Message>();
+	private final List messageQueue = new ArrayList();
 
 	/** Whether the client was disconnected. */
 	private boolean disconnected = false;
@@ -173,7 +173,7 @@ public class Client implements ConnectionListener {
 				}
 			}
 			if (messageQueue.size() > 0) {
-				return messageQueue.remove(0);
+				return (Message) messageQueue.remove(0);
 			}
 		}
 		return null;

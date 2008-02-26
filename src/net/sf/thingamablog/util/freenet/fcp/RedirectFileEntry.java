@@ -31,7 +31,6 @@ public class RedirectFileEntry extends FileEntry {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public String getName() {
 		return "redirect";
 	}

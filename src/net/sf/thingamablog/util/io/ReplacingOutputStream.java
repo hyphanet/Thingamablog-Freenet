@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 
 /**
@@ -34,7 +35,7 @@ import java.util.Map.Entry;
  */
 public class ReplacingOutputStream extends FilterOutputStream {
 
-	private Map<String, String> replacements = new HashMap<String, String>();
+	private Map replacements = new HashMap();
 	private StringBuffer ringBuffer = new StringBuffer();
 	
 	/**
@@ -51,15 +52,15 @@ public class ReplacingOutputStream extends FilterOutputStream {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void write(int b) throws IOException {
 		ringBuffer.append((char) b);
-		Iterator<Entry<String, String>> entries = replacements.entrySet().iterator();
+                Set entrySet = replacements.entrySet();
+		Iterator entries = entrySet.iterator();
 		boolean found = false;
-		Entry<String, String> entry = null;
+		Entry entry = null;
 		while (!found && entries.hasNext()) {
-			entry = entries.next();
-			if (entry.getKey().startsWith(ringBuffer.toString())) {
+			entry = (Entry) entries.next();
+			if (((String) entry.getKey()).startsWith(ringBuffer.toString())) {
 				found = true;
 			}
 		}
@@ -71,7 +72,7 @@ public class ReplacingOutputStream extends FilterOutputStream {
 			ringBuffer.setLength(0);
 		} else {
 			if (entry.getKey().equals(ringBuffer.toString())) {
-				String buffer = entry.getValue();
+				String buffer = (String) entry.getValue();
 				for (int index = 0, size = buffer.length(); index < size; index++) {
 					super.write(buffer.charAt(index));
 				}

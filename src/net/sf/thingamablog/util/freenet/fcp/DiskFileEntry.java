@@ -50,7 +50,6 @@ public class DiskFileEntry extends FileEntry {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public String getName() {
 		return "disk";
 	}

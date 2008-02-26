@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import src.net.sf.thingamablog.util.io.Closer;
@@ -41,7 +42,7 @@ import src.net.sf.thingamablog.util.io.Closer;
 public class ClientPutComplexDir extends ClientPutDir {
 
 	/** The file entries of this directory. */
-	private List<FileEntry> fileEntries = new ArrayList<FileEntry>();
+	private List fileEntries = new ArrayList();
 
 	/** Whether this request has payload. */
 	private boolean hasPayload = false;
@@ -101,11 +102,12 @@ public class ClientPutComplexDir extends ClientPutDir {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected void write(Writer writer) throws IOException {
 		super.write(writer);
 		int fileIndex = 0;
-		for (FileEntry fileEntry: fileEntries) {
+                Iterator it = fileEntries.iterator();
+		while (it.hasNext()) {
+                    FileEntry fileEntry = (FileEntry) it.next();
 			writer.write("Files." + fileIndex + ".Name=" + fileEntry.getFilename() + LINEFEED);
 			if (fileEntry.getContentType() != null) {
 				writer.write("Files." + fileIndex + ".Metadata.ContentType=" + fileEntry.getContentType() + LINEFEED);
@@ -127,7 +129,6 @@ public class ClientPutComplexDir extends ClientPutDir {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected boolean hasPayload() {
 		return hasPayload;
 	}
@@ -135,7 +136,6 @@ public class ClientPutComplexDir extends ClientPutDir {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected long getPayloadLength() {
 		return payloadLength;
 	}
@@ -143,7 +143,6 @@ public class ClientPutComplexDir extends ClientPutDir {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected InputStream getPayload() {
 		if (payloadFile != null) {
 			try {

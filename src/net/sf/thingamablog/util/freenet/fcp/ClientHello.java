@@ -92,7 +92,6 @@ public class ClientHello extends Command {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected void write(Writer writer) throws IOException {
 		writer.write("Name=" + name + LINEFEED);
 		writer.write("ExpectedVersion=" + expectedVersion + LINEFEED);

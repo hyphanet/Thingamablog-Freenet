@@ -74,7 +74,6 @@ public class DirectFileEntry extends FileEntry {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public String getName() {
 		return "direct";
 	}

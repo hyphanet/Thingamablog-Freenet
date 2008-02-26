@@ -73,7 +73,6 @@ public class ClientPutDir extends ClientPut {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	protected void write(Writer writer) throws IOException {
 		super.write(writer);
 		if (defaultName != null)

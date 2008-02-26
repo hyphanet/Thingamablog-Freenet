@@ -44,7 +44,7 @@ public class Message {
 	private String identifier = "";
 
 	/** The parameters of this message. */
-	private Map<String, String> parameters = new HashMap<String, String>();
+	private Map parameters = new HashMap();
 
 	/** The payload. */
 	private InputStream payloadInputStream;
@@ -107,7 +107,7 @@ public class Message {
 	 * 
 	 * @return All parameters of this message
 	 */
-	public Set<Entry<String, String>> entrySet() {
+	public Set entrySet() {
 		return parameters.entrySet();
 	}
 
@@ -120,7 +120,7 @@ public class Message {
 	 * @return The value of the parameter
 	 */
 	public String get(String key) {
-		return parameters.get(key.toLowerCase());
+		return (String) parameters.get(key.toLowerCase());
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class Message {
 	 *         previous value
 	 */
 	public String put(String key, String value) {
-		return parameters.put(key.toLowerCase(), value);
+		return (String) parameters.put(key.toLowerCase(), value);
 	}
 
 	/**
