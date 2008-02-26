@@ -19,7 +19,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.ProgressBarUI;
 import net.sf.thingamablog.blog.PublishProgress;
 
