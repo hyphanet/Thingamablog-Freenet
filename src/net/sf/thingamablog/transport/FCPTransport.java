@@ -32,7 +32,6 @@ import net.sf.thingamablog.util.freenet.fcp.Message;
 import net.sf.thingamablog.util.freenet.fcp.Verbosity;
 import net.sf.thingamablog.util.freenet.fcp.fcpManager;
 import net.sf.thingamablog.util.string.ASCIIconv;
-import src.net.sf.thingamablog.util.io.ReplacingOutputStream;
 
 /**
  * There is *a lot* of code below that comes from jSite
@@ -46,6 +45,8 @@ public class FCPTransport implements PublishTransport {
     private String failMsg;
     private boolean hasPublish = false;
     private int edition;
+    private String hostname;
+    private int port;
     
     /**
      * Connects the transport
@@ -123,6 +124,7 @@ public class FCPTransport implements PublishTransport {
         System.out.println("Default name : " + frontPage);
         putDir.setDefaultName(frontPage);
         putDir.setMaxRetries(-1);
+        putDir.setVerbosity(Verbosity.ALL);
         int totalBytes = 0;
         for(Enumeration e = ht.keys() ; e.hasMoreElements() ;) {
             Object element = e.nextElement();
@@ -182,15 +184,17 @@ public class FCPTransport implements PublishTransport {
     }
     
     public void setNode(String hostname, int port) {
+        this.hostname = hostname;
+        this.port = port;
         Manager.setNode(hostname,port);
     }
     
-    public String getPort(){
-        return Manager.getNode().getPort() + "";
+    public int getPort(){
+        return this.port;
     }
     
     public String getHostname(){
-        return Manager.getNode().getHostname();
+        return this.hostname;
     }
     
     public String getInsertURI(){

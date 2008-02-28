@@ -220,6 +220,7 @@ public class TBFlogNodeWizardDialog extends JDialog {
                 
                 flog.setPublishTransport(new net.sf.thingamablog.transport.FCPTransport());
                 ((FCPTransport) flog.getPublishTransport()).setInsertURI(keys[0]);
+                ((FCPTransport) flog.getPublishTransport()).setNode(hostname, port);
                 logger.log(Level.INFO,"Transport method set to FCP");
             } catch (IOException ex) {
                 logger.log(Level.INFO,"Node unreachable : " + ex.getMessage());

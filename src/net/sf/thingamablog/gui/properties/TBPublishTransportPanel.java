@@ -185,8 +185,8 @@ public class TBPublishTransportPanel extends PropertyPanel
 			tLayout.show(transportsPanel, LOCAL);
 		} else {
                         FCPTransport t =(FCPTransport)wb.getPublishTransport();
-                        fcpPanel.setMachineNameField(TBGlobals.getProperty("NODE_HOSTNAME"));
-                        fcpPanel.setPortField(Integer.parseInt(TBGlobals.getProperty("NODE_PORT")));
+                        fcpPanel.setMachineNameField(t.getHostname());
+                        fcpPanel.setPortField(t.getPort());
                         fcpPanel.setInsertUri("USK@" + t.getInsertURI() + "/");
                         transportTypeCombo.setSelectedItem(FCP);
                         tLayout.show(transportsPanel, FCP);

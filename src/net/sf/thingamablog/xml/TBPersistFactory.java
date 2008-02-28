@@ -478,7 +478,7 @@ public class TBPersistFactory
                     FCPTransport fpt = (FCPTransport) pt;
                     transport.setAttribute("type","fcp");
                     transport.setAttribute("hostname",fpt.getHostname());
-                    transport.setAttribute("port",fpt.getPort());
+                    transport.setAttribute("port",fpt.getPort() + "");
                     transport.setAttribute("edition",fpt.getEdition()+"");
                     transport.setAttribute("insertURI",fpt.getInsertURI());
                 }
