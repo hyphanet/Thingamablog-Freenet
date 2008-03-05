@@ -2010,13 +2010,26 @@ public class ThingamablogFrame extends JFrame
 			    ClassLoader.getSystemResource(UIUtils.MISC + "webpages.png")); //$NON-NLS-1$
 	        
 	        htmlOptionsPane.addOption(new NewWeblogLink());
+                htmlOptionsPane.addOption(new NewFlogLink());
 	        if(weblogList.getWeblogCount() > 0)
 	        {
 	            htmlOptionsPane.addHeading(i18n.str("weblogs")); //$NON-NLS-1$
 	            for(int i = 0; i < weblogList.getWeblogCount(); i++)
 	            {
-	                htmlOptionsPane.addOption(new WeblogLink(weblogList.getWeblogAt(i)));
-	            }
+                        Weblog wb = weblogList.getWeblogAt(i);
+                        if (wb instanceof TBWeblog && ((TBWeblog) wb).getType().equals("internet")) {
+                            htmlOptionsPane.addOption(new WeblogLink(weblogList.getWeblogAt(i)));
+                        }
+                    }
+                    htmlOptionsPane.addHeading(i18n.str("flogs"));
+                    for(int i = 0; i < weblogList.getWeblogCount(); i++)
+                    {
+                        Weblog wb = weblogList.getWeblogAt(i);
+                        if (wb instanceof TBWeblog && ((TBWeblog) wb).getType().equals("freenet")) {
+                            htmlOptionsPane.addOption(new WeblogLink(weblogList.getWeblogAt(i)));
+                        }
+                    }
+//                    htmlOptionsPane.addHeading(i18n.str("other"));
 	        }			
 	    }
 	    
@@ -4718,6 +4731,25 @@ public class ThingamablogFrame extends JFrame
 	    {
 	        if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
 	            showNewWeblogWizard();
+	    }
+	}
+        
+        private class NewFlogLink implements HTMLOptionLink
+	{
+	    public String getLinkText()
+	    {
+	        return i18n.str("create_flog"); //$NON-NLS-1$
+	    }
+	    
+	    public URL getImageURL()
+	    {
+	        return ClassLoader.getSystemResource(UIUtils.X48 + "pencil.png"); //$NON-NLS-1$
+	    }
+	    
+	    public void hyperlinkUpdate(HyperlinkEvent e)
+	    {
+	        if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+	            showNewFlogWizard();
 	    }
 	}
 		
