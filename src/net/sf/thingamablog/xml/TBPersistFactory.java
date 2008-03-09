@@ -481,6 +481,10 @@ public class TBPersistFactory
                     transport.setAttribute("port",fpt.getPort() + "");
                     transport.setAttribute("edition",fpt.getEdition()+"");
                     transport.setAttribute("insertURI",fpt.getInsertURI());
+                    transport.setAttribute("activeLink",fpt.getActiveLink() + "");
+                    if (fpt.getActiveLink()){
+                        transport.setAttribute("activeLinkPath",fpt.getActiveLinkPath());
+                    }
                 }
 		else
 		{
@@ -874,6 +878,10 @@ public class TBPersistFactory
                     fcp.setNode(transport.getAttributeValue("hostname"), Integer.parseInt(transport.getAttributeValue("port")));
                     fcp.setEdition(transport.getAttributeValue("edition"));
                     fcp.setInsertURI(transport.getAttributeValue("insertURI"));
+                    fcp.setActiveLink(Boolean.valueOf(transport.getAttributeValue("activeLink")).booleanValue());
+                    if (fcp.getActiveLink()){
+                        fcp.setActiveLinkPath(transport.getAttributeValue("activeLinkPath"));
+                    }
                     pubTransport = fcp;
                 }
 		else		

@@ -43,10 +43,11 @@ public class FCPTransport implements PublishTransport {
     private String insertURI;
     private Client client;
     private String failMsg;
-    private boolean hasPublish = false;
     private int edition;
     private String hostname;
     private int port;
+    private boolean activeLink;
+    private String activeLinkPath;
     
     /**
      * Connects the transport
@@ -137,6 +138,17 @@ public class FCPTransport implements PublishTransport {
                 putDir.addFileEntry(fileEntry);
             }
         }
+        // If there is an active link set, we publish it
+        if (activeLink) {
+            File file = new File(activeLinkPath);
+            String content = DefaultMIMETypes.guessMIMEType(file.getName());
+            FileEntry fileEntry = new DiskFileEntry("activelink.png", content, file.getPath());
+            if (fileEntry != null) {
+                System.out.println("File to insert : activelink.png");
+                totalBytes += file.length();                
+                putDir.addFileEntry(fileEntry);
+            }
+        }
         try {            
             tp.publishStarted(totalBytes);
             client.execute(putDir);
@@ -211,6 +223,22 @@ public class FCPTransport implements PublishTransport {
     
     public int getEdition(){
         return this.edition;
+    }
+    
+    public void setActiveLink(boolean b){
+        this.activeLink = b;
+    }
+    
+    public boolean getActiveLink(){
+        return this.activeLink;
+    }
+    
+    public void setActiveLinkPath(String activeLinkPath){
+        this.activeLinkPath = activeLinkPath;
+    }
+    
+    public String getActiveLinkPath(){
+        return this.activeLinkPath;
     }
     
     private String shortenURI(String uri) {

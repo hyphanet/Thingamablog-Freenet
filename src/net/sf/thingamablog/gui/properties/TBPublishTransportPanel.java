@@ -188,6 +188,10 @@ public class TBPublishTransportPanel extends PropertyPanel
                         fcpPanel.setMachineNameField(t.getHostname());
                         fcpPanel.setPortField(t.getPort());
                         fcpPanel.setInsertUri("USK@" + t.getInsertURI() + "/");
+                        fcpPanel.setActiveLink(t.getActiveLink());
+                        if (t.getActiveLink()){                            
+                            fcpPanel.setActiveLinkPath(t.getActiveLinkPath());
+                        }
                         transportTypeCombo.setSelectedItem(FCP);
                         tLayout.show(transportsPanel, FCP);
                 }
@@ -257,8 +261,12 @@ public class TBPublishTransportPanel extends PropertyPanel
 		} else {
                         FCPTransport pt = new FCPTransport();
                         pt.setNode(fcpPanel.getMachineNameField(),fcpPanel.getPortField());  
-                        pt.setInsertURI(fcpPanel.getInsertUri());                                                                     
-                        String url = fcpPanel.getRequestUri();
+                        pt.setInsertURI(fcpPanel.getInsertUri());
+                        pt.setActiveLink(fcpPanel.getActiveLink());
+                        if (pt.getActiveLink()){
+                            pt.setActiveLinkPath(fcpPanel.getActiveLinkPath());
+                        }
+                        String url = fcpPanel.getRequestUri();                        
                         int firstSlash = url.indexOf('/');
                         url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
                         weblog.setBlogUrls("none",url,url,url);
@@ -453,6 +461,8 @@ public class TBPublishTransportPanel extends PropertyPanel
 		private JTextField machineNameField;
                 private JTextField requestUriField;
                 private JTextField insertUriField;
+                private JTextField activeLinkPathField;
+                private JCheckBox activeLinkCheckBox;
                 private JButton generateKeyButton;
 		public FcpTransportPanel()
 		{
@@ -460,6 +470,8 @@ public class TBPublishTransportPanel extends PropertyPanel
                         machineNameField = new JTextField();
                         requestUriField = new JTextField();
                         insertUriField = new JTextField();
+                        activeLinkPathField = new JTextField();
+                        activeLinkCheckBox = new JCheckBox();
                         generateKeyButton = new JButton();
                     
 			TextEditPopupManager pm = TextEditPopupManager.getInstance();
@@ -467,6 +479,13 @@ public class TBPublishTransportPanel extends PropertyPanel
                         
                         TypeListener listener = new TypeListener();
                         generateKeyButton.addActionListener(listener);
+                        
+                        activeLinkPathField.setEditable(false);
+                        activeLinkCheckBox.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {                                
+                                activeLinkPathField.setEditable(activeLinkCheckBox.isSelected());
+                            }
+                        });
                         
                         // Default port
                         portField.setText(TBGlobals.getProperty("NODE_PORT"));
@@ -479,8 +498,10 @@ public class TBPublishTransportPanel extends PropertyPanel
 			p.add(new JPanel(), BorderLayout.CENTER);
 			lip.addItem(i18n.str("port"), p);
                         lip.addItem(i18n.str("machineName"),machineNameField);
+                        lip.addItem(i18n.str("add_activeLink"),activeLinkCheckBox);
+                        lip.addItem(i18n.str("activeLinkPath"),activeLinkPathField);
                         lip.addItem(i18n.str("requestUri"),requestUriField);
-                        lip.addItem(i18n.str("insertUri"),insertUriField);
+                        lip.addItem(i18n.str("insertUri"),insertUriField);                        
                         lip.addItem("",generateKeyButton);
 			setLayout(new BorderLayout());
 			add(lip, BorderLayout.CENTER);	
@@ -521,6 +542,22 @@ public class TBPublishTransportPanel extends PropertyPanel
         
         public String getRequestUri(){
             return this.requestUriField.getText();
+        }
+        
+        public void setActiveLink(boolean b){
+            this.activeLinkCheckBox.setSelected(b);
+        }
+        
+        public boolean getActiveLink(){
+            return this.activeLinkCheckBox.isSelected();
+        }
+        
+        public void setActiveLinkPath(String activeLinkPath){
+            this.activeLinkPathField.setText(activeLinkPath);
+        }
+        
+        public String getActiveLinkPath(){
+            return this.activeLinkPathField.getText();
         }
         
         private class TypeListener implements ActionListener {
