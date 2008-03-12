@@ -183,9 +183,11 @@ public class FCPTransport implements PublishTransport {
                 finished = success || "PutFailed".equals(messageName) || messageName.endsWith("Error");
             }            
         }
-        // If the publish has been made, we update the edition number to the current edition
+        // If the publish has been made, we update the edition number to the current edition, otherwise, we revert it
         if(finalURI != null){
             edition = Integer.parseInt(finalURI.substring(finalURI.length()-1));
+        } else {
+            edition--;
         }
         return success;
     }
