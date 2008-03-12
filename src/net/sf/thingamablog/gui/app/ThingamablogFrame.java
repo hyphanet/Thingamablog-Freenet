@@ -99,7 +99,6 @@ import net.sf.thingamablog.gui.ViewerPane;
 import net.sf.thingamablog.gui.editor.EntryEditor;
 import net.sf.thingamablog.gui.editor.HTMLEditor;
 import net.sf.thingamablog.gui.properties.TBFlogNodeWizardDialog;
-import net.sf.thingamablog.gui.properties.TBFlogWizardDialog;
 import net.sf.thingamablog.gui.properties.TBWizardDialog;
 import net.sf.thingamablog.gui.properties.WeblogPropertiesDialogFactory;
 import net.sf.thingamablog.gui.table.JSortTable;
@@ -111,6 +110,7 @@ import net.sf.thingamablog.xml.TBPersistFactory;
 import org.jdesktop.jdic.desktop.Desktop;
 
 import com.l2fprod.common.swing.JDirectoryChooser;
+import freenet.utils.BrowserLaunch;
 
 
 
@@ -3543,9 +3543,8 @@ public class ThingamablogFrame extends JFrame
                                 TBWeblog tb = (TBWeblog) curSelWeblog;
                                 if(tb.getType().equals("internet")){
 				try
-				{				
-					//Browser.displayURL(curSelWeblog.getFrontPageUrl());
-                    Desktop.browse(new URL(curSelWeblog.getFrontPageUrl()));
+				{
+					BrowserLaunch.launch(curSelWeblog.getFrontPageUrl());
 				}
 				catch(Exception ex)
 				{
@@ -3556,7 +3555,7 @@ public class ThingamablogFrame extends JFrame
                                 try
                                 {   
                                     String nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
-                                    Desktop.browse(new URL("http://" + nodeHostname + ":8888" + curSelWeblog.getFrontPageUrl()));
+                                    BrowserLaunch.launch("http://" + nodeHostname + ":8888" + curSelWeblog.getFrontPageUrl());
                                 }
                                 catch(Exception ex)
                                 {
@@ -3567,9 +3566,8 @@ public class ThingamablogFrame extends JFrame
                             }
                             }else{
                                 try
-				{				
-					//Browser.displayURL(curSelWeblog.getFrontPageUrl());
-                    Desktop.browse(new URL(curSelWeblog.getFrontPageUrl()));
+				{
+					BrowserLaunch.launch(curSelWeblog.getFrontPageUrl());
 				}
 				catch(Exception ex)
 				{
@@ -4394,9 +4392,8 @@ public class ThingamablogFrame extends JFrame
 		public void actionPerformed(ActionEvent e)
 		{
 			try
-			{			
-				//Browser.displayURL(TBGlobals.APP_URL);
-                Desktop.browse(new URL(TBGlobals.APP_URL));
+			{
+				BrowserLaunch.launch(TBGlobals.APP_URL);
 			}
 			catch(Exception ex)
 			{

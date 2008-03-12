@@ -3,6 +3,7 @@
  */
 package net.sf.thingamablog.gui.app;
 
+import freenet.utils.BrowserLaunch;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +21,6 @@ import net.sf.thingamablog.blog.NullPublishProgress;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.blog.TemplatePack;
 import net.sf.thingamablog.blog.WeblogBackend;
-
-import org.jdesktop.jdic.desktop.Desktop;
-
-
 
 /**
  * @author Bob Tantlinger
@@ -130,12 +127,7 @@ public class WeblogPreviewer
     	try
         {            
             previewBlog.publishAll(new NullPublishProgress());
-            if(previewBlog.getType().equals("internet")) {
-                Desktop.browse(new URL(previewBlog.getFrontPageUrl()));            
-            } else {
-                String nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
-                Desktop.browse(new URL("http://" + nodeHostname + ":8888/" + previewBlog.getFrontPageUrl()));
-            }
+            BrowserLaunch.launch(previewBlog.getFrontPageUrl());
         }
         catch(Exception ex)
         {           

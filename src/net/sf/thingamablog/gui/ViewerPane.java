@@ -22,6 +22,7 @@
 package net.sf.thingamablog.gui;
 
 
+import freenet.utils.BrowserLaunch;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -141,8 +142,7 @@ public class ViewerPane extends JComponent
 				try
 				{				
 					if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
-						//Browser.displayURL(e.getURL().toString());
-                        Desktop.browse(e.getURL());
+						BrowserLaunch.launch(e.getURL());
 				}
 				catch(Exception ex){}
 			}

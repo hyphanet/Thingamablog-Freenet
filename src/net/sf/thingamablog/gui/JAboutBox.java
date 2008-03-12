@@ -20,6 +20,7 @@
 
 package net.sf.thingamablog.gui;
 
+import freenet.utils.BrowserLaunch;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -421,15 +422,7 @@ public class JAboutBox extends JDialog
 		}
 		public void mousePressed(MouseEvent e)
 		{
-			try
-			{
-				//Browser.displayURL(url);
-                Desktop.browse(new URL(url));
-			}
-			catch(Exception ex)
-			{
-				System.out.println("Can't open " + url);	 //$NON-NLS-1$
-			}
+			BrowserLaunch.launch(url);
 		}
 		public void mouseReleased(MouseEvent e){}
 		public void mouseClicked(MouseEvent e){}
