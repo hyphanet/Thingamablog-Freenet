@@ -119,6 +119,7 @@ public class FCPTransport implements PublishTransport {
             return false;
         }
         System.out.println("Beginning of the publish process...");
+        edition++;
         String dirURI = "freenet:USK@" + insertURI + "/" + ASCIIconv.convertNonAscii(title) + "/" + edition + "/";
         System.out.println("Insert URI : " + dirURI);
         ClientPutComplexDir putDir = new ClientPutComplexDir("Thingamablog insert", dirURI);
@@ -182,9 +183,9 @@ public class FCPTransport implements PublishTransport {
                 finished = success || "PutFailed".equals(messageName) || messageName.endsWith("Error");
             }            
         }
-        // If the publish has been made, we update the edition number to the current edition +1
+        // If the publish has been made, we update the edition number to the current edition
         if(finalURI != null){
-            edition = Integer.parseInt(finalURI.substring(finalURI.length()-1)) + 1;
+            edition = Integer.parseInt(finalURI.substring(finalURI.length()-1));
         }
         return success;
     }
