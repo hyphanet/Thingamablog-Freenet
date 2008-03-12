@@ -114,6 +114,7 @@ public class TBOptionsDialog extends StandardDialog
         
         private JTextField nodePortTf;
         private JTextField hostNameTf;
+        private JTextField fproxyPortTf;
 	
 	private JTextArea feedItemArea;
 	private JCheckBox updateNewsCb;
@@ -240,6 +241,7 @@ public class TBOptionsDialog extends StandardDialog
                 //node components
                 nodePortTf = new JTextField(10);
                 hostNameTf = new JTextField(20);
+                fproxyPortTf = new JTextField(10);
 			
     	
     	
@@ -341,6 +343,7 @@ public class TBOptionsDialog extends StandardDialog
                 lip = new LabelledItemPanel();
                 lip.addItem(i18n.str("node_port"), nodePortTf);
                 lip.addItem(i18n.str("node_hostname"), hostNameTf);
+                lip.addItem(i18n.str("fproxy_port"), fproxyPortTf);
                 lip.setBorder(new TitledBorder(i18n.str("node_details")));
                 nodePanel.add(lip, BorderLayout.NORTH);
                 
@@ -370,6 +373,7 @@ public class TBOptionsDialog extends StandardDialog
     		socksPasswordField.setText(TBGlobals.getSocksProxyPassword());
                 nodePortTf.setText(TBGlobals.getNodePort());
                 hostNameTf.setText(TBGlobals.getNodeHostname());
+                fproxyPortTf.setText(TBGlobals.getFProxyPort());
   		
 			updateProxyComponentsEnabledState();
     	}
@@ -430,6 +434,7 @@ public class TBOptionsDialog extends StandardDialog
     	TBGlobals.setSocksProxyPassword(new String(socksPasswordField.getPassword()));
         TBGlobals.setNodePort(nodePortTf.getText());
         TBGlobals.setNodeHostname(hostNameTf.getText());
+        TBGlobals.setFProxyPort(fproxyPortTf.getText());
     	
     	if(layout2ColRb.isSelected())
     		TBGlobals.setLayoutStyle(TBGlobals.TWO_COL);

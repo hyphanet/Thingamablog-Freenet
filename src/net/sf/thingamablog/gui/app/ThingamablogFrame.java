@@ -102,7 +102,9 @@ import net.sf.thingamablog.gui.properties.TBFlogNodeWizardDialog;
 import net.sf.thingamablog.gui.properties.TBWizardDialog;
 import net.sf.thingamablog.gui.properties.WeblogPropertiesDialogFactory;
 import net.sf.thingamablog.gui.table.JSortTable;
+import net.sf.thingamablog.transport.FCPTransport;
 import net.sf.thingamablog.transport.LoginFactory;
+import net.sf.thingamablog.transport.PublishTransport;
 import net.sf.thingamablog.xml.OPMLImportExport;
 import net.sf.thingamablog.xml.RSSImportExport;
 import net.sf.thingamablog.xml.TBPersistFactory;
@@ -3554,8 +3556,15 @@ public class ThingamablogFrame extends JFrame
                             } else {
                                 try
                                 {   
-                                    String nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
-                                    BrowserLaunch.launch("http://" + nodeHostname + ":8888" + curSelWeblog.getFrontPageUrl());
+                                    PublishTransport pt = curSelWeblog.getPublishTransport();
+                                    String nodeHostname;
+                                    String port = TBGlobals.getProperty("FPROXY_PORT");
+                                    if ( pt instanceof FCPTransport) {
+                                        nodeHostname = ((FCPTransport) pt).getHostname();
+                                    } else {
+                                        nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
+                                    }
+                                    BrowserLaunch.launch("http://" + nodeHostname + ":" + port + "/" + curSelWeblog.getFrontPageUrl());
                                 }
                                 catch(Exception ex)
                                 {

@@ -116,6 +116,7 @@ public class TBGlobals
         //node properties
         private static String nodePort = "9481";
         private static String nodeHostname = "localhost";
+        private static String fproxyPort = "8888";
 	
 	//auto feed updater stuff
 	private static int feedUpdateInterval = 1800000;//30 minutes
@@ -281,6 +282,8 @@ public class TBGlobals
                             nodePort = props.getProperty("NODE_PORT");
                         if(props.get("NODE_HOSTNAME") != null)
                             nodeHostname = props.getProperty("NODE_HOSTNAME");
+                        if(props.get("FRPOXY_PORT") != null)
+                            fproxyPort = props.getProperty("FPROXY_PORT");
 		}
 		catch(FileNotFoundException fnfe)
 		{
@@ -331,6 +334,7 @@ public class TBGlobals
 			props.put("PING_AFTER_PUB", isPingAfterPub + "");
                         props.put("NODE_PORT", nodePort);
                         props.put("NODE_HOSTNAME", nodeHostname);
+                        props.put("FPROXY_PORT",fproxyPort);
 			
 			//Browser.save(props);
 			props.store(fos, "Thingamablog Properties");			
@@ -543,6 +547,27 @@ public class TBGlobals
          */
         public static String getNodePort() {
             return nodePort;
+        }
+        
+        /**
+         * Sets the port of fproxy
+         * @param port
+         */
+        public static void setFProxyPort(String port)
+        {
+            if(port == null || port.equals(""))
+                fproxyPort = "8888";
+            else
+                fproxyPort = port;
+        }
+        
+        /**
+         * Gets the port of fproxy
+         * @return
+         */
+        public static String getFProxyPort()
+        {
+            return fproxyPort;
         }
         
         /**
