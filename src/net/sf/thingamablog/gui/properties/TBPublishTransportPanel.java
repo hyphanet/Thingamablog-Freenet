@@ -52,6 +52,7 @@ import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.gui.LabelledItemPanel;
+import net.sf.thingamablog.transport.DefaultMIMETypes;
 import net.sf.thingamablog.transport.FCPTransport;
 import net.sf.thingamablog.transport.FTPTransport;
 import net.sf.thingamablog.transport.LocalTransport;
@@ -192,6 +193,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                         if (t.getActiveLink()){                            
                             fcpPanel.setActiveLinkPath(t.getActiveLinkPath());
                         }
+                        fcpPanel.setEditionNumber(t.getEdition());
                         transportTypeCombo.setSelectedItem(FCP);
                         tLayout.show(transportsPanel, FCP);
                 }
@@ -268,9 +270,9 @@ public class TBPublishTransportPanel extends PropertyPanel
                         }
                         String url = fcpPanel.getRequestUri();                        
                         int firstSlash = url.indexOf('/');
-                        url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(weblog.getTitle()) + "/1/";
+                        url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(weblog.getTitle()) + "/" + fcpPanel.getEditionNumber() + "/";
                         weblog.setBlogUrls("none",url,url,url);
-                        pt.setEdition("1");
+                        pt.setEdition(fcpPanel.getEditionNumber());
                         transport = pt;
                 }
 		
@@ -288,6 +290,8 @@ public class TBPublishTransportPanel extends PropertyPanel
         	return validateOptions(ftpPanel);
         if(o == SFTP)
         	return validateOptions(sftpPanel);
+        if(o == FCP)
+                return validateOptions(fcpPanel);
         	
         return true;
     }
@@ -303,6 +307,17 @@ public class TBPublishTransportPanel extends PropertyPanel
     	
 		return true;
     }    
+    
+    private boolean validateOptions(FcpTransportPanel fcp)
+    {
+            if (!fcp.getActiveLink() || DefaultMIMETypes.guessMIMEType(fcp.getActiveLinkPath()).equals("image/png")){
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(this, i18n.str("png_needed"), i18n.str("wrong_type"),  //$NON-NLS-1$ //$NON-NLS-2$
+    			JOptionPane.WARNING_MESSAGE);
+                return false;
+            }            
+    }
     
     private class RemoteTransportPanel extends JPanel
     {
@@ -464,6 +479,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                 private JTextField activeLinkPathField;
                 private JCheckBox activeLinkCheckBox;
                 private JButton generateKeyButton;
+                private int EditionNumber = 0;
 		public FcpTransportPanel()
 		{
                         portField = new JTextField();
@@ -480,7 +496,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                         TypeListener listener = new TypeListener();
                         generateKeyButton.addActionListener(listener);
                         
-                        activeLinkPathField.setEditable(false);
+                        activeLinkPathField.setEditable(activeLinkCheckBox.isSelected());
                         activeLinkCheckBox.addActionListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {                                
                                 activeLinkPathField.setEditable(activeLinkCheckBox.isSelected());
@@ -546,6 +562,7 @@ public class TBPublishTransportPanel extends PropertyPanel
         
         public void setActiveLink(boolean b){
             this.activeLinkCheckBox.setSelected(b);
+            this.activeLinkPathField.setEditable(b);
         }
         
         public boolean getActiveLink(){
@@ -558,6 +575,14 @@ public class TBPublishTransportPanel extends PropertyPanel
         
         public String getActiveLinkPath(){
             return this.activeLinkPathField.getText();
+        }
+        
+        public void setEditionNumber(int ed){
+            this.EditionNumber = ed;
+        }
+        
+        public int getEditionNumber(){
+            return this.EditionNumber;
         }
         
         private class TypeListener implements ActionListener {

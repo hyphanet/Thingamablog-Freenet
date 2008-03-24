@@ -876,7 +876,7 @@ public class TBPersistFactory
                 {
                     FCPTransport fcp = new FCPTransport();
                     fcp.setNode(transport.getAttributeValue("hostname"), Integer.parseInt(transport.getAttributeValue("port")));
-                    fcp.setEdition(transport.getAttributeValue("edition"));
+                    fcp.setEdition(Integer.parseInt(transport.getAttributeValue("edition")));
                     fcp.setInsertURI(transport.getAttributeValue("insertURI"));
                     fcp.setActiveLink(Boolean.valueOf(transport.getAttributeValue("activeLink")).booleanValue());
                     if (fcp.getActiveLink()){
