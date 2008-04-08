@@ -477,9 +477,9 @@ public class TBPublishTransportPanel extends PropertyPanel
                 private JTextField requestUriField;
                 private JTextField insertUriField;
                 private JTextField activeLinkPathField;
+                private JTextField editionNumberField;
                 private JCheckBox activeLinkCheckBox;
                 private JButton generateKeyButton;
-                private int EditionNumber = 0;
 		public FcpTransportPanel()
 		{
                         portField = new JTextField();
@@ -489,6 +489,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                         activeLinkPathField = new JTextField();
                         activeLinkCheckBox = new JCheckBox();
                         generateKeyButton = new JButton();
+                        editionNumberField = new JTextField();
                     
 			TextEditPopupManager pm = TextEditPopupManager.getInstance();
 			pm.registerJTextComponent(machineNameField);
@@ -518,6 +519,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                         lip.addItem(i18n.str("activeLinkPath"),activeLinkPathField);
                         lip.addItem(i18n.str("requestUri"),requestUriField);
                         lip.addItem(i18n.str("insertUri"),insertUriField);                        
+                        lip.addItem(i18n.str("currentEdition"),editionNumberField);
                         lip.addItem("",generateKeyButton);
 			setLayout(new BorderLayout());
 			add(lip, BorderLayout.CENTER);	
@@ -578,11 +580,11 @@ public class TBPublishTransportPanel extends PropertyPanel
         }
         
         public void setEditionNumber(int ed){
-            this.EditionNumber = ed;
+            this.editionNumberField.setText(ed+"");
         }
         
         public int getEditionNumber(){
-            return this.EditionNumber;
+            return Integer.parseInt(this.editionNumberField.getText());
         }
         
         private class TypeListener implements ActionListener {
