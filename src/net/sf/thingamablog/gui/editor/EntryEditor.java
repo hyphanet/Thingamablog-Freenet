@@ -331,7 +331,7 @@ public class EntryEditor extends JFrame
         
         markModifiedCb = new JCheckBox(i18n.str("mark_as_modified")); //$NON-NLS-1$
         markModifiedCb.setSelected(true);
-        markModifiedCb.setEnabled(!entry.isDraft());
+        markModifiedCb.setEnabled(true);
         markModifiedCb.setVisible(mode == UPDATE_ENTRY_MODE);
         
         JPanel attPanel = new JPanel(new GridBagLayout());
