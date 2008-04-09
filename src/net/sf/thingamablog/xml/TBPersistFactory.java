@@ -485,6 +485,7 @@ public class TBPersistFactory
                     if (fpt.getActiveLink()){
                         transport.setAttribute("activeLinkPath",fpt.getActiveLinkPath());
                     }
+                    transport.setAttribute("SSKPath",fpt.getSSKPath());
                 }
 		else
 		{
@@ -549,11 +550,11 @@ public class TBPersistFactory
 		
 		if(weblog == null)
 			return null;
-		
-		weblog.setPublishTransport(loadPublishTransportFromXML(blogEle));
+		String title = blogEle.getAttributeValue("title", "Untitled");
+		weblog.setPublishTransport(loadPublishTransportFromXML(blogEle, title));
 		loadPingServicesFromXML(blogEle, weblog);
         loadEmailSettingsFromXML(blogEle, weblog);
-		weblog.setTitle(blogEle.getAttributeValue("title", "Untitled"));
+		weblog.setTitle(title);
 		String description = "";
 		Element desc = blogEle.getChild("Description");
 		if(desc != null)
@@ -826,7 +827,7 @@ public class TBPersistFactory
 		return loc;		
 	}
 	
-	private static PublishTransport loadPublishTransportFromXML(Element parent)
+	private static PublishTransport loadPublishTransportFromXML(Element parent, String title)
 	{
 		Element transport = parent.getChild("Transport");
 		if(transport == null)
@@ -882,6 +883,9 @@ public class TBPersistFactory
                     if (fcp.getActiveLink()){
                         fcp.setActiveLinkPath(transport.getAttributeValue("activeLinkPath"));
                     }
+                    fcp.setSSKPath(transport.getAttributeValue("SSKPath"));
+                    if(fcp.getSSKPath() == null)
+                        fcp.setSSKPath(title);                    
                     pubTransport = fcp;
                 }
 		else		

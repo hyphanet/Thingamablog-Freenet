@@ -408,7 +408,7 @@ public abstract class Weblog
             FCPTransport fcp = (FCPTransport) transport;
             int index = this.getFrontPageUrl().lastIndexOf("/");
             String defaultName = this.getFrontPageUrl().substring(index+1);
-            boolean result = fcp.publishFile(ht,progress,defaultName,getArchivePath(),this.getTitle());
+            boolean result = fcp.publishFile(ht,progress,defaultName,getArchivePath());
             if(!result)
 				{
 					//progress.publishFailed(transport.getFailureReason());

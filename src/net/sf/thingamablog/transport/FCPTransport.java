@@ -48,6 +48,7 @@ public class FCPTransport implements PublishTransport {
     private int port;
     private boolean activeLink;
     private String activeLinkPath;
+    private String SSKPath;
     
     /**
      * Connects the transport
@@ -111,7 +112,7 @@ public class FCPTransport implements PublishTransport {
         return false;
     }
     
-    public boolean publishFile(Hashtable ht, PublishProgress tp, String frontPage, String arcPath, String title){
+    public boolean publishFile(Hashtable ht, PublishProgress tp, String frontPage, String arcPath){
         //We do the publish job for an entire directory
         if(!Manager.isConnected()){
             logger.log(Level.WARNING,"The connection to the node is not open !");
@@ -120,7 +121,7 @@ public class FCPTransport implements PublishTransport {
         }
         System.out.println("Beginning of the publish process...");
         int current_edition = edition + 1;
-        String dirURI = "freenet:USK@" + insertURI + "/" + ASCIIconv.convertNonAscii(title) + "/" + current_edition + "/";
+        String dirURI = "freenet:USK@" + insertURI + "/" + ASCIIconv.convertNonAscii(this.SSKPath) + "/" + current_edition + "/";
         System.out.println("Insert URI : " + dirURI);
         ClientPutComplexDir putDir = new ClientPutComplexDir("Thingamablog insert", dirURI);
         System.out.println("Default name : " + frontPage);
@@ -240,6 +241,14 @@ public class FCPTransport implements PublishTransport {
     
     public String getActiveLinkPath(){
         return this.activeLinkPath;
+    }
+    
+    public String getSSKPath(){
+        return this.SSKPath;
+    }
+    
+    public void setSSKPath(String path){
+        this.SSKPath = path;
     }
     
     private String shortenURI(String uri) {

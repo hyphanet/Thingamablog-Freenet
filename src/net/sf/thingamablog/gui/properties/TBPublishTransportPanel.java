@@ -194,6 +194,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                             fcpPanel.setActiveLinkPath(t.getActiveLinkPath());
                         }
                         fcpPanel.setEditionNumber(t.getEdition());
+                        fcpPanel.setFlogSSKPath(t.getSSKPath());
                         transportTypeCombo.setSelectedItem(FCP);
                         tLayout.show(transportsPanel, FCP);
                 }
@@ -270,9 +271,10 @@ public class TBPublishTransportPanel extends PropertyPanel
                         }
                         String url = fcpPanel.getRequestUri();                        
                         int firstSlash = url.indexOf('/');
-                        url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(weblog.getTitle()) + "/" + fcpPanel.getEditionNumber() + "/";
+                        url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(fcpPanel.getFlogSSKPath()) + "/" + fcpPanel.getEditionNumber() + "/";
                         weblog.setBlogUrls("none",url,url,url);
                         pt.setEdition(fcpPanel.getEditionNumber());
+                        pt.setSSKPath(fcpPanel.getFlogSSKPath());
                         transport = pt;
                 }
 		
@@ -310,6 +312,7 @@ public class TBPublishTransportPanel extends PropertyPanel
     
     private boolean validateOptions(FcpTransportPanel fcp)
     {
+        if(!fcp.getFlogSSKPath().equals("")){
             if (!fcp.getActiveLink() || DefaultMIMETypes.guessMIMEType(fcp.getActiveLinkPath()).equals("image/png")){
                 return true;
             } else {
@@ -317,6 +320,11 @@ public class TBPublishTransportPanel extends PropertyPanel
     			JOptionPane.WARNING_MESSAGE);
                 return false;
             }            
+        } else {
+            JOptionPane.showMessageDialog(this, i18n.str("invalid_path_prompt"), i18n.str("invalid_path"),  //$NON-NLS-1$ //$NON-NLS-2$
+    			JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
     }
     
     private class RemoteTransportPanel extends JPanel
@@ -478,6 +486,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                 private JTextField insertUriField;
                 private JTextField activeLinkPathField;
                 private JTextField editionNumberField;
+                private JTextField flogSSKPath;
                 private JCheckBox activeLinkCheckBox;
                 private JButton generateKeyButton;
 		public FcpTransportPanel()
@@ -487,6 +496,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                         requestUriField = new JTextField();
                         insertUriField = new JTextField();
                         activeLinkPathField = new JTextField();
+                        flogSSKPath = new JTextField();
                         activeLinkCheckBox = new JCheckBox();
                         generateKeyButton = new JButton();
                         editionNumberField = new JTextField();
@@ -508,7 +518,7 @@ public class TBPublishTransportPanel extends PropertyPanel
                         portField.setText(TBGlobals.getProperty("NODE_PORT"));
                         //Default machine name
                         machineNameField.setText(TBGlobals.getProperty("NODE_HOSTNAME"));
-                        generateKeyButton.setText(i18n.str("generate_keys"));
+                        generateKeyButton.setText(i18n.str("generate_keys"));                        
 			LabelledItemPanel lip = new LabelledItemPanel();
 			JPanel p = new JPanel(new BorderLayout());
 			p.add(portField, BorderLayout.WEST);
@@ -519,8 +529,9 @@ public class TBPublishTransportPanel extends PropertyPanel
                         lip.addItem(i18n.str("activeLinkPath"),activeLinkPathField);
                         lip.addItem(i18n.str("requestUri"),requestUriField);
                         lip.addItem(i18n.str("insertUri"),insertUriField);                        
-                        lip.addItem(i18n.str("currentEdition"),editionNumberField);
                         lip.addItem("",generateKeyButton);
+                        lip.addItem(i18n.str("currentEdition"),editionNumberField);
+                        lip.addItem(i18n.str("flogSSKPath"),flogSSKPath);
 			setLayout(new BorderLayout());
 			add(lip, BorderLayout.CENTER);	
 		}
@@ -585,6 +596,14 @@ public class TBPublishTransportPanel extends PropertyPanel
         
         public int getEditionNumber(){
             return Integer.parseInt(this.editionNumberField.getText());
+        }
+        
+        public String getFlogSSKPath(){
+            return flogSSKPath.getText();
+        }
+        
+        public void setFlogSSKPath(String path){
+            this.flogSSKPath.setText(path);
         }
         
         private class TypeListener implements ActionListener {
