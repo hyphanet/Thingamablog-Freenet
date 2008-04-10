@@ -271,7 +271,8 @@ public class TBPublishTransportPanel extends PropertyPanel
                         }
                         String url = fcpPanel.getRequestUri();                        
                         int firstSlash = url.indexOf('/');
-                        url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(fcpPanel.getFlogSSKPath()) + "/" + fcpPanel.getEditionNumber() + "/";
+                        // The url will be use for the next edition of the flog, so it must point to the next edition
+                        url = url.substring(0,firstSlash+1) + ASCIIconv.convertNonAscii(fcpPanel.getFlogSSKPath()) + "/" + (fcpPanel.getEditionNumber()+1) + "/";
                         weblog.setBlogUrls("none",url,url,url);
                         pt.setEdition(fcpPanel.getEditionNumber());
                         pt.setSSKPath(fcpPanel.getFlogSSKPath());
