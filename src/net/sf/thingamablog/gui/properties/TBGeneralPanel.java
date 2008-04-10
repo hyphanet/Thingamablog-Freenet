@@ -25,6 +25,7 @@ import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.gui.LabelledItemPanel;
+import net.sf.thingamablog.transport.FCPTransport;
 
 
 /**
@@ -120,6 +121,9 @@ public class TBGeneralPanel extends PropertyPanel
     public TBGeneralPanel(TBWeblog blog)
     {
     	weblog = blog;
+        boolean setEditable = true;
+        if (weblog.getPublishTransport() instanceof FCPTransport)
+            setEditable = false;
     	
     	TextEditPopupManager popupMan = TextEditPopupManager.getInstance();
 		titleField = new JTextField();
@@ -169,14 +173,17 @@ public class TBGeneralPanel extends PropertyPanel
 		urlField = new JTextField();
 		urlField.setText(weblog.getBaseUrl());
 		popupMan.registerJTextComponent(urlField);
+                urlField.setEditable(setEditable);
 		
 		arcUrlField = new JTextField();
 		arcUrlField.setText(weblog.getArchiveUrl());
 		popupMan.registerJTextComponent(arcUrlField);
+                arcUrlField.setEditable(setEditable);
 		
 		mediaUrlField = new JTextField();
 		mediaUrlField.setText(weblog.getMediaUrl());
 		popupMan.registerJTextComponent(mediaUrlField);
+                mediaUrlField.setEditable(setEditable);
 		
 		setLayout(new BorderLayout(5, 5));
 		setBorder(new EmptyBorder(5, 5, 5, 5));
