@@ -193,6 +193,7 @@ public class FCPTransport implements PublishTransport {
     
     private FileEntry createFileEntry(File file, int edition, String path){
         String content = DefaultMIMETypes.guessMIMEType(file.getName());
+        System.out.println("File path : " + file.getPath());
         FileEntry fileEntry = new DiskFileEntry(path + file.getName(), content, file.getPath());
         return fileEntry;
     }
