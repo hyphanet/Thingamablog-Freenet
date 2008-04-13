@@ -132,12 +132,19 @@ public class FCPTransport implements PublishTransport {
         for(Enumeration e = ht.keys() ; e.hasMoreElements() ;) {
             Object element = e.nextElement();
             File file = (File)element;
-            String path = ((String) ht.get(element)).substring(arcPath.length());
-            FileEntry fileEntry = createFileEntry(file, edition, path);            
-            if (fileEntry != null) {
-                System.out.println("File to insert : " + fileEntry.getFilename());
-                totalBytes += file.length();
-                putDir.addFileEntry(fileEntry);
+            long[] fileLength = new long[1];
+            try {
+                InputStream fileEntryInputStream = createFileInputStream(file, fileLength);
+                String path = ((String) ht.get(element)).substring(arcPath.length());
+                FileEntry fileEntry = createDirectFileEntry(file.getName(), fileEntryInputStream, fileLength);
+//              FileEntry fileEntry = createDiskFileEntry(file, path);            
+                if (fileEntry != null) {
+                    System.out.println("File to insert : " + fileEntry.getFilename());
+                    totalBytes += fileLength[0];
+                    putDir.addFileEntry(fileEntry);
+                }
+            } catch (IOException ex) {
+                logger.log(Level.WARNING, ex.getMessage());
             }
         }
         // If there is an active link set, we publish it
@@ -191,11 +198,22 @@ public class FCPTransport implements PublishTransport {
         return success;
     }
     
-    private FileEntry createFileEntry(File file, int edition, String path){
+    private FileEntry createDiskFileEntry(File file, String path){
         String content = DefaultMIMETypes.guessMIMEType(file.getName());
         System.out.println("File path : " + file.getPath());
         FileEntry fileEntry = new DiskFileEntry(path + file.getName(), content, file.getPath());
         return fileEntry;
+    }
+    
+    private FileEntry createDirectFileEntry(String filename, InputStream fileEntryInputStream, long[] fileLength){
+        String content = DefaultMIMETypes.guessMIMEType(filename);
+        FileEntry fileEntry = new DirectFileEntry(filename, content, fileEntryInputStream, fileLength[0]);
+        return fileEntry;
+    }
+        
+    private InputStream createFileInputStream(File file, long[] length) throws IOException {
+        length[0] = file.length();
+        return new FileInputStream(file);
     }
     
     public void setNode(String hostname, int port) {
