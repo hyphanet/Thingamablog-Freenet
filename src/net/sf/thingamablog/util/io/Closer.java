@@ -16,7 +16,7 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package src.net.sf.thingamablog.util.io;
+package net.sf.thingamablog.util.io;
 
 import java.io.IOException;
 import java.io.InputStream;

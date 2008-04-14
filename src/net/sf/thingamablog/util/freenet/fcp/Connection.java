@@ -32,10 +32,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import src.net.sf.thingamablog.util.io.Closer;
-import src.net.sf.thingamablog.util.io.LineInputStream;
-import src.net.sf.thingamablog.util.io.StreamCopier;
-import src.net.sf.thingamablog.util.io.TempFileInputStream;
+import net.sf.thingamablog.util.io.Closer;
+import net.sf.thingamablog.util.io.LineInputStream;
+import net.sf.thingamablog.util.io.StreamCopier;
+import net.sf.thingamablog.util.io.TempFileInputStream;
 
 /**
  * A physical connection to a Freenet node.

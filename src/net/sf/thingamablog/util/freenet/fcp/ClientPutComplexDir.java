@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import src.net.sf.thingamablog.util.io.Closer;
+import net.sf.thingamablog.util.io.Closer;
 
 /**
  * Implementation of the <code>ClientPutComplexDir</code> command. This

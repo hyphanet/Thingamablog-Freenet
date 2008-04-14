@@ -2001,8 +2001,9 @@ public class ThingamablogFrame extends JFrame
 			htmlOptionsPane.addOption(new ReadEntriesLink());
 			htmlOptionsPane.addOption(new ConfigureWeblogLink());
 			htmlOptionsPane.addHeading(i18n.str("publishing")); //$NON-NLS-1$
-			htmlOptionsPane.addOption(new PublishLink());
-			htmlOptionsPane.addOption(new PublishAllLink());
+			htmlOptionsPane.addOption(new PublishLink());                        
+                        if (obj instanceof TBWeblog && ((TBWeblog) obj).getType().equals("internet"))
+                            htmlOptionsPane.addOption(new PublishAllLink());
 			htmlOptionsPane.addOption(new PingLink());			
 	    }
 	    else if(obj == WeblogTreeModel.ROOT)
