@@ -135,9 +135,7 @@ public class FCPTransport implements PublishTransport {
             long[] fileLength = new long[1];
             try {
                 InputStream fileEntryInputStream = createFileInputStream(file, fileLength);
-                String path = ((String) ht.get(element)).substring(arcPath.length());
-                FileEntry fileEntry = createDirectFileEntry(file.getName(), fileEntryInputStream, fileLength);
-//              FileEntry fileEntry = createDiskFileEntry(file, path);            
+                FileEntry fileEntry = createDirectFileEntry(file.getName(), fileEntryInputStream, fileLength);           
                 if (fileEntry != null) {
                     System.out.println("File to insert : " + fileEntry.getFilename());
                     totalBytes += fileLength[0];
@@ -149,14 +147,20 @@ public class FCPTransport implements PublishTransport {
         }
         // If there is an active link set, we publish it
         if (activeLink) {
-            File file = new File(activeLinkPath);
-            String content = DefaultMIMETypes.guessMIMEType(file.getName());
-            FileEntry fileEntry = new DiskFileEntry("activelink.png", content, file.getPath());
-            if (fileEntry != null) {
-                System.out.println("File to insert : activelink.png");
-                totalBytes += file.length();                
-                putDir.addFileEntry(fileEntry);
-            }
+            File file = new File(activeLinkPath);            
+            long[] fileLength = new long[1];
+            InputStream fileEntryInputStream;
+            try {
+                fileEntryInputStream = createFileInputStream(file, fileLength);           
+                FileEntry fileEntry = createDirectFileEntry("activelink.png", fileEntryInputStream, fileLength);
+                if (fileEntry != null) {
+                    System.out.println("File to insert : activelink.png");
+                    totalBytes += file.length();                
+                    putDir.addFileEntry(fileEntry);
+                }
+             } catch (IOException ex) {
+                    logger.log(Level.WARNING, ex.getMessage());
+             }
         }
         try {            
             tp.publishStarted(totalBytes);
@@ -196,13 +200,6 @@ public class FCPTransport implements PublishTransport {
             edition++;
         }
         return success;
-    }
-    
-    private FileEntry createDiskFileEntry(File file, String path){
-        String content = DefaultMIMETypes.guessMIMEType(file.getName());
-        System.out.println("File path : " + file.getPath());
-        FileEntry fileEntry = new DiskFileEntry(path + file.getName(), content, file.getPath());
-        return fileEntry;
     }
     
     private FileEntry createDirectFileEntry(String filename, InputStream fileEntryInputStream, long[] fileLength){
