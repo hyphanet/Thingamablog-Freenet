@@ -264,7 +264,7 @@ public class FCPTransport implements PublishTransport {
     }
     
     public void setSSKPath(String path){
-        this.SSKPath = path;
+        this.SSKPath = ASCIIconv.convertNonAscii(path);
     }
     
     private String shortenURI(String uri) {

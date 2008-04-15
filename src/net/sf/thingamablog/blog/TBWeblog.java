@@ -152,10 +152,12 @@ public class TBWeblog extends Weblog
                 super.doFlogPublish(progress);
                 // Now we update the urls with the new edition number
                 String url = baseUrl;
+                int edition = ((FCPTransport) getPublishTransport()).getEdition() + 1;
+                String path = ((FCPTransport) getPublishTransport()).getSSKPath();
                 if(!url.endsWith("/"))
-                    url += "/";;
-                url = url.substring(0,url.length()-2);
-                url += ((FCPTransport) getPublishTransport()).getEdition() + "/";
+                    url += "/";
+                int firstSlash = url.indexOf('/');
+                url = url.substring(0,firstSlash+1) + "/" + path + "/" + edition + "/";                
                 setBlogUrls(basePath,url,url,url);
             }
 	}

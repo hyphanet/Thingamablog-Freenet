@@ -2045,6 +2045,7 @@ public class ThingamablogFrame extends JFrame
 		{
 			blogTreePopup = new JPopupMenu();
 			blogTreePopup.add(newWeblogAction);
+                        blogTreePopup.add(newFlogAction);
 			initHTMLView(WeblogTreeModel.ROOT);
 			viewerPanelLayout.show(viewerPanel, HTML_VIEW);
 			return;//nothing to do	
