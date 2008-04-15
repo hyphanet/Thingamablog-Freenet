@@ -23,6 +23,7 @@ import javax.swing.border.TitledBorder;
 
 import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
+import net.atlanticbb.tantlinger.ui.text.actions.IndentAction;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.gui.LabelledItemPanel;
 import net.sf.thingamablog.transport.FCPTransport;
@@ -44,6 +45,7 @@ public class TBGeneralPanel extends PropertyPanel
     private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private TBWeblog weblog;
+    private boolean isPublishFCP;
 	
 	private JTextField titleField;
 	private JTextArea descrArea;
@@ -121,9 +123,7 @@ public class TBGeneralPanel extends PropertyPanel
     public TBGeneralPanel(TBWeblog blog)
     {
     	weblog = blog;
-        boolean setEditable = true;
-        if (weblog.getPublishTransport() instanceof FCPTransport)
-            setEditable = false;
+        isPublishFCP = (weblog.getPublishTransport() instanceof FCPTransport);
     	
     	TextEditPopupManager popupMan = TextEditPopupManager.getInstance();
 		titleField = new JTextField();
@@ -166,25 +166,36 @@ public class TBGeneralPanel extends PropertyPanel
                 typeField.setText(weblog.getType());
                 typeField.setEditable(false);                
                 
-		basePathField = new JTextField();
-		basePathField.setText(weblog.getBasePath());
-		popupMan.registerJTextComponent(basePathField);
+                if (!isPublishFCP) {
+                    
+                    basePathField = new JTextField();
+                    basePathField.setText(weblog.getBasePath());
+                    popupMan.registerJTextComponent(basePathField);
 		
-		urlField = new JTextField();
-		urlField.setText(weblog.getBaseUrl());
-		popupMan.registerJTextComponent(urlField);
-                urlField.setEditable(setEditable);
+                    urlField = new JTextField();
+                    urlField.setText(weblog.getBaseUrl());
+                    popupMan.registerJTextComponent(urlField);
 		
-		arcUrlField = new JTextField();
-		arcUrlField.setText(weblog.getArchiveUrl());
-		popupMan.registerJTextComponent(arcUrlField);
-                arcUrlField.setEditable(setEditable);
+                    arcUrlField = new JTextField();
+                    arcUrlField.setText(weblog.getArchiveUrl());
+                    popupMan.registerJTextComponent(arcUrlField);
 		
-		mediaUrlField = new JTextField();
-		mediaUrlField.setText(weblog.getMediaUrl());
-		popupMan.registerJTextComponent(mediaUrlField);
-                mediaUrlField.setEditable(setEditable);
-		
+                    mediaUrlField = new JTextField();
+                    mediaUrlField.setText(weblog.getMediaUrl());
+                    popupMan.registerJTextComponent(mediaUrlField);
+                
+                } else {
+                    String url = weblog.getBaseUrl();
+                    int firstSlash = url.indexOf('/');
+                    int edition = ((FCPTransport) weblog.getPublishTransport()).getEdition();
+                    String path = ((FCPTransport) weblog.getPublishTransport()).getSSKPath();
+                    url = url.substring(0,firstSlash+1) + path + "/" + edition + "/";  
+                    urlField = new JTextField();
+                    urlField.setText(url);
+                    popupMan.registerJTextComponent(urlField);
+                    urlField.setEditable(false);
+                }
+                
 		setLayout(new BorderLayout(5, 5));
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		LabelledItemPanel lip1 = new LabelledItemPanel();
@@ -201,10 +212,14 @@ public class TBGeneralPanel extends PropertyPanel
                 
 		LabelledItemPanel lip2 = new LabelledItemPanel();
 		lip2.setBorder(new TitledBorder(i18n.str("location"))); //$NON-NLS-1$
-		lip2.addItem(i18n.str("base_path"), basePathField); //$NON-NLS-1$
-		lip2.addItem(i18n.str("base_url"), urlField); //$NON-NLS-1$
-		lip2.addItem(i18n.str("archive_url"), arcUrlField); //$NON-NLS-1$
-		lip2.addItem(i18n.str("media_url"), mediaUrlField); //$NON-NLS-1$
+                if (!isPublishFCP) {
+                    lip2.addItem(i18n.str("base_path"), basePathField); //$NON-NLS-1$
+                    lip2.addItem(i18n.str("base_url"), urlField); //$NON-NLS-1$
+                    lip2.addItem(i18n.str("archive_url"), arcUrlField); //$NON-NLS-1$
+                    lip2.addItem(i18n.str("media_url"), mediaUrlField); //$NON-NLS-1$
+                } else {
+                    lip2.addItem(i18n.str("request_uri"), urlField); //$NON-NLS-1$
+                }
 		
 		add(lip1, BorderLayout.CENTER);
 		add(lip2, BorderLayout.SOUTH);
@@ -223,9 +238,11 @@ public class TBGeneralPanel extends PropertyPanel
     public void saveProperties()
     {
         weblog.setPublishAll(true);        
-        weblog.setBlogUrls(
-        	basePathField.getText(), urlField.getText(), 
-        	arcUrlField.getText(), mediaUrlField.getText());
+        if(!isPublishFCP){
+            weblog.setBlogUrls(
+                    basePathField.getText(), urlField.getText(), 
+                    arcUrlField.getText(), mediaUrlField.getText());
+        }
         weblog.setLocale((Locale)localeCombo.getSelectedItem());
         weblog.setTitle(titleField.getText());
         weblog.setDescription(descrArea.getText());
@@ -237,10 +254,17 @@ public class TBGeneralPanel extends PropertyPanel
     
     public boolean isValidData()
     {
+        if(titleField.getText().equals("")) //$NON-NLS-1$
+        {
+            JOptionPane.showMessageDialog(this,
+                i18n.str("invalid_title_prompt"), i18n.str("title"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+            return false;
+        }
+        if(!isPublishFCP){
 		String base = urlField.getText();
 		String arc = arcUrlField.getText();
 		String media = mediaUrlField.getText();
-		
+        
 		if(basePathField.getText() == null || basePathField.getText().equals("")) //$NON-NLS-1$
 		{		
 			JOptionPane.showMessageDialog(this,
@@ -272,7 +296,7 @@ public class TBGeneralPanel extends PropertyPanel
 			
 			return false;	
 		}
-		
+        }	
 		return true;
     }
     

@@ -157,7 +157,7 @@ public class TBWeblog extends Weblog
                 if(!url.endsWith("/"))
                     url += "/";
                 int firstSlash = url.indexOf('/');
-                url = url.substring(0,firstSlash+1) + "/" + path + "/" + edition + "/";                
+                url = url.substring(0,firstSlash+1) + path + "/" + edition + "/";                
                 setBlogUrls(basePath,url,url,url);
             }
 	}
