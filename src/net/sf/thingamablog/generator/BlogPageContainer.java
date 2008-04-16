@@ -67,9 +67,9 @@ public class BlogPageContainer implements TemplateContainer
         if (blog.getType().equals("internet")) {
             tagValues.put(new TextTag("RssLink"), blog.getBaseUrl() + blog.getRssFileName());        
         } else {
-            tagValues.put(new TextTag("RssLink"), "http://127.0.0.1:8888/?newbookmark=freenet:" + blog.getBaseUrl() + "&desc=" + blog.getDescription());        
+            tagValues.put(new TextTag("RssLink"), "/?newbookmark=freenet:" + blog.getBaseUrl() + "&desc=" + blog.getDescription());        
             if (blog.getPublishTransport() instanceof FCPTransport)
-                            tagValues.put(new TextTag("EditionNumber"), ((FCPTransport)blog.getPublishTransport()).getEdition()+"");        
+                            tagValues.put(new TextTag("EditionNumber"), (((FCPTransport)blog.getPublishTransport()).getEdition()+ 1) +"");        
         }
         tagValues.put(new TextTag("IndexPageLink"), blog.getBaseUrl() + blog.getArchiveIndexFileName());
         tagValues.put(curDateTag, new Date());

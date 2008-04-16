@@ -602,16 +602,34 @@ public class TBWeblog extends Weblog
     
     public String getUrlForEntry(BlogEntry b)
     {
+        if (getPublishTransport() instanceof FCPTransport) {
+            String url = getArchiveUrl();
+            int firstSlash = url.indexOf('/');
+            url = url.substring(0,firstSlash+1) + ((FCPTransport) getPublishTransport()).getSSKPath() + "/<$EditionNumber$>/";
+            return url + getEntryFileName(b);
+        }
        return getArchiveUrl() + getEntryPathPart(b) + getEntryFileName(b);
     }
     
     public String getUrlForCategory(String cat)
     {
+        if (getPublishTransport() instanceof FCPTransport) {
+            String url = getArchiveUrl();
+            int firstSlash = url.indexOf('/');
+            url = url.substring(0,firstSlash+1) + ((FCPTransport) getPublishTransport()).getSSKPath() + "/<$EditionNumber$>/";
+            return url + getCategoryFileName(cat);
+        }
         return getArchiveUrl() + getCategoryFileName(cat);
     }
     
     public String getUrlForArchive(ArchiveRange arc)
     {
+        if (getPublishTransport() instanceof FCPTransport) {
+            String url = getArchiveUrl();
+            int firstSlash = url.indexOf('/');
+            url = url.substring(0,firstSlash+1) + ((FCPTransport) getPublishTransport()).getSSKPath() + "/<$EditionNumber$>/";
+            return url + getArchiveFileName(arc);
+        }
         return getArchiveUrl() + getArchiveFileName(arc);
     }
     
@@ -625,6 +643,12 @@ public class TBWeblog extends Weblog
             String url = f.toURL().toExternalForm();
             String wurl = getWebFilesDirectory().toURL().toExternalForm();
             int s = url.indexOf(wurl) + wurl.length();
+            if (getPublishTransport() instanceof FCPTransport) {
+                String uri = getBaseUrl();
+                int firstSlash = uri.indexOf('/');
+                uri = uri.substring(0,firstSlash+1) + ((FCPTransport) getPublishTransport()).getSSKPath() + "/<$EditionNumber$>/";
+                return uri + url.substring(s, url.length());
+            }
             return getBaseUrl() +  url.substring(s, url.length());
         }
         catch(Exception ex)
