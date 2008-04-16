@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sf.thingamablog.blog.Weblog;
+import net.sf.thingamablog.transport.FCPTransport;
 
 
 /**
@@ -138,6 +139,11 @@ public class EntryImageUtils
     public static String changeLocalImageURLs(String html, Weblog blog)
     {
         String mediaURL = /*toRelativeUrl*/(blog.getMediaUrl());
+        if (blog.getPublishTransport() instanceof FCPTransport) {
+            int firstSlash = mediaURL.indexOf('/');
+            mediaURL = mediaURL.substring(0,firstSlash+1) + ((FCPTransport) blog.getPublishTransport()).getSSKPath() + "/<$EditionNumber$>/";
+        }
+            
         File dir = getImageDirectory(blog);
         
         List tags = parseImageTags(html);

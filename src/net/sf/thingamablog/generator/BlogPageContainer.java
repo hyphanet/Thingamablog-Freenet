@@ -12,6 +12,7 @@ import java.util.Vector;
 
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.TBWeblog;
+import net.sf.thingamablog.transport.FCPTransport;
 
 
 
@@ -63,7 +64,13 @@ public class BlogPageContainer implements TemplateContainer
         tagValues.put(new TextTag("BlogTitle"), blog.getTitle());
         tagValues.put(new HyperTextTag("BlogDescription"), blog.getDescription());
         tagValues.put(new TextTag("FrontPageLink"), blog.getBaseUrl() + blog.getFrontPageFileName());
-        tagValues.put(new TextTag("RssLink"), blog.getBaseUrl() + blog.getRssFileName());        
+        if (blog.getType().equals("internet")) {
+            tagValues.put(new TextTag("RssLink"), blog.getBaseUrl() + blog.getRssFileName());        
+        } else {
+            tagValues.put(new TextTag("RssLink"), "http://127.0.0.1:8888/?newbookmark=freenet:" + blog.getBaseUrl() + "&desc=" + blog.getDescription());        
+            if (blog.getPublishTransport() instanceof FCPTransport)
+                            tagValues.put(new TextTag("EditionNumber"), ((FCPTransport)blog.getPublishTransport()).getEdition()+"");        
+        }
         tagValues.put(new TextTag("IndexPageLink"), blog.getBaseUrl() + blog.getArchiveIndexFileName());
         tagValues.put(curDateTag, new Date());
         tagValues.put(new TextTag("PageTitle"), pageTitle);

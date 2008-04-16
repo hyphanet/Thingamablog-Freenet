@@ -18,6 +18,7 @@ import net.sf.thingamablog.blog.BlogEntry;
 import net.sf.thingamablog.blog.EntryEnumeration;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.blog.WeblogBackend;
+import net.sf.thingamablog.transport.FCPTransport;
 
 
 
@@ -59,6 +60,7 @@ public class BlogEntryContainer extends ListContainer
 	private TemplateTag entryAuthorUrlTag = new TextTag("EntryAuthorURL");
 	private TemplateTag entryArchivePageTag = new TextTag("EntryArchivePage");
 	private TemplateTag entryPermalinkTag = new TextTag("EntryPermalink");
+        private TemplateTag editionNumberTag = new TextTag("EditionNumber");
 	private DateTag entryDateTag = new DateTag("EntryDate");
 	private DateTag entryTimeTag = new DateTag("EntryTime");
 	private DateTag entryDateTimeTag = new DateTag("EntryDateTime");	
@@ -116,6 +118,8 @@ public class BlogEntryContainer extends ListContainer
 	    tags.add(entryTimeTag);
 	    tags.add(entryDateTimeTag);
 	    tags.add(entryPermalinkTag);
+            if (blog.getPublishTransport() instanceof FCPTransport)
+                tags.add(editionNumberTag);
 	    
 	    entryDateTag.setLocale(blog.getLocale());
 	    entryTimeTag.setLocale(blog.getLocale());
@@ -405,6 +409,8 @@ public class BlogEntryContainer extends ListContainer
         		ArchiveRange ar = blog.getArchiveForDate(curEntry.getDate());
         		return blog.getArchiveUrl() + blog.getArchiveFileName(ar);
             }
+            if(tag == editionNumberTag && blog.getPublishTransport() instanceof FCPTransport)
+                return (((FCPTransport) blog.getPublishTransport()).getEdition() + 1) + "";
             
         }
         catch(Exception ex)
