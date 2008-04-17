@@ -72,6 +72,13 @@
 		</javac>
 		<move file="${src_dir}/net/sf/thingamablog/~~TBGlobals.java" tofile="${src_dir}/net/sf/thingamablog/TBGlobals.java" />
 		<delete file="${src_dir}/net/sf/thingamablog/~~TBGlobals.java" />
+		<!-- Copy translation files to the build dir -->
+		<copy todir="${class_dir}/thingamablog/l10n">
+			<fileset dir="${src_dir}/thingamablog/l10n">
+				<include name="thingamablog.l10n.*.properties"/>
+			</fileset>
+		</copy>
+
 		<!--
          Copy files needed to run the software to destinations in the 
          build directory. I do this because I usually pull all binary files like
