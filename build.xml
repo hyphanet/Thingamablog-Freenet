@@ -21,6 +21,7 @@
 		<property name="dicts_dir" value="./dictionaries" />
 		<property name="build_dir" value="./build" />
 		<property name="lib_dir" value="./lib" />
+		<property name="l10n_dir" value="./l10n" />
 		<property name="templates_dir" value="./template_sets" />
 		<property name="languages_dir" value="./languages" />
 		<property name="class_dir" value="${build_dir}/classes" />
@@ -74,7 +75,7 @@
 		<delete file="${src_dir}/net/sf/thingamablog/~~TBGlobals.java" />
 		<!-- Copy translation files to the build dir -->
 		<copy todir="${class_dir}/thingamablog/l10n">
-			<fileset dir="${src_dir}/thingamablog/l10n">
+			<fileset dir="${l10n_dir}/">
 				<include name="thingamablog.l10n.*.properties"/>
 			</fileset>
 		</copy>
