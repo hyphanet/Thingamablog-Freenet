@@ -194,7 +194,8 @@ public class TBPublishTransportPanel extends PropertyPanel
                             fcpPanel.setActiveLinkPath(t.getActiveLinkPath());
                         }
                         fcpPanel.setEditionNumber(t.getEdition());
-                        fcpPanel.setFlogSSKPath(t.getSSKPath());
+                        if (t.getSSKPath() != null)
+                            fcpPanel.setFlogSSKPath(t.getSSKPath());
                         transportTypeCombo.setSelectedItem(FCP);
                         tLayout.show(transportsPanel, FCP);
                 }
