@@ -27,11 +27,11 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.blog.Author;
 import net.sf.thingamablog.blog.BackendException;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.gui.LabelledItemPanel;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -41,9 +41,7 @@ import net.sf.thingamablog.gui.LabelledItemPanel;
  */
 public class WeblogEditableListModel implements EditableListModel
 {
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
-    
-    public static final int CATEGORIES = -1;
+        public static final int CATEGORIES = -1;
 	public static final int AUTHORS = -2;
 	private int mode;
 	private Vector listEdits = new Vector();

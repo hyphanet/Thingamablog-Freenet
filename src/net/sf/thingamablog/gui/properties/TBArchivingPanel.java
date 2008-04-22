@@ -40,13 +40,13 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.gui.LabelledItemPanel;
 
 import com.tantlinger.jdatepicker.JCalendarComboBox;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -60,8 +60,6 @@ public class TBArchivingPanel extends PropertyPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private static final String MONTHLY = i18n.str("monthly"); //$NON-NLS-1$
 	private static final String WEEKLY = i18n.str("weekly"); //$NON-NLS-1$

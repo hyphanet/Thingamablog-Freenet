@@ -36,11 +36,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.generator.CustomTag;
 import net.sf.thingamablog.gui.StandardDialog;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -55,8 +55,6 @@ public class TBCustomVariablesPanel extends PropertyPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private TBWeblog weblog;
 	private EditableList eList;

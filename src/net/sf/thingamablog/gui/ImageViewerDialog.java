@@ -38,8 +38,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -54,8 +54,6 @@ public class ImageViewerDialog extends JDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui");
     
     private ImagePanel imagePanel;
 	private File currentImageFile;

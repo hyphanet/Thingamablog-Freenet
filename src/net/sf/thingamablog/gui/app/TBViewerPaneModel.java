@@ -32,21 +32,19 @@ import javax.swing.ImageIcon;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.BlogEntry;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.feed.FeedItem;
 import net.sf.thingamablog.gui.ViewerPaneModel;
 import net.sf.thingamablog.gui.editor.EntryImageUtils;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
  */
 public class TBViewerPaneModel implements ViewerPaneModel
-{
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app"); //$NON-NLS-1$
-    
+{   
     private static final String exts[] = {".gif", ".jpg", ".png"};  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	private Object data;		
 	private SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy hh:mm a z");	 //$NON-NLS-1$

@@ -35,11 +35,10 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.io.IOUtils;
 import net.sf.thingamablog.generator.PageGenerator;
 import net.sf.thingamablog.transport.FCPTransport;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -51,7 +50,6 @@ import net.sf.thingamablog.transport.FCPTransport;
 public class TBWeblog extends Weblog
 {    
     private static Logger logger = Logger.getLogger("net.sf.thingamablog.blog");
-    private static I18n i18n = I18n.getInstance("net.sf.thingamablog.blog");
 	
 	//vaid chars for category page files names
 	private static final String VALID_CHARS = 

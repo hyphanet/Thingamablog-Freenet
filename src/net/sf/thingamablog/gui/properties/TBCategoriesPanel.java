@@ -35,10 +35,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.gui.LabelledItemPanel;
+import thingamablog.l10n.i18n;
 
 
 
@@ -55,8 +55,6 @@ public class TBCategoriesPanel extends PropertyPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private TBWeblog weblog;
 	private EditableList eCatList;

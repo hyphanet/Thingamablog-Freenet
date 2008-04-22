@@ -18,9 +18,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.blog.Weblog;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -34,8 +34,6 @@ public class TBEmailPanel extends PropertyPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties"); //$NON-NLS-1$
     
     private static final String[] PROTOCOLS = {"POP3", "IMAP"}; //$NON-NLS-1$ //$NON-NLS-2$
     private JLabel protocolLabel = null;

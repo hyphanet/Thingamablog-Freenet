@@ -24,9 +24,9 @@
 package net.sf.thingamablog.gui.app;
 
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.feed.FeedItem;
 import net.sf.thingamablog.gui.table.DefaultSortTableModel;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -40,8 +40,6 @@ public class FeedTableModel extends DefaultSortTableModel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     
     public static final Object READ =  " "; //$NON-NLS-1$
 	public static final Object ITEM = i18n.str("item"); //$NON-NLS-1$

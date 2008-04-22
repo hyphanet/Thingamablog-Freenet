@@ -13,8 +13,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import thingamablog.l10n.i18n;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
+
 
 
 public class SelectTemplatePanel extends JPanel
@@ -23,7 +24,6 @@ public class SelectTemplatePanel extends JPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     public static final String TEMPLATE_ZIP_PATH = "templateZip";  //  @jve:decl-index=0: //$NON-NLS-1$
     public static final String TEMPLATE_NAME = "templateName"; //$NON-NLS-1$
     

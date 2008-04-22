@@ -49,11 +49,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.gui.CustomFileFilter;
 import net.sf.thingamablog.xml.RSSImportExport;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -67,8 +67,6 @@ public class ImportEntriesDialog extends JDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     
     private JButton cancelButton;
 	private JButton importButton;

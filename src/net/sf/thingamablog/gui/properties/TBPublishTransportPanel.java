@@ -28,13 +28,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.SortedMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 
@@ -47,7 +44,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.TBWeblog;
@@ -60,6 +56,7 @@ import net.sf.thingamablog.transport.PublishTransport;
 import net.sf.thingamablog.transport.SFTPTransport;
 import net.sf.thingamablog.util.freenet.fcp.fcpManager;
 import net.sf.thingamablog.util.string.ASCIIconv;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -73,8 +70,6 @@ public class TBPublishTransportPanel extends PropertyPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private final String FTP = "FTP"; //$NON-NLS-1$
 	private final String SFTP = "SFTP"; //$NON-NLS-1$

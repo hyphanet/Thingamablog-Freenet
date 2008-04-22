@@ -44,7 +44,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoManager;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
 import net.atlanticbb.tantlinger.ui.text.IndentationFilter;
@@ -66,6 +65,7 @@ import novaworx.textpane.SyntaxGutterBase;
 
 import org.bushe.swing.action.ActionList;
 import org.bushe.swing.action.ActionUIFactory;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -78,8 +78,6 @@ public class HTMLEditor extends JFrame
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.editor");
        
     public static final int TEMPLATE_MODE = 1;
     public static final int FILE_MODE = 2;

@@ -28,8 +28,8 @@ import java.awt.Frame;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.transport.LoginPrompt;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -44,8 +44,6 @@ public class GUILoginPrompt extends StandardDialog implements LoginPrompt
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui");
     
     private JPasswordField pwField;
 	private JTextField userField;

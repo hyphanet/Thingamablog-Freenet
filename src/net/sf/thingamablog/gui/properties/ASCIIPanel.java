@@ -25,8 +25,8 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
+import thingamablog.l10n.i18n;
 
 public class ASCIIPanel extends JPanel implements ActionListener
 {
@@ -34,8 +34,6 @@ public class ASCIIPanel extends JPanel implements ActionListener
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private JScrollPane jScrollPane = null;
     

@@ -26,10 +26,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.gui.StandardDialog;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -42,8 +42,6 @@ public class TBWeblogPropertiesDialog extends StandardDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties"); //$NON-NLS-1$
     
     private TBWeblog tbw;
 	private Vector opts = new Vector();

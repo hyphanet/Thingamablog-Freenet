@@ -5,10 +5,10 @@
 package net.sf.thingamablog.gui.properties;
 import java.awt.Frame;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.gui.StandardDialog;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -16,9 +16,7 @@ import net.sf.thingamablog.gui.StandardDialog;
  * Creates and shows the appropriate weblog properties dialog
  */
 public class WeblogPropertiesDialogFactory
-{
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
-    
+{   
     /**
 	 * Shows a weblog property dialog box
 	 * @param wb - The weblog

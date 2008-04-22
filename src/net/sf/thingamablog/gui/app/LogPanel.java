@@ -32,13 +32,13 @@ import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.blog.PingProgress;
 import net.sf.thingamablog.blog.PingService;
 import net.sf.thingamablog.blog.PublishProgress;
 import net.sf.thingamablog.transport.MailTransportProgress;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -51,8 +51,6 @@ public class LogPanel extends JPanel implements PublishProgress, PingProgress, M
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app"); //$NON-NLS-1$
     
     private JProgressBar progressBar;
     private JButton abortButton;

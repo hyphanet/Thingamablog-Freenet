@@ -12,10 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -31,10 +29,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
-import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.Author;
 import net.sf.thingamablog.blog.BackendException;
 import net.sf.thingamablog.blog.TBWeblog;
@@ -48,7 +44,7 @@ import net.sf.thingamablog.gui.app.WeblogPreviewer;
 import net.sf.thingamablog.transport.FCPTransport;
 import net.sf.thingamablog.transport.LocalTransport;
 import net.sf.thingamablog.util.freenet.fcp.fcpManager;
-import net.sf.thingamablog.util.string.ASCIIconv;
+import thingamablog.l10n.i18n;
 
 
 
@@ -65,7 +61,6 @@ public class TBFlogWizardDialog extends JDialog {
      */
     private static final long serialVersionUID = 1L;
     
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties"); //$NON-NLS-1$
     private Logger logger = Logger.getLogger("net.sf.thingamablog.gui.properties");
     
     private static final String CANCEL = i18n.str("cancel"); //$NON-NLS-1$

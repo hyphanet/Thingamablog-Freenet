@@ -40,10 +40,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.feed.Feed;
 import net.sf.thingamablog.gui.LabelledItemPanel;
 import net.sf.thingamablog.gui.StandardDialog;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -55,8 +55,6 @@ public class FeedPropertiesDialog extends StandardDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     
     private Feed feed;
 	private JTextField urlField;

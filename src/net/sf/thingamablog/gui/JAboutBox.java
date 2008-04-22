@@ -39,7 +39,6 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.StringTokenizer;
 
 import javax.swing.Box;
@@ -53,10 +52,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.Scrollable;
 import javax.swing.border.EmptyBorder;
-
-import net.atlanticbb.tantlinger.i18n.I18n;
-
-import org.jdesktop.jdic.desktop.Desktop;
+import thingamablog.l10n.i18n;
 
 //import com.Ostermiller.util.Browser;
 
@@ -77,7 +73,6 @@ public class JAboutBox extends JDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui");
     private final String MAILTO = "mailto:"; //$NON-NLS-1$
 	
 	private JLabel appTitleLabel = new JLabel();

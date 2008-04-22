@@ -38,7 +38,6 @@ import javax.swing.SwingConstants;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.io.IOUtils;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
@@ -47,6 +46,7 @@ import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.blog.TemplatePack;
 import net.sf.thingamablog.blog.ZipExportableTemplatePack;
 import net.sf.thingamablog.gui.StandardDialog;
+import thingamablog.l10n.i18n;
 
 
 
@@ -60,7 +60,6 @@ public class ExportTemplatePackDialog extends StandardDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app"); //$NON-NLS-1$
     private static final String TITLE = i18n.str("export_templates"); //$NON-NLS-1$
     
     private JLabel msgLabel = null;

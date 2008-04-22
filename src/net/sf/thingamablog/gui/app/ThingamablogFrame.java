@@ -67,7 +67,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.io.IOUtils;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
@@ -113,6 +112,7 @@ import org.jdesktop.jdic.desktop.Desktop;
 
 import com.l2fprod.common.swing.JDirectoryChooser;
 import freenet.utils.BrowserLaunch;
+import thingamablog.l10n.i18n;
 
 
 
@@ -128,7 +128,6 @@ public class ThingamablogFrame extends JFrame
      * 
      */
     private static final long serialVersionUID = 1L;
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app"); //$NON-NLS-1$
     private static Logger logger = Logger.getLogger("net.sf.thingamablog.gui.app"); //$NON-NLS-1$
     
     private final JFrame FRAME = this;

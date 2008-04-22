@@ -41,11 +41,11 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.blog.PingService;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.blog.WeblogsDotComPing;
 import net.sf.thingamablog.gui.LabelledItemPanel;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -59,8 +59,6 @@ public class XmlRpcPingPanel extends PropertyPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private Weblog weblog;
    	private PingerTableModel model;

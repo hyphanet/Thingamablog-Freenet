@@ -36,10 +36,10 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.feed.Feed;
+import thingamablog.l10n.i18n;
 
 
 
@@ -55,8 +55,6 @@ public class StatusBar extends JPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     
     final static Icon blogIcon = UIUtils.getIcon(UIUtils.X16, "blog.png"); //$NON-NLS-1$
 	final static Icon feedIcon = UIUtils.getIcon(UIUtils.X16, "blogpages.png"); //$NON-NLS-1$

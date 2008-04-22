@@ -30,12 +30,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.PingProgress;
 import net.sf.thingamablog.blog.PublishProgress;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.transport.MailTransportProgress;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -48,8 +48,6 @@ public class TaskDialog extends JDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app"); //$NON-NLS-1$
     
     private JButton closeButton, clearButton;
     private JComboBox blogCombo;

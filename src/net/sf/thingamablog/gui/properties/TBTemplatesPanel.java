@@ -9,11 +9,11 @@ import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.blog.TemplatePack;
 import net.sf.thingamablog.gui.app.TemplateSelectionPanel;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -26,8 +26,6 @@ public class TBTemplatesPanel extends PropertyPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private TemplateSelectionPanel tmplPanel;
     private TBWeblog blog;

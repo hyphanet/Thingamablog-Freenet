@@ -33,13 +33,13 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.gui.app.ExperiencedBlue;
 import net.sf.thingamablog.gui.app.ThingamablogFrame;
 
 import com.jgoodies.plaf.LookUtils;
 import com.jgoodies.plaf.Options;
 import com.jgoodies.plaf.plastic.PlasticLookAndFeel;
+import thingamablog.l10n.i18n;
 
 /** Application starter */
 
@@ -86,18 +86,8 @@ public class App
         
         //set up the I18n resource bundles
         if(TBGlobals.getProperty("LANG_LOCALE") != null)
-        	I18n.setLocale(TBGlobals.getProperty("LANG_LOCALE"));
+        	i18n.setLocale(TBGlobals.getProperty("LANG_LOCALE"));
         
-        I18n.setBundleForPackage("net.sf.thingamablog.blog", langPack);
-        I18n.setBundleForPackage("net.sf.thingamablog.gui", langPack);
-        I18n.setBundleForPackage("net.sf.thingamablog.gui.app", langPack);
-        I18n.setBundleForPackage("net.sf.thingamablog.gui.editor", langPack);
-        I18n.setBundleForPackage("net.sf.thingamablog.gui.properties", langPack);
-        I18n.setBundleForPackage("net.atlanticbb.tantlinger.ui", langPack);
-        I18n.setBundleForPackage("net.atlanticbb.tantlinger.ui.text", langPack);
-        I18n.setBundleForPackage("net.atlanticbb.tantlinger.ui.text.actions", langPack);
-        I18n.setBundleForPackage("net.atlanticbb.tantlinger.ui.text.dialogs", langPack);
-                
         //OSX properties
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", TBGlobals.APP_NAME);

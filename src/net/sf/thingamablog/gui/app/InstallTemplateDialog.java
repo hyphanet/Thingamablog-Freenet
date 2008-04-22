@@ -25,12 +25,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.io.IOUtils;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.TemplatePack;
 import net.sf.thingamablog.blog.ZipTemplatePack;
+import thingamablog.l10n.i18n;
 
 
 
@@ -39,9 +39,7 @@ import net.sf.thingamablog.blog.ZipTemplatePack;
  *
  */
 public class InstallTemplateDialog extends JDialog
-{
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
-    
+{   
     private static final long serialVersionUID = 1L;
     private JLabel instrLabel = null;
     private JButton openButton = null;

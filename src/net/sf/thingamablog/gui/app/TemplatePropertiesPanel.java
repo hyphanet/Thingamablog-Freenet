@@ -18,9 +18,9 @@ import java.util.Properties;
 
 import javax.swing.BorderFactory;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.text.TextEditPopupManager;
 import net.sf.thingamablog.blog.TemplatePack;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -29,7 +29,6 @@ import net.sf.thingamablog.blog.TemplatePack;
  */
 public class TemplatePropertiesPanel extends JPanel
 {    
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     private static final long serialVersionUID = 1L;
     
     private JLabel titleLabel = null;

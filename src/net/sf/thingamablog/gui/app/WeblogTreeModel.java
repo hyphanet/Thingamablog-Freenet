@@ -34,9 +34,9 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.blog.Weblog;
 import net.sf.thingamablog.blog.WeblogList;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -45,9 +45,7 @@ import net.sf.thingamablog.blog.WeblogList;
  * 
  */
 public class WeblogTreeModel implements TreeModel
-{
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
-    
+{   
 	public static final String ROOT = i18n.str("my_sites"); //$NON-NLS-1$
 	
 	public static final String CURRENT = i18n.str("current"); //$NON-NLS-1$

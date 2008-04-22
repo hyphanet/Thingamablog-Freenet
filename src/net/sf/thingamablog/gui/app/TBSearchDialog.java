@@ -48,7 +48,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.blog.BackendException;
 import net.sf.thingamablog.blog.BlogEntry;
 import net.sf.thingamablog.blog.CategoryEvent;
@@ -62,6 +61,7 @@ import net.sf.thingamablog.feed.FeedItem;
 import net.sf.thingamablog.feed.FeedSearch;
 import net.sf.thingamablog.gui.LabelledItemPanel;
 import net.sf.thingamablog.gui.StandardDialog;
+import thingamablog.l10n.i18n;
 
 import com.tantlinger.jdatepicker.JCalendarComboBox;
 
@@ -77,8 +77,6 @@ public class TBSearchDialog extends JDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     
     private final String DRAFTS = i18n.str("drafts"); //$NON-NLS-1$
 	private final String POSTS = i18n.str("posts"); //$NON-NLS-1$

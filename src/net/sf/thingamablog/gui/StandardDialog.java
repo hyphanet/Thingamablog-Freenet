@@ -11,8 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-
-import net.atlanticbb.tantlinger.i18n.I18n;
+import thingamablog.l10n.i18n;
 
 
 
@@ -35,8 +34,6 @@ public class StandardDialog extends JDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui");
     
     // Constants
     public static final int BUTTONS_CENTER = FlowLayout.CENTER;

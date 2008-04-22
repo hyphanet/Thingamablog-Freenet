@@ -51,13 +51,13 @@ import com.jgoodies.plaf.Options;
 public class TBGlobals
 {
 	/** The name of the application */
-	public static final String APP_NAME = "@APP_NAME@";
+	public static final String APP_NAME = "Thingamablog";
 	/** The version of the application */
-	public static final String VERSION = "@VERSION@";
+	public static final String VERSION = "1.1b6";
 	/** The build of the application */
-	public static final String BUILD = "@BUILD@";
+	public static final String BUILD = "20080423.120";
 	/** The home page of the application */
-	public static final String APP_URL = "@APP_URL@";
+	public static final String APP_URL = "http://thingamablog.sourceforge.net";
     
 	/** Platform specific path separator */
 	public static final String SEP = System.getProperty("file.separator");

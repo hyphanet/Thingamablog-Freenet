@@ -73,7 +73,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.undo.UndoManager;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.DefaultAction;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.atlanticbb.tantlinger.ui.text.CompoundUndoManager;
@@ -129,6 +128,7 @@ import org.dts.spell.dictionary.SpellDictionary;
 import org.dts.spell.swing.JTextComponentSpellChecker;
 
 import com.tantlinger.jdatepicker.JCalendarComboBox;
+import thingamablog.l10n.i18n;
 
 
 //TODO table edit actions on wysiwyg popup menu
@@ -144,8 +144,6 @@ public class EntryEditor extends JFrame
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.editor"); //$NON-NLS-1$
     
     public static final int NEW_ENTRY_MODE = -1;
     public static final int UPDATE_ENTRY_MODE = -2; 

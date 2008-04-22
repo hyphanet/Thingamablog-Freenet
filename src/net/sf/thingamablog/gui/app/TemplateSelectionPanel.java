@@ -23,12 +23,12 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.Author;
 import net.sf.thingamablog.blog.TBWeblog;
 import net.sf.thingamablog.blog.TemplatePack;
 import net.sf.thingamablog.blog.WeblogBackend;
+import thingamablog.l10n.i18n;
 
 
 /**
@@ -41,8 +41,6 @@ public class TemplateSelectionPanel extends JPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     
     private JComboBox tmplCombo; 
     private TemplatePropertiesPanel propertyPanel;

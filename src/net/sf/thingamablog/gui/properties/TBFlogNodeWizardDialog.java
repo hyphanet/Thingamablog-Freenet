@@ -11,7 +11,6 @@ package net.sf.thingamablog.gui.properties;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -30,11 +29,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
-import net.atlanticbb.tantlinger.i18n.I18n;
-import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.blog.BackendException;
 
@@ -45,6 +41,7 @@ import net.sf.thingamablog.gui.LabelledItemPanel;
 import net.sf.thingamablog.gui.MultilineText;
 import net.sf.thingamablog.transport.FCPTransport;
 import net.sf.thingamablog.util.freenet.fcp.fcpManager;
+import thingamablog.l10n.i18n;
 
 /**
  *
@@ -52,7 +49,6 @@ import net.sf.thingamablog.util.freenet.fcp.fcpManager;
  */
 public class TBFlogNodeWizardDialog extends JDialog {
     
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     private Logger logger = Logger.getLogger("net.sf.thingamablog.gui.properties");
     
     private PropertyPanel nodePanel;

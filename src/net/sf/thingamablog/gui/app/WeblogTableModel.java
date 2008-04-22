@@ -1,8 +1,8 @@
 package net.sf.thingamablog.gui.app;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.sf.thingamablog.blog.BlogEntry;
 import net.sf.thingamablog.gui.table.DefaultSortTableModel;
+import thingamablog.l10n.i18n;
 
 
 public class WeblogTableModel extends DefaultSortTableModel
@@ -11,8 +11,6 @@ public class WeblogTableModel extends DefaultSortTableModel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app");
     
     public static final Object TITLE = i18n.str("title"); //$NON-NLS-1$
 	public static final Object POST_DATE = i18n.str("date_posted"); //$NON-NLS-1$

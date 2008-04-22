@@ -9,8 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import thingamablog.l10n.i18n;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
+
 
 /*
  * Created on Jun 29, 2004
@@ -48,8 +49,6 @@ public class EditableList extends JPanel
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.properties");
     
     private JList list;
 	private JButton addButton;

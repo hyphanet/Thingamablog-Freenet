@@ -66,12 +66,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.atlanticbb.tantlinger.i18n.I18n;
 import net.atlanticbb.tantlinger.ui.UIUtils;
 import net.sf.thingamablog.TBGlobals;
 import net.sf.thingamablog.gui.LabelledItemPanel;
 import net.sf.thingamablog.gui.MultilineText;
 import net.sf.thingamablog.gui.StandardDialog;
+import thingamablog.l10n.i18n;
 
 /**
  * @author Bob Tantlinger
@@ -85,8 +85,6 @@ public class TBOptionsDialog extends StandardDialog
      * 
      */
     private static final long serialVersionUID = 1L;
-
-    private static final I18n i18n = I18n.getInstance("net.sf.thingamablog.gui.app"); //$NON-NLS-1$
     
     private final String fontSizes[] = new String[] {"8", "9", "10", "11",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 								"12", "14", "16", "18", "20", "22", "24",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
@@ -165,12 +163,12 @@ public class TBOptionsDialog extends StandardDialog
 		lafCombo.setModel(new DefaultComboBoxModel(lfNames));
 		lafCombo.setSelectedItem(UIManager.getLookAndFeel().getName());
         
-        Vector locs = new Vector(Arrays.asList(I18n.getAvailableLanguagePackLocales()));
+        Vector locs = new Vector(Arrays.asList(i18n.getAvailableLanguagePackLocales()));
         Collections.sort(locs, new LocaleComparator());
-        if(!locs.contains(I18n.getLocale()))
-            locs.add(I18n.getLocale());
+        if(!locs.contains(i18n.getLocale()))
+            locs.add(i18n.getLocale());
         langCombo = new JComboBox(locs);        
-        langCombo.setSelectedItem(I18n.getLocale());
+        langCombo.setSelectedItem(i18n.getLocale());
         langCombo.setRenderer(new LocaleListCellRenderer());
 		
 		File dictDir = new File(TBGlobals.DICT_DIR);
@@ -473,7 +471,7 @@ public class TBOptionsDialog extends StandardDialog
     	String msg = ""; //$NON-NLS-1$
     	String curLaf = TBGlobals.getLookAndFeelClassName();
     	String selLaf = lfinfo[lafCombo.getSelectedIndex()].getClassName();
-    	if(!curLaf.equals(selLaf) || (!langCombo.getSelectedItem().equals(I18n.getLocale())))
+    	if(!curLaf.equals(selLaf) || (!langCombo.getSelectedItem().equals(i18n.getLocale())))
     	{    	
     		msg += i18n.str("look_and_feel_prompt"); //$NON-NLS-1$
     	}
