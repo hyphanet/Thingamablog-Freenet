@@ -603,7 +603,7 @@ public class TBPersistFactory
 		
 		tb.setLocale(createLocale(element.getAttributeValue("locale", Locale.getDefault().toString())));
 		tb.setPublishAll(element.getAttributeValue("publish_all", "true").equals("true"));
-		tb.setType(element.getAttributeValue("type").toString());
+		tb.setType(element.getAttributeValue("type","internet"));
                 
 		int arcPolicy = TBWeblog.ARCHIVE_MONTHLY;
 		int dayInterval = 5;
@@ -883,9 +883,12 @@ public class TBPersistFactory
                     if (fcp.getActiveLink()){
                         fcp.setActiveLinkPath(transport.getAttributeValue("activeLinkPath"));
                     }
-                    fcp.setSSKPath(transport.getAttributeValue("SSKPath"));
-                    if(fcp.getSSKPath() == null)
+                    String SSKPath = transport.getAttributeValue("SSKPath");
+                    if(SSKPath == null) {
                         fcp.setSSKPath(title);                    
+                    } else {
+                        fcp.setSSKPath(SSKPath);
+                    }
                     pubTransport = fcp;
                 }
 		else		
