@@ -127,11 +127,6 @@
 		<copy todir="${jar_dir}/template_sets">
 			<fileset dir="${templates_dir}" />
 		</copy>
-		
-		<!-- copy the lang packs to the jar dir -->
-		<copy todir="${jar_dir}/languages">
-				<fileset dir="${languages_dir}" />
-		</copy>
 
 		<!-- copy any text and icon files to the jar dir -->
 		<copy todir="${jar_dir}">
