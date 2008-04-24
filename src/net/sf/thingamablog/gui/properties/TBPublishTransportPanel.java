@@ -121,7 +121,10 @@ public class TBPublishTransportPanel extends PropertyPanel
                         types[0]="FCP";
                         types[1]="Local";   
                     }
-                    fcpPanel.setRequestUri(weblog.getBaseUrl());
+                    String requestURI = weblog.getBaseUrl();
+                    if(!requestURI.startsWith("USK@"))
+                        requestURI = "USK@" + requestURI;
+                    fcpPanel.setRequestUri(requestURI);
                  }
                 localPanel = new JPanel();
                 		
