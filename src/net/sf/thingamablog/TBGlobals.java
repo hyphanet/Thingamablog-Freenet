@@ -282,7 +282,7 @@ public class TBGlobals
                             nodePort = props.getProperty("NODE_PORT");
                         if(props.get("NODE_HOSTNAME") != null)
                             nodeHostname = props.getProperty("NODE_HOSTNAME");
-                        if(props.get("FRPOXY_PORT") != null)
+                        if(props.get("FPROXY_PORT") != null)
                             fproxyPort = props.getProperty("FPROXY_PORT");
 		}
 		catch(FileNotFoundException fnfe)

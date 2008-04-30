@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -85,8 +86,18 @@ public class App
         TBGlobals.loadProperties();
         
         //set up the I18n resource bundles
-        if(TBGlobals.getProperty("LANG_LOCALE") != null)
+        if(TBGlobals.getProperty("LANG_LOCALE") != null) {
         	i18n.setLocale(TBGlobals.getProperty("LANG_LOCALE"));
+        } else {
+            String defaultLoc = Locale.getDefault().getLanguage();
+            String selected = "en";
+            Locale[] available = i18n.getAvailableLanguagePackLocales();
+            for (int i = 0; i < available.length; i++) {
+                if (defaultLoc.equals(available[i].getLanguage()))
+                    selected = defaultLoc;
+            }
+            i18n.setLocale(selected);
+        }
         
         //OSX properties
         System.setProperty("apple.laf.useScreenMenuBar", "true");
