@@ -21,6 +21,9 @@ public class i18n extends L10n{
     }
     
     public static void setLocale(String selected){
+        int index = selected.indexOf('_');
+        if (index != -1)
+            selected = selected.substring(0,index);
         setLanguage(selected);
     }
     
