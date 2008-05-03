@@ -68,6 +68,11 @@ public class NullPublishProgress implements PublishProgress
 
     }
 
+    public void updateBlocksTransferred(int blocs, int total, String name)
+    {
+        
+    }
+    
     /* (non-Javadoc)
      * @see net.sf.thingamablog.transport.TransportProgress#isAborted()
      */
