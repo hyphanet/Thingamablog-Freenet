@@ -376,10 +376,8 @@ public abstract class Weblog
             markWebFilesAsUpdated();
             File webFiles[] = getWebFiles();
             String webPaths[] = getWebFilesServerPaths(webFiles);
-            long totalBytes = 0;				
             //count the total bytes for this publish
             for(int i = 0; i < webFiles.length; i++){
-                totalBytes += webFiles[i].length();
                 ht.put(webFiles[i],webPaths[i]);
             }
             for(Enumeration e = ht.keys() ; e.hasMoreElements() ;) 
@@ -387,12 +385,9 @@ public abstract class Weblog
                     try
                     {
                         File f = (File)e.nextElement();
-                        totalBytes += f.length();
                     }   
                     catch(ClassCastException cce){}
             }
-		
-            progress.publishStarted(totalBytes);
         
             if(!transport.connect())
             {

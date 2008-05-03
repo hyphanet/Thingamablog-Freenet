@@ -32,6 +32,7 @@ import net.sf.thingamablog.util.freenet.fcp.Message;
 import net.sf.thingamablog.util.freenet.fcp.Verbosity;
 import net.sf.thingamablog.util.freenet.fcp.fcpManager;
 import net.sf.thingamablog.util.string.ASCIIconv;
+import thingamablog.l10n.i18n;
 
 /**
  * There is *a lot* of code below that comes from jSite
@@ -123,12 +124,11 @@ public class FCPTransport implements PublishTransport {
         int current_edition = edition + 1;
         String dirURI = "freenet:USK@" + insertURI + "/" + ASCIIconv.convertNonAscii(this.SSKPath) + "/" + current_edition + "/";
         System.out.println("Insert URI : " + dirURI);
-        ClientPutComplexDir putDir = new ClientPutComplexDir("Thingamablog insert", dirURI);
+        ClientPutComplexDir putDir = new ClientPutComplexDir("Thingamablog-insert", dirURI);
         System.out.println("Default name : " + frontPage);
         putDir.setDefaultName(frontPage);
         putDir.setMaxRetries(-1);
         putDir.setVerbosity(Verbosity.ALL);
-        int totalBytes = 0;
         for(Enumeration e = ht.keys() ; e.hasMoreElements() ;) {
             Object element = e.nextElement();
             File file = (File)element;
@@ -138,7 +138,6 @@ public class FCPTransport implements PublishTransport {
                 FileEntry fileEntry = createDirectFileEntry(file.getName(), fileEntryInputStream, fileLength);           
                 if (fileEntry != null) {
                     System.out.println("File to insert : " + fileEntry.getFilename());
-                    totalBytes += fileLength[0];
                     putDir.addFileEntry(fileEntry);
                 }
             } catch (IOException ex) {
@@ -155,7 +154,6 @@ public class FCPTransport implements PublishTransport {
                 FileEntry fileEntry = createDirectFileEntry("activelink.png", fileEntryInputStream, fileLength);
                 if (fileEntry != null) {
                     System.out.println("File to insert : activelink.png");
-                    totalBytes += file.length();                
                     putDir.addFileEntry(fileEntry);
                 }
              } catch (IOException ex) {
@@ -163,7 +161,6 @@ public class FCPTransport implements PublishTransport {
              }
         }
         try {            
-            tp.publishStarted(totalBytes);
             client.execute(putDir);
             System.out.println("Publish in progress...");
         } catch (IOException ioe) {
@@ -174,6 +171,9 @@ public class FCPTransport implements PublishTransport {
         boolean success = false;
         boolean finished = false;
         boolean disconnected = false;
+        int totalBlockToPublish = 0;
+        int blockPublished = 0;
+        tp.publishStarted(totalBlockToPublish);
         while (!finished) {
             Message message = client.readMessage();
             finished = (message == null) || (disconnected = client.isDisconnected());
@@ -189,16 +189,30 @@ public class FCPTransport implements PublishTransport {
                     int fatal = Integer.parseInt(message.get("FatallyFailed"));
                     int failed = Integer.parseInt(message.get("Failed"));
                     boolean finalized = Boolean.valueOf(message.get("FinalizedTotal")).booleanValue();
-                    tp.bytesTransferred(succeeded);
+                    blockPublished = succeeded;
+                    if (totalBlockToPublish != total) {
+                        totalBlockToPublish = total;
+                    }
+                    String log = "";
+                    log += "Total : " + total;
+                    log += "; Succeeded : " + succeeded;
+                    log += "; Fatally failed : " + fatal;
+                    log += "; Failed : " + failed;
+                    log += "; Final ? " + (finalized ? "yes;" : "no;");
+                    tp.logMessage(log);
+                    tp.updateBlocksTransferred(blockPublished, totalBlockToPublish, i18n.str("insertion_in_progress"));
                 }
                 success = "PutSuccessful".equals(messageName);
                 finished = success || "PutFailed".equals(messageName) || messageName.endsWith("Error");
+                if (tp.isAborted())
+                    disconnect();
             }            
         }
         // If the publish has been made, we update the edition number to the current edition
         if(finalURI != null){
             edition++;
         }
+        tp.logMessage("URI : " + finalURI);
         return success;
     }
     

@@ -44,5 +44,7 @@ public interface TransportProgress
 	 */
 	public boolean isAborted();
     
-    public void logMessage(String msg);
+        public void logMessage(String msg);
+        
+        public void updateBlocksTransferred(int blocks, int total, String name);
 }

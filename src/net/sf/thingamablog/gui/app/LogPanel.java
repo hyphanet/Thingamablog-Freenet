@@ -257,6 +257,13 @@ public class LogPanel extends JPanel implements PublishProgress, PingProgress, M
     { 
         updateProgressValue((int)bytes, true);
     }
+    
+    public void updateBlocksTransferred(final int blocks, final int total, String name)
+    {
+        if (!label.getIcon().equals(fileIcon))
+            updateLabelText(fileIcon, name, false);
+        updateProgressBar(blocks, total);
+    }
 
     /* (non-Javadoc)
      * @see net.sf.thingamablog.transport.TransportProgress#isAborted()
