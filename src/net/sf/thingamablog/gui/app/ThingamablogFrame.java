@@ -522,6 +522,8 @@ public class ThingamablogFrame extends JFrame
 		
 		if(r == JOptionPane.YES_OPTION)
 			createNewDatabase();				
+                TBGlobals.saveProperties();
+                TBGlobals.loadProperties();
 	}
 	
 	private void createNewDatabase()
@@ -3565,7 +3567,12 @@ public class ThingamablogFrame extends JFrame
                                     } else {
                                         nodeHostname = TBGlobals.getProperty("NODE_HOSTNAME");
                                     }
-                                    BrowserLaunch.launch("http://" + nodeHostname + ":" + port + "/" + curSelWeblog.getFrontPageUrl());
+                                    String url = curSelWeblog.getBaseUrl();
+                                    int firstSlash = url.indexOf('/');
+                                    int edition = ((FCPTransport) curSelWeblog.getPublishTransport()).getEdition();
+                                    String path = ((FCPTransport) curSelWeblog.getPublishTransport()).getSSKPath();
+                                    url = url.substring(0,firstSlash+1) + path + "/" + edition + "/";  
+                                    BrowserLaunch.launch("http://" + nodeHostname + ":" + port + "/" + url);
                                 }
                                 catch(Exception ex)
                                 {

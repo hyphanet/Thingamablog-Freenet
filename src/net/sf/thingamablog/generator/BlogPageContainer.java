@@ -65,9 +65,13 @@ public class BlogPageContainer implements TemplateContainer
         tagValues.put(new HyperTextTag("BlogDescription"), blog.getDescription());
         tagValues.put(new TextTag("FrontPageLink"), blog.getBaseUrl() + blog.getFrontPageFileName());
         if (blog.getType().equals("internet")) {
+            tagValues.put(new TextTag("MetaDescription"),"");
             tagValues.put(new TextTag("RssLink"), blog.getBaseUrl() + blog.getRssFileName());        
+            tagValues.put(new TextTag("SyndicateMessage"), "Syndicate this site !");
         } else {
+            tagValues.put(new TextTag("MetaDescription"), "<meta name=\"description\" content=" + blog.getDescription());
             tagValues.put(new TextTag("RssLink"), "/?newbookmark=freenet:" + blog.getBaseUrl() + "&desc=" + blog.getDescription());        
+            tagValues.put(new TextTag("SyndicateMessage"), "Bookmark this site !");
             if (blog.getPublishTransport() instanceof FCPTransport)
                             tagValues.put(new TextTag("EditionNumber"), (((FCPTransport)blog.getPublishTransport()).getEdition()+ 1) +"");        
         }
