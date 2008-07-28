@@ -16,7 +16,7 @@ Running Thingamablog
 -make sure a Java Virtual Machine is installed (minimum JRE 1.4.2)
 - Under windows click on thinga.exe, thingamablog.jar, or run.bat 
 or
-- entrer java -jar thingablog.jar from the commandline.
+- entrer java -jar thingamablog.jar from the commandline.
 
 Getting Started
 ---------------
